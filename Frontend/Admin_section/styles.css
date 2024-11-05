@@ -2,11 +2,12 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  width: 300px;
+  width: 500px;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
@@ -15,8 +16,42 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.charts-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.chart {
+  width: 45%;
+  margin: 0 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chart canvas {
+  width: 300px;
+  height: 200px;
+}
+
+.dashboard-container {
+  width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .login-form {
+  margin: 0 auto;
   margin-top: 20px;
+  width: 80%; /* adjust the width to be a percentage of the container */
+  margin-right: 10%; /* add a margin to indent the form from the container */
 }
 
 .login-form h2 {
@@ -41,6 +76,7 @@ body {
 .login-form input[type="submit"] {
   width: 100%;
   height: 40px;
+  margin-left: 2.5%;
   background-color: #4CAF50;
   color: #fff;
   padding: 10px;
@@ -51,4 +87,51 @@ body {
 
 .login-form input[type="submit"]:hover {
   background-color: #3e8e41;
+}
+
+.recent-donations-container {
+  margin-bottom: 20px;
+}
+
+.recent-donations-container h2 {
+  margin-top: 0;
+}
+
+#recent-donations-list {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.widgets-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.widget {
+  width: 23%;
+  margin: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.widget h2 {
+  margin-top: 0;
+}
+
+#dog-blood-types-chart {
+  width: 250px;
+  height: 150px;
+}
+
+#cat-blood-types-chart {
+  width: 300px;
+  height: 200px;
 }
