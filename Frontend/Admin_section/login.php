@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button type="submit">
+        Home
+    </button>
     <div class="container">
         <div class="login-form">
             <h2>Login</h2>

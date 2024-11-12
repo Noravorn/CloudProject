@@ -47,11 +47,59 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.dashboard-button-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.dashboard-button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dashboard-button:hover {
+  background-color: #3e8e41;
+}
+
 .login-form {
   margin: 0 auto;
   margin-top: 20px;
   width: 80%; /* adjust the width to be a percentage of the container */
   margin-right: 10%; /* add a margin to indent the form from the container */
+}
+
+.history-search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.history-search-form input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+}
+
+.history-search-form button[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.history-search-form button[type="submit"]:hover {
+  background-color: #3e8e41;
 }
 
 .login-form h2 {
