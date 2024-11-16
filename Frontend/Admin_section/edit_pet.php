@@ -1,7 +1,6 @@
 <?php 
     session_start();
 	include("connect.php");
-    $uid = $_SESSION['uid'];
 	if (isset($_POST['sub'])) {
 		$id = $_GET['id'];
 		$Name = filter_input(INPUT_POST, 'Name');

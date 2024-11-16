@@ -31,7 +31,7 @@
 				<tr>
 					<th>Name</th>
 					<th>Blood Type</th>
-					<th>Species</th>
+					<th>Type</th>
 					<th>Breed</th>
 					<th>Age</th>
                     <th>Edit</th>
