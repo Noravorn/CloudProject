@@ -6,36 +6,42 @@
 <?php include 'connect.php'; ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    $petSpecies = $_POST['petSpecies'] ?? '';
-    $location = $_POST['location'] ?? '';
+
     $bloodType = $_POST['bloodType'] ?? '';
-    $serviceHours = $_POST['serviceHours'] ?? '';
+    $city = $_POST['city'] ?? '';
 
-    // Prepare SQL query with placeholders for filtering
-    $query = "
-        SELECT name, location, type, blood 
-        FROM blood_banks 
-        WHERE type = :petSpecies 
-        AND location = :location 
-        AND blood = :bloodType
-    ";
+    try {
+        // Prepare SQL query with placeholders for filtering
+        $query = "
+            SELECT Blood_Types.Blood_Type_Name, Clinic.Clinic_Name, Clinic.Clinic_City, Clinic.Clinic_Open_Time
+            FROM Storage
 
-    // Prepare the statement
-    $stmt = $pdo->prepare($query);
+            JOIN Blood_Types ON Storage.Blood_Type_ID = Blood_Types.Blood_Type_ID
+            JOIN Clinic ON Storage.Clinic_ID = Clinic.Clinic_ID
 
-    // Bind parameters
-    $stmt->bindParam(':petSpecies', $petSpecies, PDO::PARAM_STR);
-    $stmt->bindParam(':location', $location, PDO::PARAM_STR);
-    $stmt->bindParam(':bloodType', $bloodType, PDO::PARAM_STR);
+            WHERE Blood_Types.Blood_Type_Name = :bloodType
+            AND Clinic.Clinic_City = :city
+        ";
 
-    // Execute the query
-    $stmt->execute();
+        // Prepare the statement
+        $stmt = $pdo->prepare($query);
 
-    // Fetch results
-    $filteredResults = $stmt->fetchAll();
+        // Bind parameters
+        $stmt->bindParam(':bloodType', $bloodType, PDO::PARAM_STR);
+        $stmt->bindParam(':city', $city, PDO::PARAM_STR);
 
-    $jsonResults = json_encode($filteredResults);
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch results
+        $filteredResults = $stmt->fetchAll();
+
+        $jsonResults = json_encode($filteredResults);
+
+        echo $jsonResults;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
 }
 ?>
 
@@ -64,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="location" class="form-label">Location *</label>
-                        <select class="form-select" id="location" name="location">
+                        <label for="cityn" class="form-label">City *</label>
+                        <select class="form-select" id="city" name="city">
                             <option value="Bangkok">Bangkok</option>
                             <option value="Chiang Mai">Chiang Mai</option>
                             <option value="Phuket">Phuket</option>
@@ -126,10 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item mb-3';
                 resultItem.innerHTML = `
-                        <h5>${item.name}</h5>
-                        <p>Location: ${item.location}</p>
-                        <p>Type: ${item.type}</p>
-                        <p>Blood Type: ${item.blood}</p>
+                        <h5>Clinic Name: ${item.Clinic_Name}</h5>
+                        <p>City: ${item.Clinic_City}</p>
+                        <p>Blood Type: ${item.Blood_Type_Name}</p>
+                        <p>Service Hours: ${item.Clinic_Open_Time}</p>
                     `;
                 resultsContainer.appendChild(resultItem);
             });
@@ -160,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Replace the current results with the new ones
                 resultsContainer.innerHTML = resultsHTML;
-                
+
             })
             .catch(error => {
                 resultsContainer.innerHTML = '<p>An error occurred while searching.</p>';
