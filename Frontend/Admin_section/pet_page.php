@@ -11,65 +11,56 @@
           rel="stylesheet">
     <!--Stylesheet-->
     <link rel="stylesheet" href="style.css">
-    <title>Admin Dashboard</title>
+    <title>Pet Data</title>
 </head>
 <body>
     <div class="container">
-    <?php include 'sideBar.php'; ?>
-        <!-- END OF SIDEBAR -->
-        <div id="PetTable" class="DisplayTable">
-        <h2>Pet Information</h2>
-			<table>
-                <col width="10%">
-				<col width="20%">
-				<col width="20%">
-				<col width="20%">
-				<col width="20%">
-				<col width="20%">
-                <col width="10%">
-						
-				<tr>
-					<th>Name</th>
-					<th>Blood Type</th>
-					<th>Type</th>
-					<th>Breed</th>
-					<th>Age</th>
-                    <th>Edit</th>
-					<th>Delete</th>
-				</tr>
-                <?php
-							$q = "select * from PETS";
-							$result = $conn->query($q);
+		<?php include 'sideBar.php'; ?>
+					<!-- END OF SIDEBAR -->
+					<div id="PetTable" class="DisplayTable">
+						<div class="top">
+							<h2>Pet Information</h2>
+							<button><a href="edit_pet.php">Edit Pet</a></button>
+						</div>
+						<table>
+							<col width="10%">
+							<col width="20%">
+							<col width="20%">
+							<col width="20%">
+							<col width="20%">
+							<col width="20%">
+							<col width="10%">
+
+							<tr>
+								<th>Name</th>
+								<th>Blood Type</th>
+								<th>Type</th>
+								<th>Breed</th>
+								<th>Age</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+							<?php
+							$query = "SELECT * FROM PETS";
+							$result = $conn->query($query);
 							if (!$result) {
 								echo "Select failed. Error: " . $conn->error;
 								return false;
 							}
-							while ($row = $result->fetch_array()) { ?>
+							while ($row = $result->fetch_assoc()) {
+							?>
 							<tr>
-								<td>
-									<? echo $row['Pet_Name'];?>
-								</td>
-								<td>
-									<? echo $row['Pet_Blood_Type'];?>
-								</td>
-								<td>
-									<? echo $row['Pet_Type'];?>
-								</td>
-								<td>
-									<? echo $row['Pet_Breed'];?>
-								</td>
-								<td>
-									<? echo $row['Pet_Age'];?>
-								</td>
-								<td><a href='edit_pet.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png"
-								width="24" height="24">-->Edit</a></td>
-								<td><a href='deleteInfo.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png"
-								width="24" height="24">-->Delete</a></td>
+								<td><?= $row['Pet_Name'] ?></td>
+								<td><?= $row['Pet_Blood_Type'] ?></td>
+								<td><?= $row['Pet_Type'] ?></td>
+								<td><?= $row['Pet_Breed'] ?></td>
+								<td><?= $row['Pet_Age'] ?></td>
+								<td><a href='edit_pet.php?id=<?= $row['Pet_ID'] ?>'>Edit</a></td>
+								<td><a href='deleteInfo.php?id=<?= $row['Pet_ID'] ?>'>Delete</a></td>
 							</tr>
-						<?php } ?>
-        </div>
+							<?php } ?>
+						</table>
+					</div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./script.js"></script>
 </body>
 </html>

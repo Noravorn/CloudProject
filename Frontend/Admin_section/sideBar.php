@@ -6,14 +6,15 @@ echo
                     <img src="./images/Pawsitive logo.png" alt="Logo">
                     <h2>Pet <span class="danger">Blood Bank</span></h2>
                 </div>
-                <div class="close" id="close-btn">
-                    <span class="material-icons-sharp">close</span>
-                </div>
             </div>
             <div class="sidebar">
-            <a href="#">
+            <a href="admin.php">
                 <span class="material-icons-sharp">grid_view</span>
                     <h3>Dashboard</h3>
+            </a>
+            <a href="donate.php">
+                <span class="material-icons-sharp">bloodtype</span>
+                    <h3>Donate</h3>
             </a>
             <a href="history.php">
                 <span class="material-icons-sharp">history</span>

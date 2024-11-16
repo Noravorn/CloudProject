@@ -33,53 +33,71 @@
           rel="stylesheet">
     <!--Stylesheet-->
     <link rel="stylesheet" href="style.css">
-    <title>Admin Dashboard</title>
+    <title>Edit User</title>
 </head>
 <body>
     <div class="container">
-    <?php include 'sideBar.php'; ?>
-        <!-- END OF SIDEBAR -->
-    </div>
-    <div id="div_content" class="form">
-					<h2>Edit Pet Data</h2>
-					<?php
-						$id = $_GET['id'];
-						$q = "SELECT * FROM USERS where User_ID = $id";
-						$result = $conn->query($q);
-						$row = $result->fetch_assoc();
-						echo "<form action='edit_user.php' method='post'>";
-						echo "<label>Title</label>";
-						echo "<input type='text' name='Title' value=" . $row['User_Title'] . ">";
-						
-						echo "<label>Role</label>";
-						echo "<input type='text' name='Role' value=" . $row['User_Role'] . ">";
-						
-						echo "<label>First Name</label>";
-						echo "<input type='text' name='Fname' value=" . $row['User_Fname'] . ">";
+			<?php include 'sideBar.php'; ?>
+					<!-- END OF SIDEBAR -->
 
-                        echo "<label>Last Name</label>";
-						echo "<input type='text' name='Lname' value=" . $row['USer_Lname'] . ">";
+					<div class="add_user">
+						<div id="div_content" class="form">
+							<h2>Add User Data</h2>
+							<form action="add_user.php" method="post">
+								<input type="text" name="Title" placeholder="Title">
+								<input type="text" name="Role" placeholder="Role">
+								<input type="text" name="Fname" placeholder="First Name">
+								<input type="text" name="Lname" placeholder="Last Name">
+								<input type="text" name="Email" placeholder="Email">
+								<input type="text" name="PhoneNumber" placeholder="Phone Number">
+								<div class="center">
+									<input type="submit" name="sub" value="Add">
+								</div>
+							</form>
+						</div>
 
-                        echo "<label>Email</label>";
-						echo "<input type='text' name='Email' value=" . $row['User_Email'] . ">";
+					<div class="edit_user">
+							<div id="div_content" class="form">
+								<h2>Edit User Data</h2>
+								<?php
+									$id = $_GET['id'];
+									$q = "SELECT * FROM USERS where User_ID = $id";
+									$result = $conn->query($q);
+									$row = $result->fetch_assoc();
+									echo "<form action='edit_user.php' method='post'>";
+									echo "<label>Title</label>";
+									echo "<input type='text' name='Title' value=" . $row['User_Title'] . ">";
+									
+									echo "<label>Role</label>";
+									echo "<input type='text' name='Role' value=" . $row['User_Role'] . ">";
+									
+									echo "<label>First Name</label>";
+									echo "<input type='text' name='Fname' value=" . $row['User_Fname'] . ">";
 
-                        echo "<label>Phone Number</label>";
-						echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";
-                        
-                        echo "<label>Phone Number</label>";
-						echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";	
+															echo "<label>Last Name</label>";
+									echo "<input type='text' name='Lname' value=" . $row['USer_Lname'] . ">";
 
-                        echo "<label>Phone Number</label>";
-						echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";	
-						
-						echo "<div class='center'>";
-						echo "<input type='submit' name='sub' value='Update'>";
-						echo "</div>";
-						echo "</form>"
-						
-					?>
+															echo "<label>Email</label>";
+									echo "<input type='text' name='Email' value=" . $row['User_Email'] . ">";
+
+															echo "<label>Phone Number</label>";
+									echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";
+															
+															echo "<label>Phone Number</label>";
+									echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";	
+
+															echo "<label>Phone Number</label>";
+									echo "<input type='text' name='PhoneNumber' value=" . $row['User_Phone_Number'] . ">";	
+									
+									echo "<div class='center'>";
+									echo "<input type='submit' name='sub' value='Update'>";
+									echo "</div>";
+									echo "</form>"
+									
+								?>
+							</div>
+					</div>
 				</div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./script.js"></script>
+		</div>
 </body>
 </html>
