@@ -1,7 +1,7 @@
 <?php
 // Database configuration
 $host = 'db-mysql-instance.czuq6imooyep.us-east-1.rds.amazonaws.com'; // RDS endpoint
-$dbname = 'sampledb'; // Database name
+$dbname = 'Cloud_Project_BloodBank'; // Database name
 $username = 'admin'; // Database username
 $password = 'password'; // Database password
 
@@ -19,3 +19,4 @@ try {
     // Handle connection error
     echo "Connection failed: " . $e->getMessage();
 }
+?>
