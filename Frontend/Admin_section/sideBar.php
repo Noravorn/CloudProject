@@ -23,25 +23,13 @@ echo
                 <span class="material-icons-sharp">pets</span>
                     <h3>Pet Data</h3>
             </a>
-            <a href="edit_pet.php">
-                <span class="material-icons-sharp">edit</span>
-                    <h3>Edit Pet Data</h3>
-            </a>
             <a href="user_manage.php">
                 <span class="material-icons-sharp">account_circle</span>
                     <h3>User Management</h3>
             </a>
-            <a href="edit_user.php">
-                <span class="material-icons-sharp">edit</span>
-                    <h3>Edit User</h3>
-            </a>
             <a href="clinic_manage.php">
                 <span class="material-icons-sharp">local_hospital</span>
                     <h3>Clinic Management</h3>
-            </a>
-            <a href="edit_clinic.php">
-                <span class="material-icons-sharp">edit</span>
-                    <h3>Edit Clinic</h3>
             </a>
             <a href="login.php">
                 <span class="material-icons-sharp">logout</span>
