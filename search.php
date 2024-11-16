@@ -3,7 +3,7 @@
 
 <?php include('header.php'); ?>
 <?php include 'navbar.php'; ?>
-
+<?php include 'connect.php'; ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
@@ -12,16 +12,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bloodType = $_POST['bloodType'] ?? '';
     $serviceHours = $_POST['serviceHours'] ?? '';
 
-    // Mock search results
-    $results = [
-        ['name' => 'Pet Blood Bank A', 'location' => 'Bangkok', 'type' => 'Dog', 'blood' => 'A'],
-        ['name' => 'Pet Blood Bank B', 'location' => 'Chiang Mai', 'type' => 'Cat', 'blood' => 'B'],
-    ];
+    // Prepare SQL query with placeholders for filtering
+    $query = "
+        SELECT name, location, type, blood 
+        FROM blood_banks 
+        WHERE type = :petSpecies 
+        AND location = :location 
+        AND blood = :bloodType
+    ";
 
-    // Filter results (example)
-    $filteredResults = array_filter($results, function ($result) use ($petSpecies, $location, $bloodType) {
-        return $result['type'] === $petSpecies && $result['location'] === $location && $result['blood'] === $bloodType;
-    });
+    // Prepare the statement
+    $stmt = $pdo->prepare($query);
+
+    // Bind parameters
+    $stmt->bindParam(':petSpecies', $petSpecies, PDO::PARAM_STR);
+    $stmt->bindParam(':location', $location, PDO::PARAM_STR);
+    $stmt->bindParam(':bloodType', $bloodType, PDO::PARAM_STR);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Fetch results
+    $filteredResults = $stmt->fetchAll();
 
     $jsonResults = json_encode($filteredResults);
 }
