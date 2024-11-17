@@ -2,56 +2,103 @@
 <html lang="en">
 
 <?php include '../header.php'; ?>
+<?php include '../connect.php'; ?>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-md-2 bg-white vh-100 p-3 shadow">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="d-flex align-items-center">
-                        <img src="../src/images/logo.svg" alt="Logo" class="img-fluid me-2" style="width: 80px;">
-                        <h2 class="h5">Pet <span class="text-danger">Blood Bank</span></h2>
-                    </div>
-                    <button class="btn btn-sm btn-outline-secondary d-md-none" id="close-btn">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                <nav class="nav flex-column">
-                    <a href="#" class="nav-link text-secondary d-flex align-items-center mb-2">
-                        <i class="bi bi-grid-fill me-2"></i> Dashboard
-                    </a>
-                    <a href="#" class="nav-link text-secondary d-flex align-items-center mb-2">
-                        <i class="bi bi-clock-history me-2"></i> History
-                    </a>
-                    <a href="#" class="nav-link text-secondary d-flex align-items-center mb-2">
-                        <i class="bi bi-paw me-2"></i> Pet Data
-                    </a>
-                    <a href="#" class="nav-link text-secondary d-flex align-items-center mb-2">
-                        <i class="bi bi-pencil-square me-2"></i> Edit Pet Data
-                    </a>
-                    <a href="#" class="nav-link text-primary d-flex align-items-center mb-2 active">
-                        <i class="bi bi-person-circle me-2"></i> User Management
-                    </a>
-                    <a href="#" class="nav-link text-secondary d-flex align-items-center mb-2">
-                        <i class="bi bi-hospital me-2"></i> Clinic Management
-                    </a>
-                    <a href="#" class="nav-link text-danger d-flex align-items-center mt-auto">
-                        <i class="bi bi-box-arrow-left me-2"></i> Logout
-                    </a>
-                </nav>
-            </aside>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Sidebar -->
+			<?php include 'sidebar.php'; ?>
 
-            <!-- Main Content -->
-            <main class="col-md-10 bg-light vh-100">
-                <div class="container py-3">
-                    <h1 class="h4">Dashboard</h1>
-                    <p class="text-muted">Welcome to the Pet Blood Bank Management System.</p>
-                </div>
-            </main>
-        </div>
-    </div>
+			<!-- Main Content -->
+			<main class="col-md-10 p-4">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h2>User Information</h2>
+					<a href="edit_user.php" class="btn btn-primary">Edit User</a>
+				</div>
 
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="table-dark">
+							<tr>
+								<th>Title</th>
+								<th>Role</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>Phone Number</th>
+								<th>Password</th>
+								<th>Pet</th>
+								<th>Clinic</th>
+								<th>City</th>
+								<th>Address</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<?php
+							try {
+								$query = "select * FROM USERS u 
+									JOIN ROLES r ON u.UserRoleID = r.RoleID 
+									JOIN CITIES c ON u.UserCityID = c.CityID 
+									JOIN CLINICS cl ON u.UserClinicID = cl.ClinicID 
+									JOIN DONATION_HISTORY dh ON u.UserID = dh.DonorID 
+									JOIN BLOOD_TYPES bt ON dh.BloodTypeID = bt.BloodTypeID 
+									JOIN PETS p ON u.UserID = p.OwnerID;";
+								$stmt = $pdo->query($query);
+
+								if ($stmt->rowCount() > 0) {
+									while ($row = $stmt->fetch()) { ?>
+										<tr>
+											<td>
+												<? echo $row['Title_Name']; ?>
+											</td>
+											<td>
+												<? echo $row['Role_Name']; ?>
+											</td>
+											<td>
+												<? echo $row['User_Fname']; ?>
+											</td>
+											<td>
+												<? echo $row['User_Lname']; ?>
+											</td>
+											<td>
+												<? echo $row['User_Email']; ?>
+											</td>
+											<td>
+												<? echo $row['User_Phone_Number']; ?>
+											</td>
+											<td>
+												<? echo $row['Pet_Name']; ?>
+											</td>
+											<td>
+												<? echo $row['Clinic_Name']; ?>
+											</td>
+											<td>
+												<? echo $row['City_Name']; ?>
+											</td>
+											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
+									width="24" height="24">-->Edit</a></td>
+											<td><a href='deleteInfo.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
+									width="24" height="24">-->Delete</a></td>
+										</tr>
+							<?php }
+								} else {
+									echo "<tr><td colspan='8' class='text-center text-muted'>No clinics found.</td></tr>";
+								}
+							} catch (PDOException $e) {
+								echo "<tr><td colspan='8' class='text-danger'>Error fetching clinics: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+							}
+							?>
+						</tbody>
+					</table>
+				</div>
+
+			</main>
+		</div>
+	</div>
 </body>
 
 </html>

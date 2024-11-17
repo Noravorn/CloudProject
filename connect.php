@@ -14,7 +14,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    //echo "Connected to AWS RDS MySQL successfully!";
+    // echo "Connected to AWS RDS MySQL successfully!";
 } catch (PDOException $e) {
     // Handle connection error
     echo "Connection failed: " . $e->getMessage();
