@@ -31,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 session_regenerate_id(true);
 
                 // Redirect based on user role
-                $redirectUrl = $user['User_Role_ID'] == 1 
-                    ? "admin/user_management.php" 
-                    : ($user['User_Role_ID'] == 2 ? "index.php" : null);
+                $redirectUrl = $user['User_Role_ID'] == 2 
+                    ? "index.php" 
+                    : null;
 
                 if ($redirectUrl) {
                     header("Location: $redirectUrl");
