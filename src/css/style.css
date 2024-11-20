@@ -1,0 +1,17 @@
+/* General Styles */
+* {
+    font-family: "Playfair Display", serif;
+}
+
+:root {
+
+    /* User UI */
+    --main-color: #f1efe7;
+    --secondary-color: #f5f5f5;
+    --text-color: #2a2929;
+    --link-hovered-color: #d62323;
+}
+
+body {
+    background-color: var(--main-color);
+}
