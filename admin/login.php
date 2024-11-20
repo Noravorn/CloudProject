@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="card">
             <div class="card-header">
                 <h2>Log In</h2>
-                <p>Login here using your username and password</p>
+                <!-- <p>Login here using your username and password</p> -->
             </div>
             <!-- Error Notification -->
             <?php if (isset($error)): ?>
@@ -88,5 +88,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </div>
 </body>
+<style>
+    body h2 {
+        text-align: center;
+    }
 
+    .card-body {
+        width: 20rem;
+    }
+
+    form button[type="submit"] {
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    }
+</style>
 </html>

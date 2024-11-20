@@ -46,6 +46,7 @@
                 <h2>Edit User Data</h2>
 
                 <?php if (isset($user)): ?>
+                <div class="user_form">
                     <!-- Form to edit user data -->
                     <form action="edit_user.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
@@ -78,10 +79,9 @@
                             <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" value="<?php echo htmlspecialchars($user['User_Phone_Number']); ?>" required>
                         </div>
 
-                        <div class="form-group text-center">
-                            <input type="submit" name="sub" class="btn btn-primary" value="Update">
-                        </div>
+                        <input type="submit" name="sub" class="btn btn-primary" value="Update">
                     </form>
+                </div>
                 <?php else: ?>
                     <p>User not found.</p>
                 <?php endif; ?>
@@ -90,5 +90,49 @@
     </div>
 
 </body>
+<style>
+    main h2 {
+        text-align: center;        
+    }
+    .user_form {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        padding-left: 20%;
+        padding-right: 20%;
+        background: var(--secondary-color);
+    }
 
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 7fr);
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        background: var(--secondary-color);
+    }
+
+    form input {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form select {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form input[type="submit"] {
+        cursor: pointer;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+    }
+</style>
 </html>
