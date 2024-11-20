@@ -4,6 +4,29 @@
 <?php include '../header.php'; ?>
 <?php include '../connect.php'; ?>
 
+<?php
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
+
+	// Sanitize input using htmlspecialchars to prevent XSS
+	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
+	$BloodType = htmlspecialchars(filter_input(INPUT_POST, 'BloodType'));
+	$Type = htmlspecialchars(filter_input(INPUT_POST, 'Type'));
+	$Breed = htmlspecialchars(filter_input(INPUT_POST, 'Breed'));
+	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
+
+	// Update query
+	$stmt = $conn->prepare("INSERT Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? INTO PETS");
+	if ($stmt->execute([$Name, $BloodType, $Type, $Breed, $Age])) {
+		header("Location: pet_page.php");
+		exit();
+	} else {
+		$error = "Insert failed";
+	}
+}
+
+?>
+
 <body>
     <div class="container-fluid">
         <div class="row">

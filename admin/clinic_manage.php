@@ -13,6 +13,7 @@
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<h1 class="mb-4">Clinic Management</h1>
+				<a href="add_clinic.php" class="btn btn-primary">Add Clinic</a>
 
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
@@ -31,7 +32,8 @@
 						<tbody>
 							<?php
 							try {
-								$query = "SELECT * FROM CLINICS";
+								$query = "SELECT * FROM CLINICS 
+								JOIN CITIES ON CITIES.City_ID = CLINICS.Clinic_City_ID";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {

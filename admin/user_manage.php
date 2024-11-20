@@ -14,7 +14,7 @@
 			<main class="col-md-10 p-4">
 				<div class="d-flex justify-content-between align-items-center mb-4">
 					<h2>User Information</h2>
-					<a href="edit_user.php" class="btn btn-primary">Edit User</a>
+					<a href="add_user.php" class="btn btn-primary">Add User</a>
 				</div>
 
 				<div class="table-responsive">
@@ -41,12 +41,12 @@
 							<?php
 							try {
 								$query = "select * FROM USERS u 
-									JOIN ROLES r ON u.UserRoleID = r.RoleID 
-									JOIN CITIES c ON u.UserCityID = c.CityID 
-									JOIN CLINICS cl ON u.UserClinicID = cl.ClinicID 
-									JOIN DONATION_HISTORY dh ON u.UserID = dh.DonorID 
-									JOIN BLOOD_TYPES bt ON dh.BloodTypeID = bt.BloodTypeID 
-									JOIN PETS p ON u.UserID = p.OwnerID;";
+									JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
+									JOIN CITIES c ON u.User_City_ID = c.City_ID 
+									JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
+									JOIN DONATION_HISTORY dh ON u.User_ID = dh.Donor_ID
+									JOIN PETS p ON u.User_Pet_ID = p.Pet_ID
+									JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID;";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {
@@ -79,10 +79,8 @@
 											<td>
 												<? echo $row['City_Name']; ?>
 											</td>
-											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
-									width="24" height="24">-->Edit</a></td>
-											<td><a href='deleteInfo.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
-									width="24" height="24">-->Delete</a></td>
+											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'>Edit</a></td>
+											<td><a href='deleteInfo.php?id=<? echo $row['User_ID']; ?>'>Delete</a></td>
 										</tr>
 							<?php }
 								} else {

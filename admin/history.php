@@ -21,15 +21,14 @@
                         <th>Blood Type</th>
                         <th>Breed</th>
                         <th>Age</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
                     </thead>
                     <?php
 
                     try {
-                        $query = "select * from DONATION_HISTORY dh 
-                            JOIN BLOOD_TYPES bt ON dh.BloodTypeID = bt.BloodTypeID 
-                            JOIN PETS p ON dh.PetID = p.PetID;
+                        $query = "select * from DONATION_HISTORY dh
+                            JOIN PETS p ON dh.Donor_Pet_ID = p.Pet_ID
+                            JOIN USERS u ON u.User_ID = dh.Donor_ID 
+                            JOIN BLOOD_TYPES bt ON p.Pet_Blood_Type_ID = bt.Blood_Type_ID;                            
                         ";
                         $stmt = $pdo->query($query);
 
@@ -54,8 +53,6 @@
                                     <td>
                                         <? echo $row['Pet_Age']; ?>
                                     </td>
-                                    <td><a href='edit_pet.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png" alt="Edit">--> Edit</a></td>
-                                    <td><a href='delete_pet.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png" alt="Delete">--> Delete</a></td>
                                 </tr>
                     <?php }
                         } else {
