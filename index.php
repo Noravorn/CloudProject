@@ -1,10 +1,9 @@
-<html>
+<?php
+session_start();
 
-<?php include('header.php'); ?>
-<?php include('navbar.php'); ?>
-
-<body>
-    
-</body>
-    
-</html>
+if (isset($_SESSION['User_ID'])) {
+    header("Location: information.php");
+} else {
+    header("Location: login.php");
+}
+?>
