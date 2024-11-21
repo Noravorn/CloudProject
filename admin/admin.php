@@ -42,15 +42,15 @@
                 <!-- Counts -->
                 <div class="row g-4 mt-4">
                     <?php
-                    $query = "SELECT COUNT(User_ID) FROM USERS";
+                    $query = "SELECT COUNT(User_ID) as cU FROM USERS";
                     $stmt = $pdo->query($query);
                     $userCount = $stmt->fetch();
 
-                    $query = "SELECT COUNT(Pet_ID) FROM PETS";
+                    $query = "SELECT COUNT(Pet_ID) as cP FROM PETS";
                     $stmt = $pdo->query($query);
                     $petCount = $stmt->fetch();
 
-                    $query = "SELECT COUNT(Clinic_ID) FROM CLINICS";
+                    $query = "SELECT COUNT(Clinic_ID) as cC FROM CLINICS";
                     $stmt = $pdo->query($query);
                     $clinicCount = $stmt->fetch();
 

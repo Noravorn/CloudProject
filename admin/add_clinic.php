@@ -36,12 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<h2>Add Clinic Data</h2>
-					<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
+					<form action="add_clinic.php" method="post">
 						<label for="Name">Clinic Name</label>
-						<input type="text" name="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
+						<input type="text" name="Name" value="" required>
 
 						<label for="City">Clinic City</label>
-						<input type="text" name="City" value="<?php echo htmlspecialchars($clinic['City_Name']); ?>" required>
+                        <select name="City" id="City" required>
+                            <?php
+                                $stmt = $pdo->prepare("SELECT * FROM CITIES");
+                                $stmt->execute();
+                                $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                foreach ($clinics as $clinic) {
+                                    echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
+                                }
+                            ?>
+                        </select>
 
 						<label for="Address">Clinic Address</label>
 						<input type="text" name="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>

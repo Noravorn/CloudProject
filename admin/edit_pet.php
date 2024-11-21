@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						<label for="Name">Pet Name</label>
 						<input type="text" name="Name" value="<?php echo htmlspecialchars($pet['Pet_Name']); ?>" required>
 
-						<label for="Type">Pet Type</label>
-						<select id="Type" name="pet_type">
+						<label for="petType">Pet Type</label>
+						<select id="petType" name="pet_type">
 							<option value="dog" <?php if ($pet['Pet_Type'] == 'dog') echo 'selected'; ?>>Dog</option>
 							<option value="cat" <?php if ($pet['Pet_Type'] == 'cat') echo 'selected'; ?>>Cat</option>
 						</select>
@@ -62,35 +62,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						<script>
 							const petTypeSelect = document.getElementById('petType');
 							const bloodTypeSelect = document.getElementById('bloodType');
-							const dogBloodTypes = ['DEA 1.1', 'DEA 1.2', 'DEA 3', 'DEA 4', 'DEA 5', 'DEA 6', 'DEA 7', 'DEA 8'];
-							dogBloodTypes.forEach(bloodType => {
-								const option = document.createElement('option');
-								option.value = BloodType;
-								option.text = bloodType;
-								bloodTypeSelect.appendChild(option);
-							});
 
-							petTypeSelect.addEventListener('change', () => {
-								const selectedPetType = petTypeSelect.value;
+							// Function to populate blood type options based on pet type
+							function populateBloodTypes(petType) {
 								bloodTypeSelect.innerHTML = ''; // Clear previous options
 
-								if (selectedPetType === 'cat') {
-									const catBloodTypes = ['A', 'B', 'AB'];
-									catBloodTypes.forEach(bloodType => {
-										const option = document.createElement('option');
-										option.value = BloodType;
-										option.text = bloodType;
-										bloodTypeSelect.appendChild(option);
-									});
-								} else if (selectedPetType === 'dog') {
+								if (petType === 'dog') {
 									const dogBloodTypes = ['DEA 1.1', 'DEA 1.2', 'DEA 3', 'DEA 4', 'DEA 5', 'DEA 6', 'DEA 7', 'DEA 8'];
 									dogBloodTypes.forEach(bloodType => {
 										const option = document.createElement('option');
-										option.value = BloodType;
+										option.value = bloodType;
+										option.text = bloodType;
+										bloodTypeSelect.appendChild(option);
+									});
+								} else if (petType === 'cat') {
+									const catBloodTypes = ['A', 'B', 'AB'];
+									catBloodTypes.forEach(bloodType => {
+										const option = document.createElement('option');
+										option.value = bloodType;
 										option.text = bloodType;
 										bloodTypeSelect.appendChild(option);
 									});
 								}
+							}
+
+							// Initial population of blood types for the default "dog" selection
+							populateBloodTypes(petTypeSelect.value);
+
+							// Event listener for pet type changes
+							petTypeSelect.addEventListener('change', () => {
+								populateBloodTypes(petTypeSelect.value);
 							});
 						</script>
 

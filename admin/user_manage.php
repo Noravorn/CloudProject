@@ -80,7 +80,7 @@
 												<? echo $row['City_Name']; ?>
 											</td>
 											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'>Edit</a></td>
-											<td><a href='deleteInfo.php?id=<? echo $row['User_ID']; ?>'>Delete</a></td>
+											<td><a href='delete_Info.php?id=<? echo $row['User_ID']; ?>'>Delete</a></td>
 										</tr>
 							<?php }
 								} else {

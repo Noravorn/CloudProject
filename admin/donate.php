@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
 
 	// Update query
-	$stmt = $conn->prepare("INSERT Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? INTO PETS");
+	$stmt = $conn->prepare("INSERT INTO PETS(Pet_Name, Pet_Blood_Type_ID, Pet_Type, Pet_Breed, Pet_Age) VALUES (?, ?, ?, ?, ?) ");
 	if ($stmt->execute([$Name, $BloodType, $Type, $Breed, $Age])) {
 		header("Location: pet_page.php");
 		exit();
@@ -85,12 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
                         <select name="clinic" id="clinic" required>
                             <?php
                                 // Fetch clinic names from the database using PDO
-                                $stmt = $pdo->prepare("SELECT Clinic_Name FROM CLINICS");
+                                $stmt = $pdo->prepare("SELECT * FROM CLINICS");
                                 $stmt->execute();
                                 $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 
                                 foreach ($clinics as $clinic) {
-                                    echo "<option value='" . htmlspecialchars($clinic['Clinic_Name']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
+                                    echo "<option value='" . htmlspecialchars($clinic['Clinic_ID']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
                                 }
                             ?>
                         </select>

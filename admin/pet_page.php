@@ -48,7 +48,7 @@
 											<td><?= $row['Pet_Breed'] ?></td>
 											<td><?= $row['Pet_Age'] ?></td>
 											<td><a href='edit_pet.php?id=<?= $row['Pet_ID'] ?>'>Edit</a></td>
-											<td><a href='deleteInfo.php?id=<?= $row['Pet_ID'] ?>'>Delete</a></td>
+											<td><a href='delete_Info.php?id=<?= $row['Pet_ID'] ?>'>Delete</a></td>
 										</tr>
 							<?php }
 								} else {

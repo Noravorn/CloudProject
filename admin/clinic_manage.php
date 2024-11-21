@@ -51,7 +51,7 @@
 												</a>
 											</td>
 											<td>
-												<a href="deleteInfo.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-danger">
+												<a href="delete_Info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-danger">
 													<i class="bi bi-trash"></i> Delete
 												</a>
 											</td>
