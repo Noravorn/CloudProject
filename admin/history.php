@@ -21,8 +21,6 @@
                         <th>Blood Type</th>
                         <th>Breed</th>
                         <th>Age</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
                     </thead>
                     <?php
 
@@ -54,8 +52,6 @@
                                     <td>
                                         <? echo $row['Pet_Age']; ?>
                                     </td>
-                                    <td><a href='edit_pet.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png" alt="Edit">--> Edit</a></td>
-                                    <td><a href='delete_pet.php?id=<? echo $row['Pet_ID']; ?>'> <!--<img src="images/.png" alt="Delete">--> Delete</a></td>
                                 </tr>
                     <?php }
                         } else {
