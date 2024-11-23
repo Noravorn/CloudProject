@@ -38,13 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
                 <h2>Donate Blood</h2>
                 <div class="donate_form">
                     <form action="donate.php" method="post">
-                        <!-- Owner First Name -->
-                        <label for="user_Fname">Owner First Name: </label>
-                        <input type="text" id="user_Fname" name="owner_first_name" required>
-                        
-                        <!-- Owner Last Name -->
-                        <label for="user_Lname">Owner Last Name: </label>
-                        <input type="text" id="user_Lname" name="owner_last_name" required>
+                        <!-- Owner Name -->
+                        <label for="user_name">Owner Name: </label>
+                        <select id="user-name" name="user_name" required>
+                            <?php
+                            
+                            ?>
+                        </select>
                         
                         <!-- Pet Name -->
                         <label for="pet_name">Pet Name:</label>
