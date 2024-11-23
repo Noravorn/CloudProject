@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 					<label for="Age">Age</label>
 					<input type="number" id="Age" required>
 
-					<input type="submit" id="sub" value="Add">
+					<input type="submit" id="sub" name="sub" value="Add">
 				</form>
 			</main>
 		</div>

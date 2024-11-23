@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     $lname = htmlspecialchars(filter_var($_POST['Lname']));
     $email = filter_var($_POST['Email'], FILTER_VALIDATE_EMAIL);
     $phone = filter_var($_POST['PhoneNumber']);
-    $password = password_hash(filter_var($_POST['Password']), PASSWORD_BCRYPT); // Hash password
+    $password = filter_var($_POST['Password']);
     $clinic = filter_var($_POST['clinic'], FILTER_SANITIZE_NUMBER_INT);
     $city = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT);
     $address = filter_var($_POST['Address']);

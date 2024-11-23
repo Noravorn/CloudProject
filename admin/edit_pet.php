@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						<label for="Age">Age</label>
 						<input type="number" id="Age" value="<?php echo htmlspecialchars($pet['Pet_Age']); ?>" required>
 
-						<input type="submit" id="sub" value="Update">
+						<input type="submit" id="sub" name="sub" value="Update">
 					</form>
 		</div>
 	<?php else: ?>
