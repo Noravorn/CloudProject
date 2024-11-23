@@ -1,6 +1,5 @@
 <?php
-// Database configuration
-$host = 'db-mysql-instance.czuq6imooyep.us-east-1.rds.amazonaws.com'; // RDS endpoint
+$host = 'database-1.c7fgj2wnwbfj.us-east-1.rds.amazonaws.com'; 
 $dbname = 'Cloud_Project_BloodBank'; // Database name
 $username = 'admin'; // Database username
 $password = 'password'; // Database password
