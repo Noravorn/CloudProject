@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$CloseTime = htmlspecialchars(filter_input(INPUT_POST, 'CloseTime'));
 
 	// Update query
-	$stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
+	$stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City_ID = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
 	if ($stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime, $id])) {
 		header("Location: clinic_manage.php");
 		exit();

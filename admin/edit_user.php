@@ -25,7 +25,7 @@
         $PhoneNumber = htmlspecialchars(filter_input(INPUT_POST, 'PhoneNumber'));
 
         // Prepare and execute update query
-        $stmt = $pdo->prepare("UPDATE USERS SET User_Title = ?, User_Role = ?, User_Fname = ?, User_Lname = ?, User_Email = ?, User_Phone_Number = ? WHERE User_ID = ?");
+        $stmt = $pdo->prepare("UPDATE USERS SET User_Title_ID = ?, User_Role_ID = ?, User_Fname = ?, User_Lname = ?, User_Email = ?, User_Phone_Number = ? WHERE User_ID = ?");
         $stmt->execute([$Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $id]);
 
         // Redirect to user management page
