@@ -39,58 +39,50 @@
 						<tbody>
 							<?php
 							try {
-								$query = "select * FROM USERS u
+								$query = "
+									SELECT 
+										r.Role_Title, 
+										t.Title_Name, 
+										u.User_Fname, 
+										u.User_Lname, 
+										u.User_Email, 
+										u.User_Phone_Number, 
+										p.Pet_Name, 
+										cl.Clinic_Name, 
+										c.City_Name, 
+										u.User_Address, 
+										u.User_ID
+									FROM USERS u
 									JOIN TITLES t ON u.User_Title_ID = t.Title_ID  
 									JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
 									JOIN CITIES c ON u.User_City_ID = c.City_ID 
 									JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
-									JOIN DONATION_HISTORY dh ON u.User_ID = dh.Donor_ID
-									JOIN PETS p ON u.User_Pet_ID = p.Pet_ID
-									JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID;";
+									JOIN PETS p ON u.User_Pet_ID = p.Pet_ID;
+								";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {
-									while ($row = $stmt->fetch()) { ?>
+									while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
 										<tr>
-											<td>
-												<? echo $row['Role_Title']; ?>
-											</td>
-											<td>
-												<? echo $row['Title_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Fname']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Lname']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Email']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Phone_Number']; ?>
-											</td>
-											<td>
-												<? echo $row['Pet_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['Clinic_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['City_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Address']; ?>
-											</td>
-											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'>Edit</a></td>
-											<td><a href='delete_Info.php?id=<? echo $row['User_ID']; ?>'>Delete</a></td>
+											<td><?php echo htmlspecialchars($row['Role_Title']); ?></td>
+											<td><?php echo htmlspecialchars($row['Title_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Fname']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Lname']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Email']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Phone_Number']); ?></td>
+											<td><?php echo htmlspecialchars($row['Pet_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['Clinic_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['City_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Address']); ?></td>
+											<td><a href='edit_user.php?id=<?php echo $row['User_ID']; ?>'>Edit</a></td>
+											<td><a href='delete_Info.php?id=<?php echo $row['User_ID']; ?>'>Delete</a></td>
 										</tr>
-							<?php }
+							<?php   }
 								} else {
-									echo "<tr><td colspan='8' class='text-center text-muted'>No clinics found.</td></tr>";
+									echo "<tr><td colspan='12' class='text-center text-muted'>No users found.</td></tr>";
 								}
 							} catch (PDOException $e) {
-								echo "<tr><td colspan='8' class='text-danger'>Error fetching clinics: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+								echo "<tr><td colspan='12' class='text-danger'>Error fetching users: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 							}
 							?>
 						</tbody>
