@@ -44,6 +44,7 @@ if (isset($_GET['id'])) {
 			<main class="col-md-10 p-4">
 				<h2>Edit Clinic Data</h2>
 				<?php if (isset($clinic)): ?>
+				<div class="clinic_form">
 					<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
 						<label for="Name">Clinic Name</label>
 						<input type="text" name="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
@@ -73,10 +74,9 @@ if (isset($_GET['id'])) {
 						<label for="CloseTime">Close Time</label>
 						<input type="time" name="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
 
-						<div class="center">
-							<input type="submit" name="sub" value="Update">
-						</div>
+						<input type="submit" name="sub" value="Update">
 					</form>
+				</div>
 				<?php else: ?>
 					<p>Clinic not found.</p>
 				<?php endif; ?>
@@ -84,5 +84,52 @@ if (isset($_GET['id'])) {
 		</div>
 	</div>
 </body>
+
+<style>
+
+	  main h2 {
+        text-align: center;        
+    }
+    .clinic_form {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        padding-left: 20%;
+        padding-right: 20%;
+        background: var(--secondary-color);
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 7fr);
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        background: var(--secondary-color);
+    }
+
+    form input {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form select {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form input[type="submit"] {
+        cursor: pointer;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+    }
+</style>
 
 </html>

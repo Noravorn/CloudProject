@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 
             <!-- Main Content -->
             <main class="col-md-10 p-4">
+                <h2>Donate Blood</h2>
                 <div class="donate_form">
-                    <h2>Donate Blood</h2>
                     <form action="donate.php" method="post">
                         <!-- Owner First Name -->
                         <label for="user_Fname">Owner First Name: </label>
@@ -103,5 +103,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
         </div>
     </div>
 </body>
+
+<style>
+    main h2 {
+        text-align: center;        
+    }
+    .donate_form {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        padding-left: 20%;
+        padding-right: 20%;
+        background: var(--secondary-color);
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 7fr);
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        background: var(--secondary-color);
+    }
+
+    form input {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form select {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form input[type="submit"] {
+        cursor: pointer;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+    }
+</style>
 
 </html>

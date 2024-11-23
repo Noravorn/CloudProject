@@ -1,3 +1,58 @@
+<?php
+require("connect.php");
+session_start();
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
+
+    if (empty($email) || empty($password)) {
+        $error = "Please fill in all fields";
+    } else {
+        try {
+            // Use prepared statements to prevent SQL injection
+            $query = "SELECT User_ID, User_Email, User_Role_ID FROM USERS WHERE User_Email = :email AND User_Password = :password";
+            $stmt = $pdo->prepare($query);
+            
+            $stmt->execute([
+                ':email' => $email,
+                ':password' => $password, // Ideally, hash passwords before storage and verification
+            ]);
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                // Set session variables
+                $_SESSION['User_ID'] = $user['User_ID'];
+                $_SESSION['User_Email'] = $user['User_Email'];
+                $_SESSION['User_Role_ID'] = $user['User_Role_ID'];
+                
+                session_regenerate_id(true);
+
+                // Redirect based on user role
+                $redirectUrl = $user['User_Role_ID'] == 2 
+                    ? "index.php" 
+                    : null;
+
+                if ($redirectUrl) {
+                    header("Location: $redirectUrl");
+                    exit();
+                } else {
+                    $error = "Invalid user role";
+                    session_destroy();
+                }
+            } else {
+                $error = "Invalid email or password";
+            }
+        } catch (Exception $e) {
+            $error = "System error. Please try again later.";
+        }
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,18 +68,24 @@
     </div>
 
     <div class="wrapper">
-        <form action="">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <h1>Login</h1>
+            <!-- Error Notification -->
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger text-center">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
 
             <!-- Email -->
             <div class="input-box">
-                <input type="text" placeholder="Email" required>
+                <input type="text" placeholder="Email" id="email" name="email" required>
                 <i class='bx bxs-envelope'></i>
             </div>
 
             <!-- Password -->
             <div class="input-box">
-                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Password" id="password" name="password" required>
                 <i class='bx bxs-lock'></i>
             </div>
 
@@ -34,7 +95,7 @@
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn" name="submit">Login</button>
         </form>
     </div>
 </body>
