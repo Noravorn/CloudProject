@@ -47,7 +47,7 @@ if (isset($_GET['id'])) {
 				<div class="clinic_form">
 					<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
 						<label for="Name">Clinic Name</label>
-						<input type="text" name="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
+						<input type="text" id="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
 
 						<label for="City">Clinic City</label>
 						<select name="City" id="City" required>
@@ -63,18 +63,18 @@ if (isset($_GET['id'])) {
                         </select>
 
 						<label for="Address">Clinic Address</label>
-						<input type="text" name="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
+						<input type="text" id="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
 
 						<label for="PhoneNumber">Phone Number</label>
-						<input type="text" name="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
+						<input type="text" id="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
 
 						<label for="OpenTime">Open Time</label>
-						<input type="time" name="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
+						<input type="time" id="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
 
 						<label for="CloseTime">Close Time</label>
-						<input type="time" name="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
+						<input type="time" id="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
 
-						<input type="submit" name="sub" value="Update">
+						<input type="submit" id="sub" value="Update">
 					</form>
 				</div>
 				<?php else: ?>

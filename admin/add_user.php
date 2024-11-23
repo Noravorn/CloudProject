@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                 <!-- Form to edit user data -->
                 <form action="add_user.php" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="Role">Role</label>
+                            <label for="role">Role</label>
                             <select name="role" id="role" required>
                                 <?php
                                     $stmt = $pdo->prepare("SELECT * FROM ROLES");
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Title">Title</label>
+                            <label for="title">Title</label>
                             <select name="title" id="title" required>
                                 <?php
                                     $stmt = $pdo->prepare("SELECT * FROM TITLES");

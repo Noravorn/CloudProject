@@ -98,7 +98,7 @@
                             <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" value="<?php echo htmlspecialchars($user['User_Phone_Number']); ?>" required>
                         </div>
 
-                        <input type="submit" name="sub" class="btn btn-primary" value="Update">
+                        <input type="submit" id="sub" class="btn btn-primary" value="Update">
                     </form>
                 </div>
                 <?php else: ?>

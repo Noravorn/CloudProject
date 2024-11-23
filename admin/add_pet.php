@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<h2>Add Pet Data</h2>
 				<form action="add_pet.php" method="post">
 					<label for="Name">Pet Name</label>
-					<input type="text" name="Name" value="" required>
+					<input type="text" id="Name" value="" required>
 
 					<label for="petType">Pet Type</label>
 					<select id="petType" name="petType">
@@ -88,13 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 					</script>
 
 					<label for="Breed">Breed</label>
-					<input type="text" name="Breed" value="" required>
+					<input type="text" id="Breed" value="" required>
 
 					<label for="Age">Age</label>
-					<input type="number" name="Age" value="" required>
+					<input type="number" id="Age" value="" required>
 
 					<div class="center">
-						<input type="submit" name="sub" value="Add">
+						<input type="submit" id="sub" value="Add">
 					</div>
 				</form>
 			</main>

@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<h2>Add Clinic Data</h2>
 					<form action="add_clinic.php" method="post">
 						<label for="Name">Clinic Name</label>
-						<input type="text" name="Name" required>
+						<input type="text" id="Name" required>
 
 						<label for="City">Clinic City</label>
                         <select name="City" id="City" required>
@@ -54,19 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
                         </select>
 
 						<label for="Address">Clinic Address</label>
-						<input type="text" name="Address"required>
+						<input type="text" id="Address"required>
 
 						<label for="PhoneNumber">Phone Number</label>
-						<input type="text" name="PhoneNumber" required>
+						<input type="text" id="PhoneNumber" required>
 
 						<label for="OpenTime">Open Time</label>
-						<input type="time" name="OpenTime" required>
+						<input type="time" id="OpenTime" required>
 
 						<label for="CloseTime">Close Time</label>
-						<input type="time" name="CloseTime" required>
+						<input type="time" id="CloseTime" required>
 
 						<div class="center">
-							<input type="submit" name="sub" value="Add">
+							<input type="submit" id="sub" value="Add">
 						</div>
 					</form>
 			</main>

@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
                         
                         <!-- Submit Button -->
-                        <input type="submit" name="submit" value="Submit">
+                        <input type="submit" id="submit" value="Submit">
                     </form>
                 </div>
             </main>

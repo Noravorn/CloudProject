@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<?php if (isset($pet)): ?>
 					<form action="edit_pet.php?id=<?php echo $pet['Pet_ID']; ?>" method="post" enctype="multipart/form-data">
 						<label for="Name">Pet Name</label>
-						<input type="text" name="Name" value="<?php echo htmlspecialchars($pet['Pet_Name']); ?>" required>
+						<input type="text" id="Name" value="<?php echo htmlspecialchars($pet['Pet_Name']); ?>" required>
 
 						<label for="petType">Pet Type</label>
 						<select id="petType" name="pet_type">
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						</select>
 
 						<label for="bloodType">Blood Type</label>
-						<select id="bloodType" name="blood_type" required></select>
+						<select id="bloodType" name="bloodType" required></select>
 						<script>
 							const petTypeSelect = document.getElementById('petType');
 							const bloodTypeSelect = document.getElementById('bloodType');
@@ -98,12 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						</script>
 
 						<label for="Breed">Breed</label>
-						<input type="text" name="Breed" value="<?php echo htmlspecialchars($pet['Pet_Breed']); ?>" required>
+						<input type="text" id="Breed" value="<?php echo htmlspecialchars($pet['Pet_Breed']); ?>" required>
 
 						<label for="Age">Age</label>
-						<input type="number" name="Age" value="<?php echo htmlspecialchars($pet['Pet_Age']); ?>" required>
+						<input type="number" id="Age" value="<?php echo htmlspecialchars($pet['Pet_Age']); ?>" required>
 
-						<input type="submit" name="sub" value="Update">
+						<input type="submit" id="sub" value="Update">
 					</form>
 				</div>
 				<?php else: ?>
