@@ -21,13 +21,12 @@
 					<table class="table table-striped table-hover">
 						<thead class="table-dark">
 							<tr>
-								<th>Title</th>
 								<th>Role</th>
+								<th>Title</th>
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Email</th>
 								<th>Phone Number</th>
-								<th>Password</th>
 								<th>Pet</th>
 								<th>Clinic</th>
 								<th>City</th>
@@ -40,7 +39,8 @@
 						<tbody>
 							<?php
 							try {
-								$query = "select * FROM USERS u 
+								$query = "select * FROM USERS u
+									JOIN TITLES t ON u.User_Title_ID = t.Title_ID  
 									JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
 									JOIN CITIES c ON u.User_City_ID = c.City_ID 
 									JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
@@ -53,10 +53,10 @@
 									while ($row = $stmt->fetch()) { ?>
 										<tr>
 											<td>
-												<? echo $row['Title_Name']; ?>
+												<? echo $row['Role_Title']; ?>
 											</td>
 											<td>
-												<? echo $row['Role_Name']; ?>
+												<? echo $row['Title_Name']; ?>
 											</td>
 											<td>
 												<? echo $row['User_Fname']; ?>
@@ -78,6 +78,9 @@
 											</td>
 											<td>
 												<? echo $row['City_Name']; ?>
+											</td>
+											<td>
+												<? echo $row['User_Address']; ?>
 											</td>
 											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'>Edit</a></td>
 											<td><a href='delete_Info.php?id=<? echo $row['User_ID']; ?>'>Delete</a></td>

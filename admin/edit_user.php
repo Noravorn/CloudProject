@@ -50,14 +50,33 @@
                     <!-- Form to edit user data -->
                     <form action="edit_user.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="Title">Title</label>
-                            <input type="text" class="form-control" name="Title" id="Title" value="<?php echo htmlspecialchars($user['User_Title']); ?>" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="Role">Role</label>
-                            <input type="text" class="form-control" name="Role" id="Role" value="<?php echo htmlspecialchars($user['User_Role']); ?>" required>
+                            <select name="role" id="role" required>
+                                <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM ROLES");
+                                    $stmt->execute();
+                                    $role = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    
+                                    foreach ($role as $role) {
+                                        echo "<option value='" . htmlspecialchars($role["Role_ID"]) . "'>" . htmlspecialchars($role["Role_Title"]) . "</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
+                        <div class="form-group">
+                            <label for="Title">Title</label>
+                            <select name="title" id="title" required>
+                                <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM TITLES");
+                                    $stmt->execute();
+                                    $title = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    
+                                    foreach ($title as $title) {
+                                        echo "<option value='" . htmlspecialchars($title["Title_ID"]) . "'>" . htmlspecialchars($title["Title_Name"]) . "</option>";
+                                    }
+                                ?>
+                        </select>
+
 
                         <div class="form-group">
                             <label for="Fname">First Name</label>
