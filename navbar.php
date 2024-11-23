@@ -1,44 +1,35 @@
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-
-        
-        <a class="navbar-brand" href="#">
-            <img src="src/images/logo.svg" alt="Pawsitive Logo" width="100"> <!-- replace logo.png with actual logo image -->
+<nav class="navbar navbar-expand-lg" style="padding: 0 20px;">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Logo on the Left -->
+        <a class="navbar-brand" href="index.php" style="color: var(--text-color);">
+            <img src="src/images/logo.svg" alt="Pawsitive Logo" width="100" height="100" class="d-inline-block align-text-top">
         </a>
 
-
-        <!-- Toggle Button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-auto">
-
-                <!-- About -->
+        <!-- Centered Links -->
+        <div class="d-flex flex-grow-1 justify-content-center">
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">About</a>
+                    <a class="nav-link" href="about.php" style="color: var(--text-color);">About</a>
                 </li>
-
-                <!-- Login -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>
-                            Login
-                            <i class="ri-user-5-line"></i>
-                        </span>
+                    <a class="nav-link" href="login.php" style="color: var(--text-color);">
+                        <span>Login</span>
+                        <i class="ri-user-line"></i>
                     </a>
                 </li>
             </ul>
+        </div>
 
-            <!-- Blood Search -->
-            <div class="d-flex">
-                <span class="nav-link">
-                    Blood Search
-                    <i class="ri-menu-search-line" style="color: var(--link-hovered-color);"></i>
-                </span>
-            </div>
+        <!-- Right-aligned Blood Search -->
+        <div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="search.php" style="color: var(--text-color);">
+                        <span>Blood Search</span>
+                        <i class="ri-menu-search-line" style="color: var(--link-hovered-color);"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

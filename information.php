@@ -4,6 +4,7 @@
 <?php include 'header.php'; ?>
 <?php include 'navbar.php'; ?>
 
+
 <body>
     <div class="container-fluid p-5">
         <div class="row gap-5">
@@ -64,5 +65,6 @@
         color: white;
     }
 </style>
-
+<?php include('footer.php'); ?>
 </html>
+

@@ -15,3 +15,21 @@
 body {
     background-color: var(--main-color);
 }
+
+.card-hover {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card-hover:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+.carousel-inner {
+    border-radius: 10px;
+}
+
+.carousel-item p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
