@@ -9,20 +9,31 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
 	// Sanitize input using htmlspecialchars to prevent XSS
-	$UserID = htmlspecialchars(filter_input(INPUT_POST, 'user-name'));
-    $stmt = $pdo->prepare("SELECT Pet_Blood_type_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$UserID]);
-	$PetBloodId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$DonorID = htmlspecialchars(filter_input(INPUT_POST, 'donor-name'));
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$DonorID]);
+	$DonorPetId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $RecieverID = htmlspecialchars(filter_input(INPUT_POST, 'reciever-name'));
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$DonorID]);
+	$RecieverPetId = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
+    $currentTimestamp = date('Y-m-d');
 
 	// Update query
-	$stmt = $conn->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?) ");
-	if ($stmt->execute([$Clinic, $UserID, $PetBloodId])) {
-		header("Location: admin.php");
-		exit();
-	} else {
-		$error = "Insert failed";
-	}
+    if ($DonorID == $RecieverID) {
+        $error = "Donor and receiver cannot be the same person.";
+        printf($error);
+    } else {
+        $stmt = $conn->prepare("INSERT INTO DONATION_HISTORY(Clinic_ID, Donor_ID, Donor_Pet_ID, Reciever_ID, Reciever_Pet_ID, Donation_Date) VALUES (?, ?, ?, ?, ?, ?) ");
+	    if ($stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $RecieverPetId, $currentTimestamp])) {
+		    header("Location: admin.php");
+		    exit();
+	    } else {
+		    $error = "Insert failed";
+	    }
+    }
+    
 }
 
 ?>
@@ -38,9 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <h2>Donate Blood</h2>
                 <div class="donate_form">
                     <form action="donate.php" method="post">
-                        <!-- Owner Name -->
-                        <label for="user_name">Owner Name: </label>
-                        <select id="user-name" name="user_name" required>
+                        <!-- Donor Name -->
+                        <label for="donor_name">Donor Name: </label>
+                        <select id="donor-name" name="donor_name" required>
+                            <?php
+                                $stmt = $pdo->prepare("SELECT * FROM USERS");
+                                $stmt->execute();
+                                $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                
+                                foreach ($user as $user) {
+                                    echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']) . "</option>";
+                                }                            
+                            ?>
+                        </select>
+
+                        <!-- Reciever Name -->
+                        <label for="reciever_name">Reciever Name: </label>
+                        <select id="reciever-name" name="reciever_name" required>
                             <?php
                                 $stmt = $pdo->prepare("SELECT * FROM USERS");
                                 $stmt->execute();
