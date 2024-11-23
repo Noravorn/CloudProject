@@ -82,54 +82,60 @@
                     <!-- Add dynamic table or list for recent donations -->
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
-                            <th>Name</th>
-                            <th>Owner</th>
-                            <th>Type</th>
-                            <th>Blood Type</th>
-                            <th>Breed</th>
-                            <th>Age</th>
+                            <th>Donor Name</th>
+                            <th>Donor Pet</th>
+                            <th>Receiver Name</th>
+                            <th>Receiver Pet</th>
+                            <th>Clinic</th>
+                            <th>Date</th>
                         </thead>
-                        <?php
+                        <tbody>
+                            <?php
+                            try {
+                                $query = "SELECT 
+                                        du.User_Fname AS Donor_FName,
+                                        du.User_Lname AS Donor_LName,
+                                        dp.Pet_Name AS Donor_Pet,
+                                        ru.User_Fname AS Receiver_FName,
+                                        ru.User_Lname AS Receiver_LName,
+                                        rp.Pet_Name AS Receiver_Pet,
+                                        c.Clinic_Name,
+                                        dh.Donation_Date
+                                    FROM DONATION_HISTORY dh
+                                    JOIN PETS dp ON dh.Donor_Pet_ID = dp.Pet_ID
+                                    JOIN USERS du ON du.User_ID = dh.Donor_ID
+                                    JOIN PETS rp ON dh.Receiver_Pet_ID = rp.Pet_ID
+                                    JOIN USERS ru ON ru.User_ID = dh.Receiver_ID
+                                    JOIN CLINICS c ON c.Clinic_ID = dh.Clinic_ID
+                                    ORDER BY Donation_Date DESC
+                            LIMIT 5";
 
-                        try {
-                            $query = "select * from DONATION_HISTORY dh
-                            JOIN PETS p ON dh.Donor_Pet_ID = p.Pet_ID
-                            JOIN USERS u ON u.User_ID = dh.Donor_ID 
-                            JOIN BLOOD_TYPES bt ON p.Pet_Blood_Type_ID = bt.Blood_Type_ID
-                            ORDER BY Donation_Date DESC
-                            LIMIT 5;";
-                            $stmt = $pdo->query($query);
 
-                            if ($stmt->rowCount() > 0) {
-                                while ($row = $stmt->fetch()) { ?>
+                                $stmt = $pdo->prepare($query);
+                                $stmt->execute();
+
+                                if ($stmt->rowCount() > 0) {
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                                        <tr>
+                                            <td><?php echo $row['Donor_FName'] . " " . $row['Donor_LName']; ?></td>
+                                            <td><?php echo $row['Donor_Pet']; ?></td>
+                                            <td><?php echo $row['Receiver_FName'] . " " . $row['Receiver_LName']; ?></td>
+                                            <td><?php echo $row['Receiver_Pet']; ?></td>
+                                            <td><?php echo $row['Clinic_Name']; ?></td>
+                                            <td><?php echo $row['Donation_Date']; ?></td>
+                                        </tr>
+                                    <?php }
+                                } else { ?>
                                     <tr>
-                                        <td>
-                                            <? echo $row['Pet_Name']; ?>
-                                        </td>
-                                        <td>
-                                            <? echo $row['User_Fname'] . " " . $row['User_Lname']; ?>
-                                        </td>
-                                        <td>
-                                            <? echo $row['Pet_Type']; ?>
-                                        </td>
-                                        <td>
-                                            <? echo $row['Blood_Type_Name']; ?>
-                                        </td>
-                                        <td>
-                                            <? echo $row['Pet_Breed']; ?>
-                                        </td>
-                                        <td>
-                                            <? echo $row['Pet_Age']; ?>
-                                        </td>
+                                        <td colspan="6" class="text-center text-muted">No history found.</td>
                                     </tr>
-                        <?php }
-                            } else {
-                                echo "<tr><td colspan='8' class='text-center text-muted'>No history found.</td></tr>";
-                            }
-                        } catch (PDOException $e) {
-                            echo "<tr><td colspan='8' class='text-danger'>Error fetching history: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
-                        }
-                        ?>
+                                <?php }
+                            } catch (PDOException $e) { ?>
+                                <tr>
+                                    <td colspan="6" class="text-danger">Error fetching history: <?php echo htmlspecialchars($e->getMessage()); ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
                     </table>
                 </div>
             </main>
