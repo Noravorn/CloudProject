@@ -12,7 +12,10 @@
 
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
-				<h1 class="mb-4">Clinic Management</h1>
+				<div class="top">
+					<h1 class="mb-4">Clinic Management</h1>
+					<a href="add_clinic.php" class="btn btn-primary">Add Clinic</a>
+				</div>
 
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
@@ -31,14 +34,15 @@
 						<tbody>
 							<?php
 							try {
-								$query = "SELECT * FROM CLINICS";
+								$query = "SELECT * FROM CLINICS 
+								JOIN CITIES ON CITIES.City_ID = CLINICS.Clinic_City_ID";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {
 									while ($row = $stmt->fetch()) { ?>
 										<tr>
 											<td><?= htmlspecialchars($row['Clinic_Name']); ?></td>
-											<td><?= htmlspecialchars($row['Clinic_City']); ?></td>
+											<td><?= htmlspecialchars($row['City_Name']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Address']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Phone_Number']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Open_Time']); ?></td>
@@ -49,7 +53,7 @@
 												</a>
 											</td>
 											<td>
-												<a href="deleteInfo.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-danger">
+												<a href="delete_Info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-danger">
 													<i class="bi bi-trash"></i> Delete
 												</a>
 											</td>
@@ -69,5 +73,12 @@
 		</div>
 	</div>
 </body>
+<style>
+	.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	}
+</style>
 
 </html>

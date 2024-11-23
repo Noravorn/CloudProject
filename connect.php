@@ -1,6 +1,5 @@
 <?php
-// Database configuration
-$host = 'db-mysql-instance.czuq6imooyep.us-east-1.rds.amazonaws.com'; // RDS endpoint
+$host = 'database-1.c7fgj2wnwbfj.us-east-1.rds.amazonaws.com'; 
 $dbname = 'Cloud_Project_BloodBank'; // Database name
 $username = 'admin'; // Database username
 $password = 'password'; // Database password
@@ -14,9 +13,11 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    // echo "Connected to AWS RDS MySQL successfully!";
+    //echo "Connected to AWS RDS MySQL successfully!";
 } catch (PDOException $e) {
     // Handle connection error
     echo "Connection failed: " . $e->getMessage();
 }
+
+// Connection closes automatically when script ends due to PDO
 ?>

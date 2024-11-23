@@ -17,15 +17,15 @@
     // Handle form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         // Sanitize and validate form data
-        $Title = htmlspecialchars(filter_input(INPUT_POST, 'Title'));
-        $Role = htmlspecialchars(filter_input(INPUT_POST, 'Role'));
+        $Title = htmlspecialchars(filter_input(INPUT_POST, 'title'));
+        $Role = htmlspecialchars(filter_input(INPUT_POST, 'role'));
         $Fname = htmlspecialchars(filter_input(INPUT_POST, 'Fname'));
         $Lname = htmlspecialchars(filter_input(INPUT_POST, 'Lname'));
         $Email = htmlspecialchars(filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL));
         $PhoneNumber = htmlspecialchars(filter_input(INPUT_POST, 'PhoneNumber'));
 
         // Prepare and execute update query
-        $stmt = $pdo->prepare("UPDATE USERS SET User_Title = ?, User_Role = ?, User_Fname = ?, User_Lname = ?, User_Email = ?, User_Phone_Number = ? WHERE User_ID = ?");
+        $stmt = $pdo->prepare("UPDATE USERS SET User_Title_ID = ?, User_Role_ID = ?, User_Fname = ?, User_Lname = ?, User_Email = ?, User_Phone_Number = ? WHERE User_ID = ?");
         $stmt->execute([$Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $id]);
 
         // Redirect to user management page
@@ -46,17 +46,37 @@
                 <h2>Edit User Data</h2>
 
                 <?php if (isset($user)): ?>
+                <div class="user_form">
                     <!-- Form to edit user data -->
                     <form action="edit_user.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="Title">Title</label>
-                            <input type="text" class="form-control" name="Title" id="Title" value="<?php echo htmlspecialchars($user['User_Title']); ?>" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="Role">Role</label>
-                            <input type="text" class="form-control" name="Role" id="Role" value="<?php echo htmlspecialchars($user['User_Role']); ?>" required>
+                            <select name="role" id="role" required>
+                                <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM ROLES");
+                                    $stmt->execute();
+                                    $role = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    
+                                    foreach ($role as $role) {
+                                        echo "<option value='" . htmlspecialchars($role["Role_ID"]) . "'>" . htmlspecialchars($role["Role_Title"]) . "</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
+                        <div class="form-group">
+                            <label for="Title">Title</label>
+                            <select name="title" id="title" required>
+                                <?php
+                                    $stmt = $pdo->prepare("SELECT * FROM TITLES");
+                                    $stmt->execute();
+                                    $title = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    
+                                    foreach ($title as $title) {
+                                        echo "<option value='" . htmlspecialchars($title["Title_ID"]) . "'>" . htmlspecialchars($title["Title_Name"]) . "</option>";
+                                    }
+                                ?>
+                        </select>
+
 
                         <div class="form-group">
                             <label for="Fname">First Name</label>
@@ -78,10 +98,9 @@
                             <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" value="<?php echo htmlspecialchars($user['User_Phone_Number']); ?>" required>
                         </div>
 
-                        <div class="form-group text-center">
-                            <input type="submit" name="sub" class="btn btn-primary" value="Update">
-                        </div>
+                        <input type="submit" id="sub" class="btn btn-primary" value="Update">
                     </form>
+                </div>
                 <?php else: ?>
                     <p>User not found.</p>
                 <?php endif; ?>
@@ -90,5 +109,49 @@
     </div>
 
 </body>
+<style>
+    main h2 {
+        text-align: center;        
+    }
+    .user_form {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        padding-left: 20%;
+        padding-right: 20%;
+        background: var(--secondary-color);
+    }
 
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 7fr);
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        background: var(--secondary-color);
+    }
+
+    form input {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form select {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form input[type="submit"] {
+        cursor: pointer;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+    }
+</style>
 </html>

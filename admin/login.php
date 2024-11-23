@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Use prepared statements to prevent SQL injection
             $query = "SELECT User_ID, User_Email, User_Role_ID FROM USERS WHERE User_Email = :email AND User_Password = :password";
             $stmt = $pdo->prepare($query);
-            
+
             $stmt->execute([
                 ':email' => $email,
                 ':password' => $password, // Ideally, hash passwords before storage and verification
@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['User_ID'] = $user['User_ID'];
                 $_SESSION['User_Email'] = $user['User_Email'];
                 $_SESSION['User_Role_ID'] = $user['User_Role_ID'];
-                
+
                 session_regenerate_id(true);
 
                 // Redirect based on user role
-                $redirectUrl = $user['User_Role_ID'] == 1 
-                    ? "admin.php" 
+                $redirectUrl = $user['User_Role_ID'] == 1
+                    ? "admin.php"
                     : null;
 
                 if ($redirectUrl) {
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="card">
             <div class="card-header">
                 <h2>Log In</h2>
-                <p>Login here using your username and password</p>
+                <!-- <p>Login here using your username and password</p> -->
             </div>
             <!-- Error Notification -->
             <?php if (isset($error)): ?>
@@ -88,5 +88,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </div>
 </body>
+<style>
+    body h2 {
+        text-align: center;
+    }
+
+    .card-body {
+        width: 20rem;
+    }
+
+    form button[type="submit"] {
+        cursor: pointer;
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        margin: 0 auto;
+        display: block;
+    }
+</style>
 
 </html>

@@ -13,21 +13,20 @@
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<div class="d-flex justify-content-between align-items-center mb-4">
-					<h2>User Information</h2>
-					<a href="edit_user.php" class="btn btn-primary">Edit User</a>
+					<h1>User Information</h1>
+					<a href="add_user.php" class="btn btn-primary">Add User</a>
 				</div>
 
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead class="table-dark">
 							<tr>
-								<th>Title</th>
 								<th>Role</th>
+								<th>Title</th>
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Email</th>
 								<th>Phone Number</th>
-								<th>Password</th>
 								<th>Pet</th>
 								<th>Clinic</th>
 								<th>City</th>
@@ -40,56 +39,50 @@
 						<tbody>
 							<?php
 							try {
-								$query = "select * FROM USERS u 
-									JOIN ROLES r ON u.UserRoleID = r.RoleID 
-									JOIN CITIES c ON u.UserCityID = c.CityID 
-									JOIN CLINICS cl ON u.UserClinicID = cl.ClinicID 
-									JOIN DONATION_HISTORY dh ON u.UserID = dh.DonorID 
-									JOIN BLOOD_TYPES bt ON dh.BloodTypeID = bt.BloodTypeID 
-									JOIN PETS p ON u.UserID = p.OwnerID;";
+								$query = "
+									SELECT 
+										r.Role_Title, 
+										t.Title_Name, 
+										u.User_Fname, 
+										u.User_Lname, 
+										u.User_Email, 
+										u.User_Phone_Number, 
+										p.Pet_Name, 
+										cl.Clinic_Name, 
+										c.City_Name, 
+										u.User_Address, 
+										u.User_ID
+									FROM USERS u
+									JOIN TITLES t ON u.User_Title_ID = t.Title_ID  
+									JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
+									JOIN CITIES c ON u.User_City_ID = c.City_ID 
+									JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
+									JOIN PETS p ON u.User_Pet_ID = p.Pet_ID;
+								";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {
-									while ($row = $stmt->fetch()) { ?>
+									while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
 										<tr>
-											<td>
-												<? echo $row['Title_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['Role_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Fname']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Lname']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Email']; ?>
-											</td>
-											<td>
-												<? echo $row['User_Phone_Number']; ?>
-											</td>
-											<td>
-												<? echo $row['Pet_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['Clinic_Name']; ?>
-											</td>
-											<td>
-												<? echo $row['City_Name']; ?>
-											</td>
-											<td><a href='edit_user.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
-									width="24" height="24">-->Edit</a></td>
-											<td><a href='deleteInfo.php?id=<? echo $row['User_ID']; ?>'> <!--<img src="images/.png"
-									width="24" height="24">-->Delete</a></td>
+											<td><?php echo htmlspecialchars($row['Role_Title']); ?></td>
+											<td><?php echo htmlspecialchars($row['Title_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Fname']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Lname']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Email']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Phone_Number']); ?></td>
+											<td><?php echo htmlspecialchars($row['Pet_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['Clinic_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['City_Name']); ?></td>
+											<td><?php echo htmlspecialchars($row['User_Address']); ?></td>
+											<td><a href='edit_user.php?id=<?php echo $row['User_ID']; ?>'>Edit</a></td>
+											<td><a href='delete_Info.php?id=<?php echo $row['User_ID']; ?>'>Delete</a></td>
 										</tr>
-							<?php }
+							<?php   }
 								} else {
-									echo "<tr><td colspan='8' class='text-center text-muted'>No clinics found.</td></tr>";
+									echo "<tr><td colspan='12' class='text-center text-muted'>No users found.</td></tr>";
 								}
 							} catch (PDOException $e) {
-								echo "<tr><td colspan='8' class='text-danger'>Error fetching clinics: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+								echo "<tr><td colspan='12' class='text-danger'>Error fetching users: " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 							}
 							?>
 						</tbody>

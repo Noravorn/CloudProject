@@ -6,6 +6,7 @@
     <nav class="nav flex-column">
         <a href="admin.php" class="nav-link text-dark"><i class="ri-dashboard-line"></i> Dashboard</a>
         <a href="donate.php" class="nav-link text-dark"><i class="ri-drop-line"></i> Donate</a>
+        <a href="recieveDonate.php" class="nav-link text-dark"><i class="ri-drop-line"></i> Recieve Donate</a>
         <a href="history.php" class="nav-link text-dark"><i class="ri-history-line"></i> History</a>
         <a href="pet_page.php" class="nav-link text-dark"><i class='bx bxs-dog'></i> Pet Data</a>
         <a href="user_manage.php" class="nav-link text-dark"><i class="ri-user-line"></i> User Management</a>
