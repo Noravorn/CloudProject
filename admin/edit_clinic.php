@@ -7,30 +7,35 @@
 <?php
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
-	$id = $_GET['id'];
-	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
-	$City = htmlspecialchars(filter_input(INPUT_POST, 'City'));
-	$Address = htmlspecialchars(filter_input(INPUT_POST, 'Address'));
-	$PhoneNumber = htmlspecialchars(filter_input(INPUT_POST, 'PhoneNumber'));
-	$OpenTime = htmlspecialchars(filter_input(INPUT_POST, 'OpenTime'));
-	$CloseTime = htmlspecialchars(filter_input(INPUT_POST, 'CloseTime'));
+    $id = $_GET['id'];
 
-	// Update query
-	$stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City_ID = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
-	if ($stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime, $id])) {
-		header("Location: clinic_manage.php");
-		exit();
-	} else {
-		$error = "Update failed";
-	}
+    $Name = filter_var($_POST['Name']);
+    $City = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT); // Assuming City_ID is an integer
+    $Address = filter_var($_POST['Address']);
+    $PhoneNumber = filter_var($_POST['PhoneNumber']);
+    $OpenTime = filter_var($_POST['OpenTime']);
+    $CloseTime = filter_var($_POST['CloseTime']);
+
+    // Update query
+    $stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City_ID = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
+
+    try {
+        $stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime, $id]);
+        header("Location: clinic_manage.php");
+        exit();
+    } catch (PDOException $e) {
+        // Log the error and display a user-friendly message
+        error_log("Update failed: " . $e->getMessage());
+        $error = "An error occurred while updating the clinic. Please try again later.";
+    }
 }
 
 // Fetch clinic data for editing
 if (isset($_GET['id'])) {
-	$id = $_GET['id'];
-	$stmt = $pdo->prepare("SELECT * FROM CLINICS JOIN CITIES ON CITIES.City_ID = CLINICS.Clinic_City_ID WHERE Clinic_ID = ?");
-	$stmt->execute([$id]);
-	$clinic = $stmt->fetch();
+    $id = $_GET['id'];
+    $stmt = $pdo->prepare("SELECT * FROM CLINICS WHERE Clinic_ID = ?");
+    $stmt->execute([$id]);
+    $clinic = $stmt->fetch();
 }
 ?>
 

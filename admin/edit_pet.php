@@ -70,19 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 								bloodTypeSelect.innerHTML = ''; // Clear previous options
 
 								if (petType === 'dog') {
-									const dogBloodTypes = ['DEA 1.1', 'DEA 1.2', 'DEA 3', 'DEA 4', 'DEA 5', 'DEA 6', 'DEA 7', 'DEA 8'];
+									const dogBloodTypes = [['DEA 1.1',1], ['DEA 1.2',2], ['DEA 3',3], ['DEA 4',4], ['DEA 5',5], ['DEA 6',6], ['DEA 7',7], ['DEA 8',8]];
 									dogBloodTypes.forEach(bloodType => {
 										const option = document.createElement('option');
-										option.value = bloodType;
-										option.text = bloodType;
+										option.value = bloodType[1];
+										option.text = bloodType[0];
 										bloodTypeSelect.appendChild(option);
 									});
 								} else if (petType === 'cat') {
-									const catBloodTypes = ['A', 'B', 'AB'];
+									const catBloodTypes = [['A',9], ['B',10], ['AB',11]];
 									catBloodTypes.forEach(bloodType => {
 										const option = document.createElement('option');
-										option.value = bloodType;
-										option.text = bloodType;
+										option.value = bloodType[1];
+										option.text = bloodType[0];
 										bloodTypeSelect.appendChild(option);
 									});
 								}

@@ -7,7 +7,6 @@
 <?php
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
-	$id = $_GET['id'];
 	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
 	$City = htmlspecialchars(filter_input(INPUT_POST, 'City'));
 	$Address = htmlspecialchars(filter_input(INPUT_POST, 'Address'));
