@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                 <h2>Add User Data</h2>
                 <!-- Form to edit user data -->
                 <form action="add_user.php" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
                         <label for="role">Role</label>
                         <select name="role" id="role" required>
                             <?php
@@ -57,8 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                             }
                             ?>
                         </select>
-                    </div>
-                    <div class="form-group">
                         <label for="title">Title</label>
                         <select name="title" id="title" required>
                             <?php
@@ -72,30 +69,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                             ?>
                         </select>
 
-                        <div class="form-group">
                             <label for="Fname">First Name</label>
                             <input type="text" class="form-control" name="Fname" id="Fname" value="" required>
-                        </div>
 
-                        <div class="form-group">
                             <label for="Lname">Last Name</label>
                             <input type="text" class="form-control" name="Lname" id="Lname" value="" required>
-                        </div>
 
-                        <div class="form-group">
                             <label for="Email">Email</label>
                             <input type="email" class="form-control" name="Email" id="Email" value="" required>
-                        </div>
 
-                        <div class="form-group">
                             <label for="PhoneNumber">Phone Number</label>
                             <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" value="" required>
-                        </div>
 
-                        <div class="form-group">
                             <label for="Password">Password</label>
                             <input type="text" class="form-control" name="Password" id="Password" value="" required>
-                        </div>
                         <label for="City">Clinic City</label>
 							<select name="City" id="City" required>
 								<?php
@@ -109,10 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 								?>
 							</select>
 
-                        <div class="form-group">
                             <label for="Address">Address</label>
                             <input type="text" class="form-control" name="Address" id="Address" value="" required>
-                        </div>
                         <label for="clinic">Clinic </label>
                         <select name="clinic" id="clinic" required>
                             <?php
@@ -127,14 +112,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                             ?>
                         </select>
 
-                        <div class="form-group text-center">
-                            <input type="submit" name="sub" class="btn btn-primary" value="Add">
-                        </div>
+                        <input type="submit" name="sub" class="btn btn-primary" value="Add">
+                    </div>
                 </form>
             </main>
         </div>
     </div>
 
 </body>
+<style>
+	main h2 {
+		text-align: center;
+	}
+
+	form {
+		display: grid;
+		grid-template-columns: repeat(1, 21fr);
+		gap: 1.1rem;
+		margin-bottom: 2rem;
+		border: 4px solid rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		padding: 20px;
+		background: var(--secondary-color);
+	}
+
+	form input {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	form select {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+</style>
 
 </html>

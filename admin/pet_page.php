@@ -13,7 +13,7 @@
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<div class="d-flex justify-content-between align-items-center mb-4">
-					<h2>Pet Information</h2>
+					<h1>Pet Information</h1>
 					<a href="add_pet.php" class="btn btn-primary">Add Pet</a>
 				</div>
 

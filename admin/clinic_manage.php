@@ -12,8 +12,10 @@
 
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
-				<h1 class="mb-4">Clinic Management</h1>
-				<a href="add_clinic.php" class="btn btn-primary">Add Clinic</a>
+				<div class="top">
+					<h1 class="mb-4">Clinic Management</h1>
+					<a href="add_clinic.php" class="btn btn-primary">Add Clinic</a>
+				</div>
 
 				<div class="table-responsive">
 					<table class="table table-striped table-hover">
@@ -71,5 +73,12 @@
 		</div>
 	</div>
 </body>
+<style>
+	.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	}
+</style>
 
 </html>

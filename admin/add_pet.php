@@ -115,13 +115,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 					<label for="Age">Age</label>
 					<input type="number" id="Age" required>
 
-					<div class="center">
-						<input type="submit" id="sub" value="Add">
-					</div>
+					<input type="submit" id="sub" value="Add">
 				</form>
 			</main>
 		</div>
 	</div>
 </body>
+<style>
+	main h2 {
+		text-align: center;
+	}
+
+	form {
+		display: grid;
+		grid-template-columns: repeat(1, 13fr);
+		gap: 1.1rem;
+		margin-bottom: 2rem;
+		border: 4px solid rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		padding: 20px;
+		background: var(--secondary-color);
+	}
+
+	form input {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	form select {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	form input[type="submit"] {
+		cursor: pointer;
+		width: auto;
+		height: 40px;
+		border-radius: 5px;
+	}
+</style>
 
 </html>
