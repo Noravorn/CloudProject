@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     $Password = htmlspecialchars(filter_input(INPUT_POST, 'Password'));
     $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
 
-    $stmt = $pdo->prepare("INSERT INTO USERS (User_Title, User_Role, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO USERS (User_Title_ID, User_Role_ID, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $Password, $Clinic]);
 
     if ($stmt->rowCount() > 0) {
