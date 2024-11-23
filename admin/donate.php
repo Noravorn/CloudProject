@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <div class="donate_form">
                     <form action="donate.php" method="post">
                         <!-- Owner Name -->
-                        <label for="user_name">Owner Name: </label>
-                        <select id="user-name" name="user_name" required>
+                        <label for="user-name">Owner Name: </label>
+                        <select id="user-name" name="user-name" required>
                             <?php
                                 $stmt = $pdo->prepare("SELECT * FROM USERS");
                                 $stmt->execute();

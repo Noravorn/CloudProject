@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	// Sanitize input using htmlspecialchars to prevent XSS
 	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
 	$BloodType = htmlspecialchars(filter_input(INPUT_POST, 'bloodType'));
-	$Type = htmlspecialchars(filter_input(INPUT_POST, 'Type'));
+	$Type = htmlspecialchars(filter_input(INPUT_POST, 'petType'));
 	$Breed = htmlspecialchars(filter_input(INPUT_POST, 'Breed'));
 	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
 
@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 					<input type="text" name="Name" value="" required>
 
 					<label for="petType">Pet Type</label>
-					<select id="petType" name="pet_type">
+					<select id="petType" name="petType">
 						<option value="dog" selected>Dog</option>
 						<option value="cat">Cat</option>
 					</select>
 
 					<label for="bloodType">Blood Type</label>
-					<select id="bloodType" name="blood_type" required></select>
+					<select id="bloodType" name="bloodType" required></select>
 					<script>
 						const petTypeSelect = document.getElementById('petType');
 						const bloodTypeSelect = document.getElementById('bloodType');
