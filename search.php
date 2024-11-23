@@ -1,37 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('header.php'); ?>
+<?php include 'header.php'; ?>
 <?php include 'navbar.php'; ?>
 <?php include 'connect.php'; ?>
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $bloodType = $_POST['bloodType'] ?? '';
-    $city = $_POST['city'] ?? '';
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Pet Blood Bank Search</h1>
 
-    try {
-        // Prepare SQL query with placeholders for filtering
-        $query = "
-            SELECT Blood_Types.Blood_Type_Name, Clinic.Clinic_Name, Clinic.Clinic_City, Clinic.Clinic_Open_Time
-            FROM Storage
+        <form id="searchForm" method="POST">
+            <div class="row mb-3">
+                <!-- Pet Species -->
+                <div class="col-md-4">
+                    <label for="petSpecies" class="form-label">Pet Species</label>
+                    <select class="form-select" id="petSpecies" name="petSpecies">
+                        <option value="">Select Pet Species</option>
+                    </select>
+                </div>
+                <!-- City -->
+                <div class="col-md-4">
+                    <label for="city" class="form-label">City</label>
+                    <select class="form-select" id="city" name="city">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+                <!-- Blood Type -->
+                <div class="col-md-4">
+                    <label for="bloodType" class="form-label">Blood Type</label>
+                    <select class="form-select" id="bloodType" name="bloodType">
+                        <option value="">Select Blood Type</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" id="sub" name="sub" class="btn bg-black text-white w-100">Search</button>
+        </form>
 
-            JOIN Blood_Types ON Storage.Blood_Type_ID = Blood_Types.Blood_Type_ID
-            JOIN Clinic ON Storage.Clinic_ID = Clinic.Clinic_ID
+        <!-- Results Section -->
+        <div id="search-results" class="mt-4">
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
+                $bloodType = $_POST['bloodType'] ?? '';
+                $city = $_POST['city'] ?? '';
+                $petSpecies = $_POST['petSpecies'] ?? '';
 
-            WHERE Blood_Types.Blood_Type_Name = :bloodType
-            AND Clinic.Clinic_City = :city
-        ";
+                try {
+                    // Updated SQL query
+                    $query = "
+                        SELECT DISTINCT
+                            BLOOD_TYPES.Blood_Type_Name,
+                            CLINICS.Clinic_Name,
+                            CITIES.City_Name AS Clinic_City,
+                            CLINICS.Clinic_Open_Time,
+                            CLINICS.Clinic_Close_Time
+                        FROM STORAGE
+                        JOIN BLOOD_TYPES ON STORAGE.Blood_Type_ID = BLOOD_TYPES.Blood_Type_ID
+                        JOIN CLINICS ON STORAGE.Clinic_ID = CLINICS.Clinic_ID
+                        JOIN CITIES ON CLINICS.Clinic_City_ID = CITIES.City_ID
+                        JOIN USERS ON STORAGE.Donor_ID = USERS.User_ID
+                        JOIN PETS ON USERS.User_Pet_ID = PETS.Pet_ID
+                        WHERE 
+                            BLOOD_TYPES.Blood_Type_Name = :bloodType
+                            AND CITIES.City_Name = :city
+                            AND PETS.Pet_Type = :petSpecies
+                    ";
 
-        // Prepare the statement
-        $stmt = $pdo->prepare($query);
+                    // Prepare the query
+                    $stmt = $pdo->prepare($query);
 
-        // Bind parameters
-        $stmt->bindParam(':bloodType', $bloodType, PDO::PARAM_STR);
-        $stmt->bindParam(':city', $city, PDO::PARAM_STR);
+                    // Bind parameters
+                    $stmt->bindParam(':bloodType', $bloodType, PDO::PARAM_STR);
+                    $stmt->bindParam(':city', $city, PDO::PARAM_STR);
+                    $stmt->bindParam(':petSpecies', $petSpecies, PDO::PARAM_STR);
 
-        // Execute the query
-        $stmt->execute();
+                    // Execute the query
+                    $stmt->execute();
 
         // Fetch results
         $filteredResults = $stmt->fetchAll();

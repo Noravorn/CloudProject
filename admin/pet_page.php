@@ -13,8 +13,8 @@
 			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<div class="d-flex justify-content-between align-items-center mb-4">
-					<h2>Pet Information</h2>
-					<a href="edit_pet.php" class="btn btn-primary">Edit Pet</a>
+					<h1>Pet Information</h1>
+					<a href="add_pet.php" class="btn btn-primary">Add Pet</a>
 				</div>
 
 				<div class="table-responsive">
@@ -34,19 +34,21 @@
 						<tbody>
 							<?php
 							try {
-								$query = "SELECT * FROM PETS";
+								$query = "SELECT * FROM PETS p
+								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
+								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID";
 								$stmt = $pdo->query($query);
 
 								if ($stmt->rowCount() > 0) {
 									while ($row = $stmt->fetch()) { ?>
 										<tr>
 											<td><?= $row['Pet_Name'] ?></td>
-											<td><?= $row['Pet_Blood_Type'] ?></td>
+											<td><?= $row['Blood_Type_Name'] ?></td>
 											<td><?= $row['Pet_Type'] ?></td>
 											<td><?= $row['Pet_Breed'] ?></td>
 											<td><?= $row['Pet_Age'] ?></td>
 											<td><a href='edit_pet.php?id=<?= $row['Pet_ID'] ?>'>Edit</a></td>
-											<td><a href='deleteInfo.php?id=<?= $row['Pet_ID'] ?>'>Delete</a></td>
+											<td><a href='delete_Info.php?id=<?= $row['Pet_ID'] ?>'>Delete</a></td>
 										</tr>
 							<?php }
 								} else {

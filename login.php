@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 // Redirect based on user role
                 $redirectUrl = $user['User_Role_ID'] == 2 
-                    ? "index.php" 
+                    ? "information.php" 
                     : null;
 
                 if ($redirectUrl) {

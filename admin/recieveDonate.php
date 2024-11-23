@@ -8,25 +8,48 @@
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
-    // Sanitize input using htmlspecialchars to prevent XSS
-    $UserID = htmlspecialchars(filter_input(INPUT_POST, 'user-name'));
-    $stmt = $pdo->prepare("SELECT Pet_Blood_type_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$UserID]);
-    $PetBloodId = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
+    // Sanitize inputs to prevent XSS
+    $DonorID = htmlspecialchars(filter_input(INPUT_POST, 'donor-name', FILTER_SANITIZE_NUMBER_INT));
+    $RecieverID = htmlspecialchars(filter_input(INPUT_POST, 'receiver-name', FILTER_SANITIZE_NUMBER_INT));
+    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic', FILTER_SANITIZE_NUMBER_INT));
+    $currentTimestamp = date('Y-m-d H:i:s'); // Use proper timestamp format
 
-    // Update query
-    $stmt = $pdo->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?)");
-    $stmt->execute([$Clinic, $UserID, $PetBloodId]);
+    // Fetch donor pet ID
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$DonorID]);
+    $DonorPetId = $stmt->fetchColumn();
 
-    if ($stmt->rowCount() > 0) {
-        header("Location: admin.php");
-        exit();
+    // Fetch receiver pet ID
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$RecieverID]);
+    $ReceiverPetId = $stmt->fetchColumn();
+
+    // Check if donor and receiver are the same
+    if ($DonorID == $RecieverID) {
+        $error = "Donor and receiver cannot be the same person.";
+        echo "<p style='color: red;'>$error</p>";
     } else {
-        $error = "Insert failed";
+        try {
+            // Insert donation history
+            $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY 
+                (Clinic_ID, Donor_ID, Donor_Pet_ID, Receiver_ID, Receiver_Pet_ID, Donation_Date) 
+                VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $ReceiverPetId, $currentTimestamp]);
+
+            // Check if the row was inserted
+            if ($stmt->rowCount() > 0) {
+                header("Location: history.php");
+                exit();
+            } else {
+                $error = "Insert failed. Please try again.";
+                echo "<p style='color: red;'>$error</p>";
+            }
+        } catch (Exception $e) {
+            // Handle database errors
+            echo "<p style='color: red;'>Error: " . $e->getMessage() . "</p>";
+        }
     }
 }
-
 ?>
 
 <body>
@@ -39,10 +62,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             <main class="col-md-10 p-4">
                 <h2>Donate Blood</h2>
                 <div class="donate_form">
-                    <form action="donate.php" method="post">
-                        <!-- Owner Name -->
-                        <label for="user-name">Owner Name: </label>
-                        <select id="user-name" name="user-name" required>
+                    <form action="recieveDonate.php" method="post">
+                        <!-- Donor Name -->
+                        <label for="donor-name">Donor Name: </label>
+                        <select id="donor-name" name="donor-name" required>
+                            <?php
+                            $stmt = $pdo->prepare("SELECT * FROM USERS");
+                            $stmt->execute();
+                            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($user as $user) {
+                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']) . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <!-- Receiver Name -->
+                        <label for="receiver-name">Receiver Name: </label>
+                        <select id="receiver-name" name="receiver-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS");
                             $stmt->execute();
