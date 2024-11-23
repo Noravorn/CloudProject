@@ -25,13 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $error = "Donor and receiver cannot be the same person.";
         printf($error);
     } else {
-        $stmt = $conn->prepare("INSERT INTO DONATION_HISTORY(Clinic_ID, Donor_ID, Donor_Pet_ID, Reciever_ID, Reciever_Pet_ID, Donation_Date) VALUES (?, ?, ?, ?, ?, ?) ");
-	    if ($stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $RecieverPetId, $currentTimestamp])) {
-		    header("Location: admin.php");
-		    exit();
-	    } else {
-		    $error = "Insert failed";
-	    }
+        $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY(Clinic_ID, Donor_ID, Donor_Pet_ID, Reciever_ID, Reciever_Pet_ID, Donation_Date) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $RecieverPetId, $currentTimestamp]);
+    
+        if ($stmt->rowCount() > 0) {
+            header("Location: admin.php");
+            exit();
+        } else {
+            $error = "Insert failed";
+        }
     }
     
 }

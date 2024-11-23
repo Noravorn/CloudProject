@@ -17,23 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     $Password = htmlspecialchars(filter_input(INPUT_POST, 'Password'));
     $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
 
-    $query = "INSERT INTO USERS (User_Title, User_Role, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare("INSERT INTO USERS (User_Title, User_Role, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $Password, $Clinic]);
 
-    // Use a prepared statement to prevent SQL injection
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("iisssssi", $Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $Password, $Clinic);
-
-    if ($stmt->execute()) {
+    if ($stmt->rowCount() > 0) {
         // Successful insertion, redirect and exit
         header("location: user_manage.php");
         exit();
     } else {
         // Display an error message
-        echo "Error: " . $stmt->error;
+        echo "Error: Failed to insert user data.";
     }
-
-    $stmt->close();
-    $conn->close();
 }
 ?>
 

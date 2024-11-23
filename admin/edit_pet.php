@@ -24,8 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
 
 	// Update query
-	$stmt = $conn->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
-	if ($stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id])) {
+	$stmt = $pdo->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
+	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
+	
+	if ($stmt->rowCount() > 0) {
 		header("Location: pet_page.php");
 		exit();
 	} else {

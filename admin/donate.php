@@ -16,13 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 	$Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
 
 	// Update query
-	$stmt = $conn->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?) ");
-	if ($stmt->execute([$Clinic, $UserID, $PetBloodId])) {
-		header("Location: admin.php");
-		exit();
-	} else {
-		$error = "Insert failed";
-	}
+    $stmt = $pdo->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?)");
+    $stmt->execute([$Clinic, $UserID, $PetBloodId]);
+    
+    if ($stmt->rowCount() > 0) {
+        header("Location: admin.php");
+        exit();
+    } else {
+        $error = "Insert failed";
+    }
 }
 
 ?>

@@ -40,7 +40,7 @@
 									while ($row = $stmt->fetch()) { ?>
 										<tr>
 											<td><?= htmlspecialchars($row['Clinic_Name']); ?></td>
-											<td><?= htmlspecialchars($row['Clinic_City']); ?></td>
+											<td><?= htmlspecialchars($row['City_Name']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Address']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Phone_Number']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Open_Time']); ?></td>

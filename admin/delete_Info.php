@@ -1,33 +1,28 @@
 <?php
-	$Pid = $_GET['Pet_ID'];
-	$Cid = $_GET['Clinic_ID'];
-	$Uid = $_GET['User_ID'];
-	include('connect.php');
-	if (isset($Pid)) {
-		$q="DELETE FROM PETS where Pet_ID=$Pid";
-			if(!$conn->query($q)){
-				echo "DELETE failed. Error: ".$conn->error ;
-		   }
-		   $conn->close();
-		   //redirect
-		   header("Location: admin.php");
-	}
-	elseif(isset($Cid)) {
-		$q2="DELETE FROM CLINICS where Clinic_ID=$Cid";
-			if(!$conn->query($q2)){
-				echo "DELETE failed. Error: ".$conn->error ;
-		   }
-		   $conn->close();
-		   //redirect
-		   header("Location: admin.php");
-	}
-	elseif(isset($Uid)) {
-		$q3="DELETE FROM USERS where User_ID=$Uid";
-			if(!$conn->query($q3)){
-				echo "DELETE failed. Error: ".$conn->error ;
-		   }
-		   $conn->close();
-		   //redirect
-		   header("Location: admin.php");
-	}
-?>
+include('connect.php');
+
+// Get the ID from the URL parameters
+$Pid = isset($_GET['Pet_ID']) ? $_GET['Pet_ID'] : null;
+$Cid = isset($_GET['Clinic_ID']) ? $_GET['Clinic_ID'] : null;
+$Uid = isset($_GET['User_ID']) ? $_GET['User_ID'] : null;
+
+if ($Pid) {
+    $sql = "DELETE FROM PETS WHERE Pet_ID = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$Pid]);
+} elseif ($Cid) {
+    $sql = "DELETE FROM CLINICS WHERE Clinic_ID = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$Cid]);
+} elseif ($Uid) {
+    $sql = "DELETE FROM USERS WHERE User_ID = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$Uid]);
+}
+
+if ($stmt->rowCount() > 0) {
+    header("Location: admin.php");
+    exit();
+} else {
+    echo "DELETE failed. Error: " . $stmt->errorInfo()[2];
+}

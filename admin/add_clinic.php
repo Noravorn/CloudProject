@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<h2>Add Clinic Data</h2>
 					<form action="add_clinic.php" method="post">
 						<label for="Name">Clinic Name</label>
-						<input type="text" name="Name" value="" required>
+						<input type="text" name="Name" required>
 
 						<label for="City">Clinic City</label>
                         <select name="City" id="City" required>
@@ -47,23 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
                                 $stmt->execute();
                                 $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 
-                                foreach ($clinics as $clinic) {
+                                foreach ($cities as $cities) {
                                     echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
                                 }
                             ?>
                         </select>
 
 						<label for="Address">Clinic Address</label>
-						<input type="text" name="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
+						<input type="text" name="Address"required>
 
 						<label for="PhoneNumber">Phone Number</label>
-						<input type="text" name="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
+						<input type="text" name="PhoneNumber" required>
 
 						<label for="OpenTime">Open Time</label>
-						<input type="time" name="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
+						<input type="time" name="OpenTime" required>
 
 						<label for="CloseTime">Close Time</label>
-						<input type="time" name="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
+						<input type="time" name="CloseTime" required>
 
 						<div class="center">
 							<input type="submit" name="sub" value="Add">

@@ -15,8 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
 
 	// Update query
-	$stmt = $conn->prepare("INSERT INTO PETS(Pet_Name, Pet_Blood_Type_ID, Pet_Type, Pet_Breed, Pet_Age) VALUES (?, ?, ?, ?, ?) ");
-	if ($stmt->execute([$Name, $BloodType, $Type, $Breed, $Age])) {
+	$stmt = $pdo->prepare("INSERT INTO PETS(Pet_Name, Pet_Blood_Type_ID, Pet_Type, Pet_Breed, Pet_Age) VALUES (?, ?, ?, ?, ?)");
+	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age]);
+	
+	if ($stmt->rowCount() > 0) {
 		header("Location: pet_page.php");
 		exit();
 	} else {
