@@ -8,35 +8,48 @@
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
-    // Sanitize input using htmlspecialchars to prevent XSS
-    $DonorID = htmlspecialchars(filter_input(INPUT_POST, 'donor-name'));
-    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$DonorID]);
-    $DonorPetId = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $RecieverID = htmlspecialchars(filter_input(INPUT_POST, 'receiver-name'));
-    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$DonorID]);
-    $ReceiverPetId = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
-    $currentTimestamp = date('d-m-Y');
+    // Sanitize inputs to prevent XSS
+    $DonorID = htmlspecialchars(filter_input(INPUT_POST, 'donor-name', FILTER_SANITIZE_NUMBER_INT));
+    $RecieverID = htmlspecialchars(filter_input(INPUT_POST, 'receiver-name', FILTER_SANITIZE_NUMBER_INT));
+    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic', FILTER_SANITIZE_NUMBER_INT));
+    $currentTimestamp = date('Y-m-d H:i:s'); // Use proper timestamp format
 
-    // Update query
+    // Fetch donor pet ID
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$DonorID]);
+    $DonorPetId = $stmt->fetchColumn();
+
+    // Fetch receiver pet ID
+    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+    $stmt->execute([$RecieverID]);
+    $ReceiverPetId = $stmt->fetchColumn();
+
+    // Check if donor and receiver are the same
     if ($DonorID == $RecieverID) {
         $error = "Donor and receiver cannot be the same person.";
-        printf($error);
+        echo "<p style='color: red;'>$error</p>";
     } else {
-        $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY(Clinic_ID, Donor_ID, Donor_Pet_ID, Receiver_ID, Receiver_Pet_ID, Donation_Date) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$Clinic, $DonorID, $DonorPetId, $ReceiverID, $ReceiverPetId, $currentTimestamp]);
+        try {
+            // Insert donation history
+            $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY 
+                (Clinic_ID, Donor_ID, Donor_Pet_ID, Receiver_ID, Receiver_Pet_ID, Donation_Date) 
+                VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $ReceiverPetId, $currentTimestamp]);
 
-        if ($stmt->rowCount() > 0) {
-            header("Location: history.php");
-            exit();
-        } else {
-            $error = "Insert failed";
+            // Check if the row was inserted
+            if ($stmt->rowCount() > 0) {
+                header("Location: history.php");
+                exit();
+            } else {
+                $error = "Insert failed. Please try again.";
+                echo "<p style='color: red;'>$error</p>";
+            }
+        } catch (Exception $e) {
+            // Handle database errors
+            echo "<p style='color: red;'>Error: " . $e->getMessage() . "</p>";
         }
     }
 }
-
 ?>
 
 <body>
