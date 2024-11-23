@@ -8,17 +8,17 @@
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
-	// Sanitize input using htmlspecialchars to prevent XSS
-	$UserID = htmlspecialchars(filter_input(INPUT_POST, 'user-name'));
+    // Sanitize input using htmlspecialchars to prevent XSS
+    $UserID = htmlspecialchars(filter_input(INPUT_POST, 'user-name'));
     $stmt = $pdo->prepare("SELECT Pet_Blood_type_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
     $stmt->execute([$UserID]);
-	$PetBloodId = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
+    $PetBloodId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
 
-	// Update query
+    // Update query
     $stmt = $pdo->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?)");
     $stmt->execute([$Clinic, $UserID, $PetBloodId]);
-    
+
     if ($stmt->rowCount() > 0) {
         header("Location: admin.php");
         exit();
@@ -44,31 +44,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="user-name">Owner Name: </label>
                         <select id="user-name" name="user-name" required>
                             <?php
-                                $stmt = $pdo->prepare("SELECT * FROM USERS");
-                                $stmt->execute();
-                                $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                
-                                foreach ($user as $user) {
-                                    echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']) . "</option>";
-                                }                            
+                            $stmt = $pdo->prepare("SELECT * FROM USERS");
+                            $stmt->execute();
+                            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($user as $user) {
+                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']) . "</option>";
+                            }
                             ?>
                         </select>
-                        
+
                         <!-- Clinic Selection -->
                         <label for="clinic">From Clinic: </label>
                         <select name="clinic" id="clinic" required>
                             <?php
-                                // Fetch clinic names from the database using PDO
-                                $stmt = $pdo->prepare("SELECT * FROM CLINICS");
-                                $stmt->execute();
-                                $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                
-                                foreach ($clinics as $clinic) {
-                                    echo "<option value='" . htmlspecialchars($clinic['Clinic_ID']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
-                                }
+                            // Fetch clinic names from the database using PDO
+                            $stmt = $pdo->prepare("SELECT * FROM CLINICS");
+                            $stmt->execute();
+                            $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($clinics as $clinic) {
+                                echo "<option value='" . htmlspecialchars($clinic['Clinic_ID']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
+                            }
                             ?>
                         </select>
-                        
+
                         <!-- Submit Button -->
                         <input type="submit" id="submit" value="Submit">
                     </form>
@@ -80,8 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
 <style>
     main h2 {
-        text-align: center;        
+        text-align: center;
     }
+
     .donate_form {
         display: flex;
         flex-direction: column;

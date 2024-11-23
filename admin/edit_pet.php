@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	// Update query
 	$stmt = $pdo->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
 	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
-	
+
 	if ($stmt->rowCount() > 0) {
 		header("Location: pet_page.php");
 		exit();
@@ -105,57 +105,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 
 						<input type="submit" id="sub" value="Update">
 					</form>
-				</div>
-				<?php else: ?>
-					<p>Pet not found.</p>
-				<?php endif; ?>
-			</main>
 		</div>
+	<?php else: ?>
+		<p>Pet not found.</p>
+	<?php endif; ?>
+	</main>
+	</div>
 	</div>
 </body>
 <style>
-    main h2 {
-        text-align: center;        
-    }
-    .pet_form {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        padding-left: 20%;
-        padding-right: 20%;
-        background: var(--secondary-color);
-    }
+	main h2 {
+		text-align: center;
+	}
 
-    form {
-        display: grid;
-        grid-template-columns: repeat(1, 7fr);
-        gap: 1.1rem;
-        margin-bottom: 2rem;
-        border: 4px solid rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        padding: 20px;
-        background: var(--secondary-color);
-    }
+	.pet_form {
+		display: flex;
+		flex-direction: column;
+		align-items: left;
+		padding-left: 20%;
+		padding-right: 20%;
+		background: var(--secondary-color);
+	}
 
-    form input {
-        width: auto;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+	form {
+		display: grid;
+		grid-template-columns: repeat(1, 7fr);
+		gap: 1.1rem;
+		margin-bottom: 2rem;
+		border: 4px solid rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		padding: 20px;
+		background: var(--secondary-color);
+	}
 
-    form select {
-        width: auto;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+	form input {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
 
-    form input[type="submit"] {
-        cursor: pointer;
-        width: auto;
-        height: 40px;
-        border-radius: 5px;
-    }
+	form select {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	form input[type="submit"] {
+		cursor: pointer;
+		width: auto;
+		height: 40px;
+		border-radius: 5px;
+	}
 </style>
+
 </html>

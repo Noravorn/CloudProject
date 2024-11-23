@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	// Update query
 	$stmt = $pdo->prepare("INSERT INTO PETS(Pet_Name, Pet_Blood_Type_ID, Pet_Type, Pet_Breed, Pet_Age) VALUES (?, ?, ?, ?, ?)");
 	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age]);
-	
+
 	if ($stmt->rowCount() > 0) {
 		header("Location: pet_page.php");
 		exit();
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<h2>Add Pet Data</h2>
 				<form action="add_pet.php" method="post">
 					<label for="Name">Pet Name</label>
-					<input type="text" id="Name" value="" required>
+					<input type="text" id="Name" required>
 
 					<label for="petType">Pet Type</label>
 					<select id="petType" name="petType">
@@ -88,10 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 					</script>
 
 					<label for="Breed">Breed</label>
-					<input type="text" id="Breed" value="" required>
+					<input type="text" id="Breed" required>
 
 					<label for="Age">Age</label>
-					<input type="number" id="Age" value="" required>
+					<input type="number" id="Age" required>
 
 					<div class="center">
 						<input type="submit" id="sub" value="Add">

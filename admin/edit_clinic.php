@@ -44,39 +44,39 @@ if (isset($_GET['id'])) {
 			<main class="col-md-10 p-4">
 				<h2>Edit Clinic Data</h2>
 				<?php if (isset($clinic)): ?>
-				<div class="clinic_form">
-					<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
-						<label for="Name">Clinic Name</label>
-						<input type="text" id="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
+					<div class="clinic_form">
+						<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
+							<label for="Name">Clinic Name</label>
+							<input type="text" id="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
 
-						<label for="City">Clinic City</label>
-						<select name="City" id="City" required>
-                            <?php
-                                $stmt = $pdo->prepare("SELECT * FROM CITIES");
-                                $stmt->execute();
-                                $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                
-                                foreach ($cities as $cities) {
-                                    echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
-                                }
-                            ?>
-                        </select>
+							<label for="City">Clinic City</label>
+							<select name="City" id="City" required>
+								<?php
+								$stmt = $pdo->prepare("SELECT * FROM CITIES");
+								$stmt->execute();
+								$cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-						<label for="Address">Clinic Address</label>
-						<input type="text" id="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
+								foreach ($cities as $cities) {
+									echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
+								}
+								?>
+							</select>
 
-						<label for="PhoneNumber">Phone Number</label>
-						<input type="text" id="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
+							<label for="Address">Clinic Address</label>
+							<input type="text" id="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
 
-						<label for="OpenTime">Open Time</label>
-						<input type="time" id="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
+							<label for="PhoneNumber">Phone Number</label>
+							<input type="text" id="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
 
-						<label for="CloseTime">Close Time</label>
-						<input type="time" id="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
+							<label for="OpenTime">Open Time</label>
+							<input type="time" id="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
 
-						<input type="submit" id="sub" value="Update">
-					</form>
-				</div>
+							<label for="CloseTime">Close Time</label>
+							<input type="time" id="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
+
+							<input type="submit" id="sub" value="Update">
+						</form>
+					</div>
 				<?php else: ?>
 					<p>Clinic not found.</p>
 				<?php endif; ?>
@@ -86,50 +86,50 @@ if (isset($_GET['id'])) {
 </body>
 
 <style>
+	main h2 {
+		text-align: center;
+	}
 
-	  main h2 {
-        text-align: center;        
-    }
-    .clinic_form {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        padding-left: 20%;
-        padding-right: 20%;
-        background: var(--secondary-color);
-    }
+	.clinic_form {
+		display: flex;
+		flex-direction: column;
+		align-items: left;
+		padding-left: 20%;
+		padding-right: 20%;
+		background: var(--secondary-color);
+	}
 
-    form {
-        display: grid;
-        grid-template-columns: repeat(1, 7fr);
-        gap: 1.1rem;
-        margin-bottom: 2rem;
-        border: 4px solid rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        padding: 20px;
-        background: var(--secondary-color);
-    }
+	form {
+		display: grid;
+		grid-template-columns: repeat(1, 7fr);
+		gap: 1.1rem;
+		margin-bottom: 2rem;
+		border: 4px solid rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		padding: 20px;
+		background: var(--secondary-color);
+	}
 
-    form input {
-        width: auto;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+	form input {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
 
-    form select {
-        width: auto;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+	form select {
+		width: auto;
+		height: 40px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
 
-    form input[type="submit"] {
-        cursor: pointer;
-        width: auto;
-        height: 40px;
-        border-radius: 5px;
-    }
+	form input[type="submit"] {
+		cursor: pointer;
+		width: auto;
+		height: 40px;
+		border-radius: 5px;
+	}
 </style>
 
 </html>
