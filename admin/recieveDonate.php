@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $stmt->execute([$Clinic, $DonorID, $DonorPetId, $ReceiverID, $ReceiverPetId, $currentTimestamp]);
 
         if ($stmt->rowCount() > 0) {
-            header("Location: admin.php");
+            header("Location: history.php");
             exit();
         } else {
             $error = "Insert failed";
@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             <main class="col-md-10 p-4">
                 <h2>Donate Blood</h2>
                 <div class="donate_form">
-                    <form action="donate.php" method="post">
+                    <form action="recieveDonate.php" method="post">
                         <!-- Donor Name -->
-                        <label for="donor_name">Donor Name: </label>
-                        <select id="donor-name" name="donor_name" required>
+                        <label for="donor-name">Donor Name: </label>
+                        <select id="donor-name" name="donor-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS");
                             $stmt->execute();
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
 
                         <!-- Receiver Name -->
-                        <label for="receiver_name">Receiver Name: </label>
-                        <select id="receiver-name" name="receiver_name" required>
+                        <label for="receiver-name">Receiver Name: </label>
+                        <select id="receiver-name" name="receiver-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS");
                             $stmt->execute();

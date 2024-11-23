@@ -7,15 +7,12 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
             <?php include 'sidebar.php'; ?>
 
-            <!-- Main Content -->
             <main class="col-md-10 p-4">
 
                 <h1 class="mb-4">Dashboard</h1>
 
-                <!-- Insights -->
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div class="card">
@@ -39,55 +36,63 @@
                     </div>
                 </div>
 
-                <!-- Counts -->
                 <div class="row g-4 mt-4">
                     <?php
-                    $query = "SELECT COUNT(User_ID) as cU FROM USERS";
-                    $stmt = $pdo->query($query);
-                    $userCount = $stmt->fetch();
+                    try {
+                        // Fetch count of users, pets, and clinics
+                        $query = "SELECT COUNT(*) AS user_count FROM USERS";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->execute();
+                        $userCount = $stmt->fetchColumn();
 
-                    $query = "SELECT COUNT(Pet_ID) as cP FROM PETS";
-                    $stmt = $pdo->query($query);
-                    $petCount = $stmt->fetch();
+                        $query = "SELECT COUNT(*) AS pet_count FROM PETS";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->execute();
+                        $petCount = $stmt->fetchColumn();
 
-                    $query = "SELECT COUNT(Clinic_ID) as cC FROM CLINICS";
-                    $stmt = $pdo->query($query);
-                    $clinicCount = $stmt->fetch();
+                        $query = "SELECT COUNT(*) AS clinic_count FROM CLINICS";
+                        $stmt = $pdo->prepare($query);
+                        $stmt->execute();
+                        $clinicCount = $stmt->fetchColumn();
 
-                    $counts = [
-                        ['title' => 'Total Users', 'icon' => 'group', 'value' => $userCount, 'class' => 'primary'],
-                        ['title' => 'Total Pets', 'icon' => 'paw', 'value' => $petCount, 'class' => 'success'],
-                        ['title' => 'Total Clinics', 'icon' => 'hospital', 'value' => $clinicCount, 'class' => 'danger']
-                    ];
+                        // Prepare data for display
+                        $counts = [
+                            ['title' => 'Total Users', 'icon' => 'group', 'value' => $userCount, 'class' => 'primary'],
+                            ['title' => 'Total Pets', 'icon' => 'paw', 'value' => $petCount, 'class' => 'success'],
+                            ['title' => 'Total Clinics', 'icon' => 'hospital', 'value' => $clinicCount, 'class' => 'danger']
+                        ];
 
-                    foreach ($counts as $count):
-                    ?>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-header bg-<?= $count['class']; ?> text-white">
-                                    <i class="bi bi-<?= $count['icon']; ?>"></i> <?= $count['title']; ?>
-                                </div>
-                                <div class="card-body text-center">
-                                    <h1><?= $count['value']; ?></h1>
+                        // Display the cards
+                        foreach ($counts as $count) { ?>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header bg-<?= $count['class']; ?> text-white">
+                                        <i class="bi bi-<?= $count['icon']; ?>"></i> <?= $count['title']; ?>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h1><?= $count['value']; ?></h1>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                    <?php }
+                    } catch (PDOException $e) {
+                        // Handle exceptions gracefully
+                        echo "Error fetching data: " . $e->getMessage();
+                    } ?>
                 </div>
-                <!-- End of Counts -->
 
-                <!-- Recent Donations -->
                 <div class="mt-5">
                     <h2>Recent Donations</h2>
-                    <!-- Add dynamic table or list for recent donations -->
                     <table class="table table-striped table-hover">
-                        <thead class="table-dark">
-                            <th>Donor Name</th>
-                            <th>Donor Pet</th>
-                            <th>Receiver Name</th>
-                            <th>Receiver Pet</th>
-                            <th>Clinic</th>
-                            <th>Date</th>
+                        <thead>
+                            <tr>
+                                <th>Donor Name</th>
+                                <th>Donor Pet</th>
+                                <th>Receiver Name</th>
+                                <th>Receiver Pet</th>
+                                <th>Clinic</th>
+                                <th>Date</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <?php
@@ -106,10 +111,7 @@
                                     JOIN USERS du ON du.User_ID = dh.Donor_ID
                                     JOIN PETS rp ON dh.Receiver_Pet_ID = rp.Pet_ID
                                     JOIN USERS ru ON ru.User_ID = dh.Receiver_ID
-                                    JOIN CLINICS c ON c.Clinic_ID = dh.Clinic_ID
-                                    ORDER BY Donation_Date DESC
-                            LIMIT 5";
-
+                                    JOIN CLINICS c ON c.Clinic_ID = dh.Clinic_ID";
 
                                 $stmt = $pdo->prepare($query);
                                 $stmt->execute();
@@ -141,121 +143,68 @@
             </main>
         </div>
     </div>
-</body>
 
-<script>
-    // Script for rendering charts
-    const dogChartCanvas = document.getElementById('dog-blood-types-chart');
-    const catChartCanvas = document.getElementById('cat-blood-types-chart');
-    <?php
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 1.1'";
-    $stmt = $pdo->query($query);
-    $TypeCountD1 = $stmt->fetch();
+    <script>
+    // Function to fetch blood type counts from the server
+    async function fetchBloodTypeCounts(petType) {
+        const response = await fetch(`fetch_blood_type_counts.php?pet_type=${petType}`);
+        const data = await response.json();
+        return data;
+    }
 
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 1.2'";
-    $stmt = $pdo->query($query);
-    $TypeCountD2 = $stmt->fetch();
+    // Fetch data for dog and cat blood types
+    async function loadCharts() {
+        const dogBloodTypes = await fetchBloodTypeCounts('dog');
+        const catBloodTypes = await fetchBloodTypeCounts('cat');
 
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 3'";
-    $stmt = $pdo->query($query);
-    $TypeCountD3 = $stmt->fetch();
+        // Create charts using the fetched data
+        const dogChartCanvas = document.getElementById('dog-blood-types-chart');
+        const catChartCanvas = document.getElementById('cat-blood-types-chart');
 
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 4'";
-    $stmt = $pdo->query($query);
-    $TypeCountD4 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 5'";
-    $stmt = $pdo->query($query);
-    $TypeCountD5 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 6'";
-    $stmt = $pdo->query($query);
-    $TypeCountD6 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 7'";
-    $stmt = $pdo->query($query);
-    $TypeCountD7 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'DEA 8'";
-    $stmt = $pdo->query($query);
-    $TypeCountD8 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-                    JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-                    JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'A'";
-    $stmt = $pdo->query($query);
-    $TypeCountC1 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-                    JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-                    JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'B'";
-    $stmt = $pdo->query($query);
-    $TypeCountC2 = $stmt->fetch();
-
-    $query = "SELECT COUNT(Pet_ID) FROM PETS p
-                    JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
-                    JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID WHERE bt.Blood_Type_Name = 'AB'";
-    $stmt = $pdo->query($query);
-    $TypeCountC3 = $stmt->fetch();
-    ?>
-
-    const dogChart = new Chart(dogChartCanvas, {
-        type: 'pie',
-        data: {
-            labels: ['DEA 1.1', 'DEA 1.2', 'DEA 3', 'DEA 4', 'DEA 5', 'DEA 6', 'DEA 7', 'DEA 8'],
-            datasets: [{
-                // data: [$TypeCountD1, $TypeCountD2, $TypeCountD3, $TypeCountD4, $TypeCountD5, $TypeCountD6, $TypeCountD7, $TypeCountD8],
-                data: [90, 50, 25, 10, 5, 2, 1],
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#7E57C2', '#C9CBCE'
-                ]
-            }]
-        },
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Dog Blood Types'
+        const dogChart = new Chart(dogChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: dogBloodTypes.labels,
+                datasets: [{
+                    data: dogBloodTypes.counts,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#7E57C2', '#C9CBCE'
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Dog Blood Types'
+                    }
                 }
             }
-        }
-    });
+        });
 
-    const catChart = new Chart(catChartCanvas, {
-        type: 'pie',
-        data: {
-            labels: ['A', 'B', 'AB'],
-            datasets: [{
-                // data: [$TypeCountC1, $TypeCountC2, $TypeCountC3],
-                data: [30, 20, 15],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }]
-        },
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Cat Blood Types'
+        const catChart = new Chart(catChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: catBloodTypes.labels,
+                datasets: [{
+                    data: catBloodTypes.counts,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cat Blood Types'
+                    }
                 }
             }
-        }
-    });
+        });
+    }
+
+    // Load charts on page load
+    window.onload = loadCharts;
 </script>
+</body>
 
 </html>
