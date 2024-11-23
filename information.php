@@ -39,6 +39,46 @@
         color: white;
     }
 </style>
+
+<script>
+    // Attach click event listeners to sidebar links
+    document.querySelectorAll("#sidebar a").forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            const section = this.getAttribute("data-section"); // Get the section name
+
+            if (section === "logout") {
+                window.location.href = this.href; // Redirect for logout
+            } else {
+                loadContent(section); // Load the content dynamically
+            }
+        });
+    });
+
+    // Function to load content into the main element
+    function loadContent(section) {
+        const mainContent = document.getElementById("main-content");
+
+        // Optional: Show a loading message while fetching content
+        mainContent.innerHTML = "<p>Loading...</p>";
+
+        // Fetch the content (e.g., through AJAX)
+        fetch(`${section}.php`)
+            .then(response => {
+                if (!response.ok) throw new Error("Network error");
+                return response.text();
+            })
+            .then(html => {
+                mainContent.innerHTML = html; // Replace main content with fetched HTML
+            })
+            .catch(error => {
+                mainContent.innerHTML = `<p>Error loading content: ${error.message}</p>`;
+            });
+    }
+</script>
+
+
 <?php include('footer.php'); ?>
 </html>
 
