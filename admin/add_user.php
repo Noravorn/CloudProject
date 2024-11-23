@@ -8,8 +8,8 @@
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     // Sanitize and validate input
-    $Title = htmlspecialchars(filter_input(INPUT_POST, 'Title'));
-    $Role = htmlspecialchars(filter_input(INPUT_POST, 'Role'));
+    $Title = htmlspecialchars(filter_input(INPUT_POST, 'title'));
+    $Role = htmlspecialchars(filter_input(INPUT_POST, 'role'));
     $Fname = htmlspecialchars(filter_input(INPUT_POST, 'Fname'));
     $Lname = htmlspecialchars(filter_input(INPUT_POST, 'Lname'));
     $Email = htmlspecialchars(filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL));

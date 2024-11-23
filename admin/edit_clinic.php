@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
                                 $stmt->execute();
                                 $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 
-                                foreach ($clinics as $clinic) {
+                                foreach ($cities as $cities) {
                                     echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
                                 }
                             ?>
