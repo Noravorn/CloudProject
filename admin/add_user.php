@@ -5,28 +5,29 @@
 <?php include '../connect.php'; ?>
 
 <?php
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
-    // Sanitize and validate input
-    $Title = htmlspecialchars(filter_input(INPUT_POST, 'title'));
-    $Role = htmlspecialchars(filter_input(INPUT_POST, 'role'));
-    $Fname = htmlspecialchars(filter_input(INPUT_POST, 'Fname'));
-    $Lname = htmlspecialchars(filter_input(INPUT_POST, 'Lname'));
-    $Email = htmlspecialchars(filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL));
-    $PhoneNumber = htmlspecialchars(filter_input(INPUT_POST, 'PhoneNumber'));
-    $Password = htmlspecialchars(filter_input(INPUT_POST, 'Password'));
-    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
+    // Sanitize and validate input more rigorously
+    $title = filter_var($_POST['title'], FILTER_SANITIZE_NUMBER_INT);
+    $role = filter_var($_POST['role'], FILTER_SANITIZE_NUMBER_INT);
+    $fname = filter_var($_POST['Fname']);
+    $lname = filter_var($_POST['Lname']);
+    $email = filter_var($_POST['Email'], FILTER_VALIDATE_EMAIL);
+    $phone = filter_var($_POST['PhoneNumber']);
+    $password = filter_var($_POST['Password']);
+    $clinic = filter_var($_POST['clinic'], FILTER_SANITIZE_NUMBER_INT);
+    $city = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT);
+    $address = filter_var($_POST['Address']);
 
-    $stmt = $pdo->prepare("INSERT INTO USERS (User_Title_ID, User_Role_ID, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$Title, $Role, $Fname, $Lname, $Email, $PhoneNumber, $Password, $Clinic]);
+    $stmt = $pdo->prepare("INSERT INTO USERS (User_Title_ID, User_Role_ID, User_Fname, User_Lname, User_Email, User_Phone_Number, User_Password, User_Clinic_ID, User_City_ID, User_Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    if ($stmt->rowCount() > 0) {
-        // Successful insertion, redirect and exit
+    try {
+        $stmt->execute([$title, $role, $fname, $lname, $email, $phone, $password, $clinic, $city, $address]);
         header("location: user_manage.php");
         exit();
-    } else {
-        // Display an error message
-        echo "Error: Failed to insert user data.";
+    } catch (PDOException $e) {
+        // Log the error and display a user-friendly message
+        error_log("Error inserting user: " . $e->getMessage());
+        echo "Error: Failed to insert user data. Please try again.";
     }
 }
 ?>
@@ -95,11 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                             <label for="Password">Password</label>
                             <input type="text" class="form-control" name="Password" id="Password" value="" required>
                         </div>
+                        <label for="City">Clinic City</label>
+							<select name="City" id="City" required>
+								<?php
+								$stmt = $pdo->prepare("SELECT * FROM CITIES");
+								$stmt->execute();
+								$cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        <div class="form-group">
-                            <label for="Pet">Pet</label>
-                            <input type="text" class="form-control" name="Pet" id="Pet" value="" required>
-                        </div>
+								foreach ($cities as $cities) {
+									echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
+								}
+								?>
+							</select>
 
                         <div class="form-group">
                             <label for="Address">Address</label>
