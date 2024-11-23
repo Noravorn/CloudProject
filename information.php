@@ -8,41 +8,15 @@
     <div class="container-fluid p-5">
         <div class="row gap-5">
             <!-- Sidebar -->
-            <nav id="sidebar" class="col rounded-3 p-3 h-100" style="background-color: var(--secondary-color);">
-                <a href="#" class="nav-link" data-section="patient-info">Patient Information</a>
-                <a href="#" class="nav-link" data-section="history">History</a>
-                <a href="#" class="nav-link" data-section="logout">Logout</a>
+            <nav id="sidebar" class="col-2 rounded-3 p-3 h-100" style="background-color: var(--secondary-color);">
+                <a href="#" class="nav-link" data-section="information_patient">Patient Information</a>
+                <a href="#" class="nav-link" data-section="information_pet">Pet Information</a>
+                <a href="#" class="nav-link" data-section="information_history">Donation History</a>
             </nav>
 
             <!-- Main Content -->
-            <main class="col-6 bg-white rounded-3 p-5 shadow-sm">
-                <div id="patient-info">
-                    <h3 class="mb-3">Patient Information</h3>
-
-                    <p>Owner Title: <span>User Title</span></p>
-                    <p>Owner Name: <span>UserF UserL</span></p>
-                    <p>Owner Email: <span>User_email</span></p>
-                    <p>Owner Phone: <span>User phone num</span></p>
-                    <p>Address: <span>User Address</span></p>
-                    <p>Pet Name: <span>Pet Name</span></p>
-                    <div class="additional-info">
-                        <p>Pet ID: <span>Pet ID</span></p>
-                        <p>Pet Age: <span>Pet Age</span></p>
-                        <p>Pet Blood Type: <span>Pet Blood Type</span></p>
-                        <p>Registered Clinic: <span>User Clinic</span></p>
-                    </div>
-                </div>
+            <main id="main-content" class="col-8 bg-white rounded-3 p-5 shadow-sm">
             </main>
-
-            <!-- Pet Name Dropdown -->
-            <div class="col rounded-3 p-5" style="background-color: var(--secondary-color);">
-                <div class="dropdown">
-                    <label for="pet-name" class="form-label">Pet Name</label>
-                    <select id="pet-name" class="form-select">
-                        <option>Select Pet</option>
-                    </select>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -64,5 +38,43 @@
         color: white;
     }
 </style>
+
+<script>
+    // Attach click event listeners to sidebar links
+    document.querySelectorAll("#sidebar a").forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            const section = this.getAttribute("data-section"); // Get the section name
+
+            if (section === "logout") {
+                window.location.href = this.href; // Redirect for logout
+            } else {
+                loadContent(section); // Load the content dynamically
+            }
+        });
+    });
+
+    // Function to load content into the main element
+    function loadContent(section) {
+        const mainContent = document.getElementById("main-content");
+
+        // Optional: Show a loading message while fetching content
+        mainContent.innerHTML = "<p>Loading...</p>";
+
+        // Fetch the content (e.g., through AJAX)
+        fetch(`${section}.php`)
+            .then(response => {
+                if (!response.ok) throw new Error("Network error");
+                return response.text();
+            })
+            .then(html => {
+                mainContent.innerHTML = html; // Replace main content with fetched HTML
+            })
+            .catch(error => {
+                mainContent.innerHTML = `<p>Error loading content: ${error.message}</p>`;
+            });
+    }
+</script>
 
 </html>

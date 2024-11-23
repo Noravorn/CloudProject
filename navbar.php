@@ -1,7 +1,8 @@
+<?php session_start(); ?>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
 
-        
+
         <a class="navbar-brand" href="#">
             <img src="src/images/logo.svg" alt="Pawsitive Logo" width="100"> <!-- replace logo.png with actual logo image -->
         </a>
@@ -21,23 +22,38 @@
                     <a class="nav-link" aria-current="page" href="#">About</a>
                 </li>
 
+                <!-- Information -->
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="information.php">Information</a>
+                </li>
+
                 <!-- Login -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>
-                            Login
-                            <i class="ri-user-5-line"></i>
-                        </span>
-                    </a>
+
+                    <?php if (isset($_SESSION['User_ID'])): ?>
+                        <a class="nav-link" href="logout.php">
+                            <span>
+                                Logout
+                                <i class="ri-user-5-line"></i>
+                            </span>
+                        </a>
+                    <?php else: ?>
+                        <a class="nav-link" href="login.php">
+                            <span>
+                                Login
+                                <i class="ri-user-5-line"></i>
+                            </span>
+                        </a>
+                    <?php endif; ?>
                 </li>
             </ul>
 
             <!-- Blood Search -->
             <div class="d-flex">
-                <span class="nav-link">
+                <a class="nav-link" href="search.php">
                     Blood Search
                     <i class="ri-menu-search-line" style="color: var(--link-hovered-color);"></i>
-                </span>
+                </a>
             </div>
         </div>
     </div>

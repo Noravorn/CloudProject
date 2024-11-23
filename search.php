@@ -4,24 +4,44 @@
 <?php include('header.php'); ?>
 <?php include 'navbar.php'; ?>
 <?php include 'connect.php'; ?>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    // Fetch inputs
     $bloodType = $_POST['bloodType'] ?? '';
     $city = $_POST['city'] ?? '';
+    $serviceHours = $_POST['serviceHours'] ?? '';
 
     try {
-        // Prepare SQL query with placeholders for filtering
+        // Prepare SQL query with placeholders
         $query = "
-            SELECT Blood_Types.Blood_Type_Name, Clinic.Clinic_Name, Clinic.Clinic_City, Clinic.Clinic_Open_Time
-            FROM Storage
-
-            JOIN Blood_Types ON Storage.Blood_Type_ID = Blood_Types.Blood_Type_ID
-            JOIN Clinic ON Storage.Clinic_ID = Clinic.Clinic_ID
-
-            WHERE Blood_Types.Blood_Type_Name = :bloodType
-            AND Clinic.Clinic_City = :city
+            SELECT 
+                BLOOD_TYPES.Blood_Type_Name, 
+                CLINICS.Clinic_Name, 
+                CLINICS.Clinic_City, 
+                CLINICS.Clinic_Open_Time, 
+                CLINICS.Clinic_Close_Time
+            FROM 
+                STORAGE
+            JOIN 
+                BLOOD_TYPES ON STORAGE.Blood_Type_ID = BLOOD_TYPES.Blood_Type_ID
+            JOIN 
+                CLINICS ON STORAGE.Clinic_ID = CLINICS.Clinic_ID
+            WHERE 
+                BLOOD_TYPES.Blood_Type_Name = :bloodType
+                AND CLINICS.Clinic_City = :city
         ";
+
+        // Add optional filter for service hours
+        if (!empty($serviceHours)) {
+            if ($serviceHours === 'Morning') {
+                $query .= " AND CLINICS.Clinic_Open_Time BETWEEN '06:00:00' AND '12:00:00'";
+            } elseif ($serviceHours === 'Afternoon') {
+                $query .= " AND CLINICS.Clinic_Open_Time BETWEEN '12:00:00' AND '18:00:00'";
+            } elseif ($serviceHours === 'Evening') {
+                $query .= " AND CLINICS.Clinic_Open_Time BETWEEN '18:00:00' AND '23:59:59'";
+            }
+        }
 
         // Prepare the statement
         $stmt = $pdo->prepare($query);
@@ -36,9 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Fetch results
         $filteredResults = $stmt->fetchAll();
 
+        // Encode results to JSON
         $jsonResults = json_encode($filteredResults);
-
-        echo $jsonResults;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -48,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
     <div class="container-fluid">
+        <!-- Search Form -->
         <form id="searchForm" action="search.php" method="POST">
 
             <div class="container">
-
                 <!-- Blood Search -->
                 <div class="row mb-3">
                     <span>
@@ -70,20 +89,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="cityn" class="form-label">City *</label>
+                        <label for="city" class="form-label">City *</label>
                         <select class="form-select" id="city" name="city">
                             <option value="Bangkok">Bangkok</option>
                             <option value="Chiang Mai">Chiang Mai</option>
                             <option value="Phuket">Phuket</option>
-                            <!-- Add more locations as needed -->
+                            <!-- Add more cities as needed -->
                         </select>
                     </div>
                 </div>
 
                 <!-- Blood Type -->
                 <div class="row mb-3">
-
-                    <!-- Blood Type -->
                     <div class="col-md-6">
                         <label for="bloodType" class="form-label">Blood Type *</label>
                         <select class="form-select" id="bloodType" name="bloodType">
@@ -108,11 +125,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Search Button -->
                 <button id="search-button" type="submit" class="btn bg-black text-white w-100">Search</button>
             </div>
-
-
         </form>
 
-
+        <!-- Search Results -->
         <div id="search-results" class="container mt-4">
             <!-- Results will be dynamically populated here -->
         </div>
@@ -121,22 +136,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 <script>
-    // This part checks if PHP has already returned search results
+    // Handle results from PHP
     <?php if (isset($jsonResults)): ?>
         const searchResults = <?php echo $jsonResults; ?>;
 
-        // Display results in the 'search-results' div
+        // Display results in 'search-results'
         const resultsContainer = document.getElementById('search-results');
         if (searchResults.length > 0) {
             searchResults.forEach(item => {
                 const resultItem = document.createElement('div');
                 resultItem.className = 'result-item mb-3';
                 resultItem.innerHTML = `
-                        <h5>Clinic Name: ${item.Clinic_Name}</h5>
-                        <p>City: ${item.Clinic_City}</p>
-                        <p>Blood Type: ${item.Blood_Type_Name}</p>
-                        <p>Service Hours: ${item.Clinic_Open_Time}</p>
-                    `;
+                    <h5>Clinic Name: ${item.Clinic_Name}</h5>
+                    <p>City: ${item.Clinic_City}</p>
+                    <p>Blood Type: ${item.Blood_Type_Name}</p>
+                    <p>Service Hours: ${item.Clinic_Open_Time} - ${item.Clinic_Close_Time}</p>
+                `;
                 resultsContainer.appendChild(resultItem);
             });
         } else {
@@ -144,34 +159,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     <?php endif; ?>
 
-    // JavaScript to handle dynamic search results (without page reload)
+    // AJAX Fetch for Dynamic Results
     document.getElementById('searchForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent form from reloading the page
+        e.preventDefault(); // Prevent default form submit
 
         const formData = new FormData(this);
         const resultsContainer = document.getElementById('search-results');
         resultsContainer.innerHTML = '<p>Loading...</p>';
 
-        // Fetch the search results dynamically using the same page (this file)
+        // Fetch results dynamically
         fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Extract search results from the page response
-                const resultsStart = data.indexOf('<div id="search-results"');
-                const resultsEnd = data.indexOf('</div>', resultsStart) + 6;
-                const resultsHTML = data.substring(resultsStart, resultsEnd);
-
-                // Replace the current results with the new ones
-                resultsContainer.innerHTML = resultsHTML;
-
-            })
-            .catch(error => {
-                resultsContainer.innerHTML = '<p>An error occurred while searching.</p>';
-                console.error(error);
-            });
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            resultsContainer.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item mb-3';
+                    resultItem.innerHTML = `
+                        <h5>Clinic Name: ${item.Clinic_Name}</h5>
+                        <p>City: ${item.Clinic_City}</p>
+                        <p>Blood Type: ${item.Blood_Type_Name}</p>
+                        <p>Service Hours: ${item.Clinic_Open_Time} - ${item.Clinic_Close_Time}</p>
+                    `;
+                    resultsContainer.appendChild(resultItem);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>No results found.</p>';
+            }
+        })
+        .catch(error => {
+            resultsContainer.innerHTML = '<p>An error occurred while searching.</p>';
+            console.error(error);
+        });
     });
 </script>
 
