@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
                     <form action="donate.php" method="post">
                         <!-- Owner Name -->
-                        <label for="user-name">Owner Name: </label>
+                        <label for="user-name">Owner Name: Pet Name: Blood type </label>
                         <select id="user-name" name="user-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
 
                         <!-- Clinic Selection -->
-                        <label for="clinic">From Clinic: </label>
+                        <label for="clinic">To Clinic: </label>
                         <select name="clinic" id="clinic" required>
                             <?php
                             // Fetch clinic names from the database using PDO

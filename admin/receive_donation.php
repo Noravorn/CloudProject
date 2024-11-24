@@ -70,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
             <!-- Main Content -->
             <main class="col-md-10 p-4">
-                <h2>Receive Donation</h2>
+                <h2>Receive Blood</h2>
                 <div class="donate_form">
                     <form action="receive_donation.php" method="post">
                         <!-- Donor Name -->
-                        <label for="donor-name">Donor Name: </label>
+                        <label for="donor-name">Donor Name: Pet Name: Blood type </label>
                         <select id="donor-name" name="donor-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM STORAGE s JOIN USERS u ON u.User_ID = s.Donor_ID JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
 
                         <!-- Receiver Name -->
-                        <label for="receiver-name">Receiver Name: </label>
+                        <label for="receiver-name">Receiver Name: Pet Name: Blood type</label>
                         <select id="receiver-name" name="receiver-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");

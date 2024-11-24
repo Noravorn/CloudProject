@@ -10,13 +10,13 @@
             <?php include 'sidebar.php'; ?>
 
             <main class="col-md-10 p-4">
-                <h1 class="mb-4">Storage</h1>
+                <h1 class="mb-4">Storage History</h1>
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <th>Donor Name</th>
-                        <th>Donor Pet</th>
+                        <th>Pet Name</th>
                         <th>Clinic</th>
-                        <th>Blood</th>
+                        <th>Blood type</th>
                         <th>Delete</th>
                     </thead>
                     <tbody>

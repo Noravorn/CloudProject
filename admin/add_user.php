@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 
             <!-- Main Content -->
             <main class="col-md-10 p-4">
-                <h2>Add User</h2>
+                <h2>Add User Data</h2>
                 <form action="add_user.php" method="post">
                     <label for="role">Role</label>
                     <select name="role" id="role" required>
