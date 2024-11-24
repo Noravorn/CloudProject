@@ -10,6 +10,55 @@
             <?php include 'sidebar.php'; ?>
 
             <main class="col-md-10 p-4">
+            <h1 class="mb-4">Storage</h1>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <th>Donor Name</th>
+                        <th>Donor Pet</th>
+                        <th>Clinic</th>
+                        <th>Blood</th>
+                        <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        <?php
+                        try {
+                            $query = "SELECT 
+                                        du.User_Fname AS Donor_FName,
+                                        du.User_Lname AS Donor_LName,
+                                        dp.Pet_Name AS Donor_Pet,
+                                        bt.Blood_Type_Name As Pet_Blood,
+                                        c.Clinic_Name
+                                    FROM STORAGE s
+                                    JOIN USERS du ON du.User_ID = s.Donor_ID
+                                    JOIN PETS dp ON du.User_Pet_ID = dp.Pet_ID
+                                    JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = dp.Pet_Blood_type_ID
+                                    JOIN CLINICS c ON c.Clinic_ID = s.Clinic_ID";
+
+                            $stmt = $pdo->prepare($query);
+                            $stmt->execute();
+
+                            if ($stmt->rowCount() > 0) {
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                                    <tr>
+                                        <td><?php echo $row['Donor_FName'] . " " . $row['Donor_LName']; ?></td>
+                                        <td><?php echo $row['Donor_Pet']; ?></td>
+                                        <td><?php echo $row['Pet_Blood']; ?></td>
+                                        <td><?php echo $row['Clinic_Name']; ?></td>
+                                        <td><a href='delete_Info.php?id=<?php echo $row['Storage_ID']; ?>'>Delete</a></td>
+                                    </tr>
+                                <?php }
+                            } else { ?>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No history found.</td>
+                                </tr>
+                            <?php }
+                        } catch (PDOException $e) { ?>
+                            <tr>
+                                <td colspan="6" class="text-danger">Error fetching storage: <?php echo htmlspecialchars($e->getMessage()); ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
                 <h1 class="mb-4">Donation History</h1>
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
@@ -18,7 +67,6 @@
                         <th>Receiver Name</th>
                         <th>Receiver Pet</th>
                         <th>Clinic</th>
-                        <th>Date</th>
                     </thead>
                     <tbody>
                         <?php
@@ -30,8 +78,7 @@
                                         ru.User_Fname AS Receiver_FName,
                                         ru.User_Lname AS Receiver_LName,
                                         rp.Pet_Name AS Receiver_Pet,
-                                        c.Clinic_Name,
-                                        dh.Donation_Date
+                                        c.Clinic_Name
                                     FROM DONATION_HISTORY dh
                                     JOIN PETS dp ON dh.Donor_Pet_ID = dp.Pet_ID
                                     JOIN USERS du ON du.User_ID = dh.Donor_ID
@@ -50,7 +97,6 @@
                                         <td><?php echo $row['Receiver_FName'] . " " . $row['Receiver_LName']; ?></td>
                                         <td><?php echo $row['Receiver_Pet']; ?></td>
                                         <td><?php echo $row['Clinic_Name']; ?></td>
-                                        <td><?php echo $row['Donation_Date']; ?></td>
                                     </tr>
                                 <?php }
                             } else { ?>

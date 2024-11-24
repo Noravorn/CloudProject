@@ -5,6 +5,7 @@ include('connect.php');
 $Pid = isset($_GET['Pet_ID']) ? $_GET['Pet_ID'] : null;
 $Cid = isset($_GET['Clinic_ID']) ? $_GET['Clinic_ID'] : null;
 $Uid = isset($_GET['User_ID']) ? $_GET['User_ID'] : null;
+$Sid = isset($_GET['Storage_ID']) ? $_GET['Storage_ID'] : null;
 
 if ($Pid) {
 	$sql = "DELETE FROM PETS WHERE Pet_ID = ?";
@@ -18,7 +19,12 @@ if ($Pid) {
 	$sql = "DELETE FROM USERS WHERE User_ID = ?";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$Uid]);
+} elseif ($Sid) {
+	$sql = "DELETE FROM STORAGE WHERE Storage_ID = ?";
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute([$Uid]);
 }
+
 
 if ($stmt->rowCount() > 0) {
 	header("Location: admin.php");

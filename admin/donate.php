@@ -44,12 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="user-name">Owner Name: </label>
                         <select id="user-name" name="user-name" required>
                             <?php
-                            $stmt = $pdo->prepare("SELECT * FROM USERS");
+                            $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
                             $stmt->execute();
                             $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach ($user as $user) {
-                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']) . "</option>";
+                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']. " : " 
+                                . $user['Pet_Name']. " : " . $user['Blood_Type_Name']) . "</option>";
                             }
                             ?>
                         </select>
