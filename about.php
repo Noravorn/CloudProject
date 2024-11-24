@@ -1,6 +1,13 @@
+<!DOCTYPE html>
 <html>
 
-<?php include('header.php'); ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('header.php'); ?>
+    <title>About</title>
+</head>
+
 <?php include('navbar.php'); ?>
 <body>
 <section class="py-5" style="background-color: #f1efe7;">

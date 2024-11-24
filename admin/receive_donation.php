@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php
-include '../header.php';
-include '../connect.php';
-?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Receive Donation</title>
+</head>
+
+<?php include('../connect.php'); ?>
 
 <?php
 // Handle form submission

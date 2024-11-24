@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include 'header.php'; ?>
-<?php include 'navbar.php'; ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('header.php'); ?>
+    <title>Information</title>
+</head>
 
+<?php include 'navbar.php'; ?>
 
 <body>
     <div class="container-fluid p-5">
