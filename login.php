@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn" name="submit">Login</button>
+            <button type="submit" class="btn" id="login_button" name="submit">Login</button>
         </form>
     </div>
 </body>
