@@ -10,23 +10,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     // Sanitize input using htmlspecialchars to prevent XSS
     $UserID = htmlspecialchars(filter_input(INPUT_POST, 'user-name'));
+    
+    // Fetch Pet_Blood_type_ID based on the UserID
     $stmt = $pdo->prepare("SELECT Pet_Blood_type_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
     $stmt->execute([$UserID]);
-    $PetBloodId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $PetBloodId = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch single result
+
+    // Check if PetBloodId is found
+    if ($PetBloodId) {
+        $PetBloodId = $PetBloodId['Pet_Blood_type_ID']; // Extract the ID value
+    } else {
+        $error = "Pet Blood Type not found for the selected user.";
+    }
+
+    // Get the clinic ID from the form
     $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic'));
 
-    // Update query
-    $stmt = $pdo->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?)");
-    $stmt->execute([$Clinic, $UserID, $PetBloodId]);
+    if (isset($PetBloodId) && isset($Clinic)) {
+        // Update query for inserting into STORAGE
+        $stmt = $pdo->prepare("INSERT INTO STORAGE(Clinic_ID, Donor_ID, Blood_Type_ID) VALUES (?, ?, ?)");
+        $stmt->execute([$Clinic, $UserID, $PetBloodId]);
 
-    if ($stmt->rowCount() > 0) {
-        header("Location: admin.php");
-        exit();
-    } else {
-        $error = "Insert failed";
+        if ($stmt->rowCount() > 0) {
+            // Redirect after successful insert
+            header("Location: history.php");
+            exit();
+        } else {
+            // Handle insert failure
+            $error = "Insert failed. Please try again.";
+        }
     }
 }
-
 ?>
 
 <body>
@@ -39,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             <main class="col-md-10 p-4">
                 <h2>Donate Blood</h2>
                 <div class="donate_form">
+                    <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
                     <form action="donate.php" method="post">
                         <!-- Owner Name -->
                         <label for="user-name">Owner Name: </label>
@@ -71,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
 
                         <!-- Submit Button -->
-                        <input type="submit" id="submit" value="Submit">
+                        <input type="submit" id="submit" name="submit" value="Submit">
                     </form>
                 </div>
             </main>
@@ -123,6 +138,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         width: auto;
         height: 40px;
         border-radius: 5px;
+    }
+
+    .error {
+        color: red;
+        text-align: center;
+        margin-bottom: 20px;
     }
 </style>
 

@@ -23,16 +23,17 @@
                         <?php
                         try {
                             $query = "SELECT 
-                                        du.User_Fname AS Donor_FName,
-                                        du.User_Lname AS Donor_LName,
-                                        dp.Pet_Name AS Donor_Pet,
-                                        bt.Blood_Type_Name As Pet_Blood,
-                                        c.Clinic_Name
-                                    FROM STORAGE s
-                                    JOIN USERS du ON du.User_ID = s.Donor_ID
-                                    JOIN PETS dp ON du.User_Pet_ID = dp.Pet_ID
-                                    JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = dp.Pet_Blood_type_ID
-                                    JOIN CLINICS c ON c.Clinic_ID = s.Clinic_ID";
+                                s.Storage_ID, 
+                                du.User_Fname AS Donor_FName,
+                                du.User_Lname AS Donor_LName,
+                                dp.Pet_Name AS Donor_Pet,
+                                bt.Blood_Type_Name AS Pet_Blood,
+                                c.Clinic_Name
+                            FROM STORAGE s
+                            JOIN USERS du ON du.User_ID = s.Donor_ID
+                            JOIN PETS dp ON du.User_Pet_ID = dp.Pet_ID
+                            JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = dp.Pet_Blood_type_ID
+                            JOIN CLINICS c ON c.Clinic_ID = s.Clinic_ID";
 
                             $stmt = $pdo->prepare($query);
                             $stmt->execute();
@@ -44,7 +45,11 @@
                                         <td><?php echo $row['Donor_Pet']; ?></td>
                                         <td><?php echo $row['Pet_Blood']; ?></td>
                                         <td><?php echo $row['Clinic_Name']; ?></td>
-                                        <td><a href='delete_Info.php?id=<?php echo $row['Storage_ID']; ?>'>Delete</a></td>
+                                        <td>
+                                            <a href='delete_info.php?id=<?php echo $row['Storage_ID']; ?>&type=storage' class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this storage?');">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                        </td>
                                     </tr>
                                 <?php }
                             } else { ?>

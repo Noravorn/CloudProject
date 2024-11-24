@@ -41,6 +41,9 @@
 </style>
 
 <script>
+
+    loadContent("information_patient");
+
     // Attach click event listeners to sidebar links
     document.querySelectorAll("#sidebar a").forEach(link => {
         link.addEventListener("click", function(event) {

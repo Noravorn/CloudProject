@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include '../header.php'; ?>
-<?php include '../connect.php'; ?>
+<?php
+include '../header.php';
+include '../connect.php';
+?>
 
 <?php
 // Handle form submission
@@ -10,44 +12,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     // Sanitize inputs to prevent XSS
     $DonorID = htmlspecialchars(filter_input(INPUT_POST, 'donor-name', FILTER_SANITIZE_NUMBER_INT));
-    $RecieverID = htmlspecialchars(filter_input(INPUT_POST, 'receiver-name', FILTER_SANITIZE_NUMBER_INT));
-    $Clinic = htmlspecialchars(filter_input(INPUT_POST, 'clinic', FILTER_SANITIZE_NUMBER_INT));
+    $ReceiverID = htmlspecialchars(filter_input(INPUT_POST, 'receiver-name', FILTER_SANITIZE_NUMBER_INT));
+    $ClinicID = htmlspecialchars(filter_input(INPUT_POST, 'clinic', FILTER_SANITIZE_NUMBER_INT));
     $currentTimestamp = date('Y-m-d H:i:s'); // Use proper timestamp format
 
-    // Fetch donor pet ID
-    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$DonorID]);
-    $DonorPetId = $stmt->fetchColumn();
+    // Validate that donor and receiver are not the same
+    if ($DonorID === $ReceiverID) {
+        echo "<p style='color: red;'>Error: Donor and receiver cannot be the same person.</p>";
+        exit;
+    }
 
-    // Fetch receiver pet ID
-    $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
-    $stmt->execute([$RecieverID]);
-    $ReceiverPetId = $stmt->fetchColumn();
+    try {
+        // Fetch donor pet ID
+        $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+        $stmt->execute([$DonorID]);
+        $DonorPetId = $stmt->fetchColumn();
 
-    // Check if donor and receiver are the same
-    if ($DonorID == $RecieverID) {
-        $error = "Donor and receiver cannot be the same person.";
-        echo "<p style='color: red;'>$error</p>";
-    } else {
-        try {
-            // Insert donation history
-            $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY 
-                (Clinic_ID, Donor_ID, Donor_Pet_ID, Receiver_ID, Receiver_Pet_ID, Donation_Date) 
-                VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$Clinic, $DonorID, $DonorPetId, $RecieverID, $ReceiverPetId, $currentTimestamp]);
-
-            // Check if the row was inserted
-            if ($stmt->rowCount() > 0) {
-                header("Location: history.php");
-                exit();
-            } else {
-                $error = "Insert failed. Please try again.";
-                echo "<p style='color: red;'>$error</p>";
-            }
-        } catch (Exception $e) {
-            // Handle database errors
-            echo "<p style='color: red;'>Error: " . $e->getMessage() . "</p>";
+        if (!$DonorPetId) {
+            echo "<p style='color: red;'>Error: Donor pet not found.</p>";
+            exit;
         }
+
+        // Fetch receiver pet ID
+        $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
+        $stmt->execute([$ReceiverID]);
+        $ReceiverPetId = $stmt->fetchColumn();
+
+        if (!$ReceiverPetId) {
+            echo "<p style='color: red;'>Error: Receiver pet not found.</p>";
+            exit;
+        }
+
+        // Insert into donation history
+        $stmt = $pdo->prepare("INSERT INTO DONATION_HISTORY 
+            (Clinic_ID, Donor_ID, Donor_Pet_ID, Receiver_ID, Receiver_Pet_ID, Donation_Date) 
+            VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$ClinicID, $DonorID, $DonorPetId, $ReceiverID, $ReceiverPetId, $currentTimestamp]);
+
+        // Check if the insertion was successful
+        if ($stmt->rowCount() > 0) {
+            echo "<p style='color: green;'>Donation history successfully added!</p>";
+            header("Location: history.php");
+            exit();
+        } else {
+            echo "<p style='color: red;'>Error: Failed to add donation history.</p>";
+        }
+
+    } catch (PDOException $e) {
+        // Handle database errors
+        echo "<p style='color: red;'>Database error: " . $e->getMessage() . "</p>";
+    } catch (Exception $e) {
+        // Handle general errors
+        echo "<p style='color: red;'>Error: " . $e->getMessage() . "</p>";
     }
 }
 ?>
@@ -60,18 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
             <!-- Main Content -->
             <main class="col-md-10 p-4">
-                <h2>Donate Blood</h2>
+                <h2>Receive Donation</h2>
                 <div class="donate_form">
-                    <form action="recieveDonate.php" method="post">
+                    <form action="receive_donation.php" method="post">
                         <!-- Donor Name -->
                         <label for="donor-name">Donor Name: </label>
                         <select id="donor-name" name="donor-name" required>
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
                             $stmt->execute();
-                            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($user as $user) {
+                            foreach ($users as $user) {
                                 echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
                                     . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
                             }
@@ -84,9 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
                             $stmt->execute();
-                            $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($user as $user) {
+                            foreach ($users as $user) {
                                 echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
                                     . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
                             }
@@ -109,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </select>
 
                         <!-- Submit Button -->
-                        <input type="submit" id="submit" value="Submit">
+                        <input type="submit" id="submit" name="submit" value="Submit">
                     </form>
                 </div>
             </main>
@@ -142,14 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         background: var(--secondary-color);
     }
 
-    form input {
-        width: auto;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    form select {
+    form input, form select {
         width: auto;
         height: 40px;
         border: 1px solid #ccc;

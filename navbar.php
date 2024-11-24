@@ -12,10 +12,15 @@
                     <a class="nav-link" href="about.php" style="color: var(--text-color);">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login.php" style="color: var(--text-color);">
-                        <span>Login</span>
-                        <i class="ri-user-line"></i>
-                    </a>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a class="nav-link" href="logout.php" style="color: var(--text-color);">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    <?php else: ?>
+                        <a class="nav-link" href="login.php" style="color: var(--text-color);">
+                            <i class="ri-user-line"></i> Login
+                        </a>
+                    <?php endif; ?>
                 </li>
             </ul>
         </div>

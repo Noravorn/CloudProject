@@ -7,23 +7,24 @@
 <?php
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
-	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
-	$City = htmlspecialchars(filter_input(INPUT_POST, 'City'));
-	$Address = htmlspecialchars(filter_input(INPUT_POST, 'Address'));
-	$PhoneNumber = htmlspecialchars(filter_input(INPUT_POST, 'PhoneNumber'));
-	$OpenTime = htmlspecialchars(filter_input(INPUT_POST, 'OpenTime'));
-	$CloseTime = htmlspecialchars(filter_input(INPUT_POST, 'CloseTime'));
+	$Name = htmlspecialchars(trim($_POST['Name']));
+	$City = htmlspecialchars(trim($_POST['City']));
+	$Address = htmlspecialchars(trim($_POST['Address']));
+	$PhoneNumber = htmlspecialchars(trim($_POST['PhoneNumber']));
+	$OpenTime = htmlspecialchars(trim($_POST['OpenTime']));
+	$CloseTime = htmlspecialchars(trim($_POST['CloseTime']));
 
 	// Update query
-	$stmt = $pdo->prepare("INSERT INTO CLINICS(Clinic_Name, Clinic_City_ID, Clinic_Address, Clinic_Phone_Number, Clinic_Open_Time, Clinic_Close_Time) VALUES (?, ?, ?, ?, ?, ?)");
-	if ($stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime])) {
+	$stmt = $pdo->prepare("INSERT INTO CLINICS (Clinic_Name, Clinic_City_ID, Clinic_Address, Clinic_Phone_Number, Clinic_Open_Time, Clinic_Close_Time) VALUES (?, ?, ?, ?, ?, ?)");
+	
+	try {
+		$stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime]);
 		header("Location: clinic_manage.php");
 		exit();
-	} else {
-		$error = "Insert failed";
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
 	}
 }
-
 ?>
 
 <body>
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 				<h2>Add Clinic Data</h2>
 				<form action="add_clinic.php" method="post">
 					<label for="Name">Clinic Name</label>
-					<input type="text" id="Name" required>
+					<input type="text" id="Name" name="Name" required>
 
 					<label for="City">Clinic City</label>
 					<select name="City" id="City" required>
@@ -46,23 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 						$stmt->execute();
 						$cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-						foreach ($cities as $cities) {
-							echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
+						foreach ($cities as $city) {
+							echo "<option value='" . htmlspecialchars($city["City_ID"]) . "'>" . htmlspecialchars($city["City_Name"]) . "</option>";
 						}
 						?>
 					</select>
 
 					<label for="Address">Clinic Address</label>
-					<input type="text" id="Address" required>
+					<input type="text" id="Address" name="Address" required>
 
 					<label for="PhoneNumber">Phone Number</label>
-					<input type="text" id="PhoneNumber" required>
+					<input type="text" id="PhoneNumber" name="PhoneNumber" required>
 
 					<label for="OpenTime">Open Time</label>
-					<input type="time" id="OpenTime" required>
+					<input type="time" id="OpenTime" name="OpenTime" required>
 
 					<label for="CloseTime">Close Time</label>
-					<input type="time" id="CloseTime" required>
+					<input type="time" id="CloseTime" name="CloseTime" required>
 
 					<input type="submit" id="sub" name="sub" value="Add">
 				</form>
@@ -86,13 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 		background: var(--secondary-color);
 	}
 
-	form input {
-		width: auto;
-		height: 40px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
-
+	form input,
 	form select {
 		width: auto;
 		height: 40px;

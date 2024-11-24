@@ -3,27 +3,28 @@
 
 <?php include '../header.php'; ?>
 <?php include '../connect.php'; ?>
+
 <?php
-// Fetch user data if ID is set
+// Fetch pet data if ID is set
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id) {
-	// Prepare and execute SQL to fetch user data
 	$stmt = $pdo->prepare("SELECT * FROM PETS WHERE Pet_ID = ?");
 	$stmt->execute([$id]);
 	$pet = $stmt->fetch();
+	if (!$pet) {
+		echo "<p>Pet not found.</p>";
+		exit();
+	}
 }
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
-	$id = $_GET['id'];
+	$Name = htmlspecialchars($_POST['Name']);
+	$BloodType = htmlspecialchars($_POST['bloodType']);
+	$Type = htmlspecialchars($_POST['petType']);
+	$Breed = htmlspecialchars($_POST['Breed']);
+	$Age = htmlspecialchars($_POST['Age']);
 
-	// Sanitize input using htmlspecialchars to prevent XSS
-	$Name = htmlspecialchars(filter_input(INPUT_POST, 'Name'));
-	$BloodType = htmlspecialchars(filter_input(INPUT_POST, 'BloodType'));
-	$Type = htmlspecialchars(filter_input(INPUT_POST, 'Type'));
-	$Breed = htmlspecialchars(filter_input(INPUT_POST, 'Breed'));
-	$Age = htmlspecialchars(filter_input(INPUT_POST, 'Age'));
-
-	// Update query
 	$stmt = $pdo->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_Type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
 	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
 
@@ -31,105 +32,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 		header("Location: pet_page.php");
 		exit();
 	} else {
-		$error = "Update failed";
+		$error = "Update failed or no changes made.";
 	}
 }
-
 ?>
-
-</html>
 
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<!-- Sidebar -->
 			<?php include 'sidebar.php'; ?>
 
-			<!-- Main Content -->
 			<main class="col-md-10 p-4">
 				<h2>Edit Pet Data</h2>
-				<?php if (isset($pet)): ?>
-					<form action="edit_pet.php?id=<?php echo $pet['Pet_ID']; ?>" method="post" enctype="multipart/form-data">
-						<label for="Name">Pet Name</label>
-						<input type="text" id="Name" value="<?php echo htmlspecialchars($pet['Pet_Name']); ?>" required>
+				<form action="edit_pet.php?id=<?php echo $id; ?>" method="post">
 
-						<label for="petType">Pet Type</label>
-						<select id="petType" name="pet_type">
-							<option value="dog" <?php if ($pet['Pet_Type'] == 'dog') echo 'selected'; ?>>Dog</option>
-							<option value="cat" <?php if ($pet['Pet_Type'] == 'cat') echo 'selected'; ?>>Cat</option>
-						</select>
+					<label for="Name">Pet Name</label>
+					<input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($pet['Pet_Name']); ?>" required>
 
-						<label for="bloodType">Blood Type</label>
-						<select id="bloodType" name="bloodType" required></select>
-						<script>
-							const petTypeSelect = document.getElementById('petType');
-							const bloodTypeSelect = document.getElementById('bloodType');
+					<label for="petType">Pet Type</label>
+					<select id="petType" name="petType">
+						<option value="dog" <?php if ($pet['Pet_Type'] === 'dog') echo 'selected'; ?>>Dog</option>
+						<option value="cat" <?php if ($pet['Pet_Type'] === 'cat') echo 'selected'; ?>>Cat</option>
+					</select>
 
-							// Function to populate blood type options based on pet type
-							function populateBloodTypes(petType) {
-								bloodTypeSelect.innerHTML = ''; // Clear previous options
+					<label for="bloodType">Blood Type</label>
+					<select id="bloodType" name="bloodType" required>
+						<option value="" disabled selected>Select Blood Type</option>
+						<option value="1">DEA 1.1</option>
+						<option value="2">DEA 1.2</option>
+						<option value="3">DEA 3</option>
+						<option value="4">DEA 4</option>
+						<option value="5">DEA 5</option>
+						<option value="6">DEA 6</option>
+						<option value="7">DEA 7</option>
+						<option value="8">DEA 8</option>
+						<option value="9">A</option>
+						<option value="10">B</option>
+						<option value="11">AB</option>
+					</select>
 
-								if (petType === 'dog') {
-									const dogBloodTypes = [['DEA 1.1',1], ['DEA 1.2',2], ['DEA 3',3], ['DEA 4',4], ['DEA 5',5], ['DEA 6',6], ['DEA 7',7], ['DEA 8',8]];
-									dogBloodTypes.forEach(bloodType => {
-										const option = document.createElement('option');
-										option.value = bloodType[1];
-										option.text = bloodType[0];
-										bloodTypeSelect.appendChild(option);
-									});
-								} else if (petType === 'cat') {
-									const catBloodTypes = [['A',9], ['B',10], ['AB',11]];
-									catBloodTypes.forEach(bloodType => {
-										const option = document.createElement('option');
-										option.value = bloodType[1];
-										option.text = bloodType[0];
-										bloodTypeSelect.appendChild(option);
-									});
-								}
-							}
+					<label for="Breed">Breed</label>
+					<input type="text" id="Breed" name="Breed" value="<?php echo htmlspecialchars($pet['Pet_Breed']); ?>" required>
 
-							// Initial population of blood types for the default "dog" selection
-							populateBloodTypes(petTypeSelect.value);
+					<label for="Age">Age</label>
+					<input type="number" id="Age" name="Age" value="<?php echo htmlspecialchars($pet['Pet_Age']); ?>" required>
 
-							// Event listener for pet type changes
-							petTypeSelect.addEventListener('change', () => {
-								populateBloodTypes(petTypeSelect.value);
-							});
-						</script>
-
-						<label for="Breed">Breed</label>
-						<input type="text" id="Breed" value="<?php echo htmlspecialchars($pet['Pet_Breed']); ?>" required>
-
-						<label for="Age">Age</label>
-						<input type="number" id="Age" value="<?php echo htmlspecialchars($pet['Pet_Age']); ?>" required>
-
-						<input type="submit" id="sub" name="sub" value="Update">
-					</form>
+					<input type="submit" id="sub" name="sub" value="Update">
+				</form>
+				<?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
+			</main>
 		</div>
-	<?php else: ?>
-		<p>Pet not found.</p>
-	<?php endif; ?>
-	</main>
-	</div>
 	</div>
 </body>
+
 <style>
 	main h2 {
 		text-align: center;
 	}
 
-	.pet_form {
-		display: flex;
-		flex-direction: column;
-		align-items: left;
-		padding-left: 20%;
-		padding-right: 20%;
-		background: var(--secondary-color);
-	}
-
 	form {
 		display: grid;
-		grid-template-columns: repeat(1, 7fr);
+		grid-template-columns: 1fr;
 		gap: 1.1rem;
 		margin-bottom: 2rem;
 		border: 4px solid rgba(0, 0, 0, 0.2);
@@ -138,24 +101,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 		background: var(--secondary-color);
 	}
 
-	form input {
-		width: auto;
+	form input, form select {
+		width: 100%;
 		height: 40px;
 		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
-
-	form select {
-		width: auto;
-		height: 40px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
-
-	form input[type="submit"] {
-		cursor: pointer;
-		width: auto;
-		height: 40px;
 		border-radius: 5px;
 	}
 </style>

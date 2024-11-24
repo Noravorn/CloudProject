@@ -53,7 +53,7 @@
 												</a>
 											</td>
 											<td>
-												<a href="delete_Info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-danger">
+											<a href="delete_info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>&type=clinic" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this clinic?');">
 													<i class="bi bi-trash"></i> Delete
 												</a>
 											</td>
