@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +11,7 @@
 </head>
 
 <?php include('navbar.php'); ?>
+
 <body>
 <section class="py-5" style="background-color: #f1efe7;">
     <div class="container">

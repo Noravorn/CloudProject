@@ -1,3 +1,6 @@
+<?php session_start(); ?>
+<?php include 'connect.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,6 @@
 </head>
 
 <?php include 'navbar.php'; ?>
-<?php include 'connect.php'; ?>
 
 <body>
     <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
