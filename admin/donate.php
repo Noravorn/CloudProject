@@ -49,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach ($user as $user) {
-                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname']. " : " 
-                                . $user['Pet_Name']. " : " . $user['Blood_Type_Name']) . "</option>";
+                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
+                                    . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
                             }
                             ?>
                         </select>

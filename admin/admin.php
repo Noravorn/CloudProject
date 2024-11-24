@@ -84,15 +84,12 @@
                 <div class="mt-5">
                     <h2>Recent Donations</h2>
                     <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Donor Name</th>
-                                <th>Donor Pet</th>
-                                <th>Receiver Name</th>
-                                <th>Receiver Pet</th>
-                                <th>Clinic</th>
-                                <th>Date</th>
-                            </tr>
+                        <thead class="table-dark">
+                            <th>Donor Name</th>
+                            <th>Donor Pet</th>
+                            <th>Receiver Name</th>
+                            <th>Receiver Pet</th>
+                            <th>Clinic</th>
                         </thead>
                         <tbody>
                             <?php
@@ -104,14 +101,14 @@
                                         ru.User_Fname AS Receiver_FName,
                                         ru.User_Lname AS Receiver_LName,
                                         rp.Pet_Name AS Receiver_Pet,
-                                        c.Clinic_Name,
-                                        dh.Donation_Date
+                                        c.Clinic_Name
                                     FROM DONATION_HISTORY dh
                                     JOIN PETS dp ON dh.Donor_Pet_ID = dp.Pet_ID
                                     JOIN USERS du ON du.User_ID = dh.Donor_ID
                                     JOIN PETS rp ON dh.Receiver_Pet_ID = rp.Pet_ID
                                     JOIN USERS ru ON ru.User_ID = dh.Receiver_ID
-                                    JOIN CLINICS c ON c.Clinic_ID = dh.Clinic_ID";
+                                    JOIN CLINICS c ON c.Clinic_ID = dh.Clinic_ID
+                                    LIMIT 5";
 
                                 $stmt = $pdo->prepare($query);
                                 $stmt->execute();
@@ -124,7 +121,6 @@
                                             <td><?php echo $row['Receiver_FName'] . " " . $row['Receiver_LName']; ?></td>
                                             <td><?php echo $row['Receiver_Pet']; ?></td>
                                             <td><?php echo $row['Clinic_Name']; ?></td>
-                                            <td><?php echo $row['Donation_Date']; ?></td>
                                         </tr>
                                     <?php }
                                 } else { ?>
@@ -145,66 +141,66 @@
     </div>
 
     <script>
-    // Function to fetch blood type counts from the server
-    async function fetchBloodTypeCounts(petType) {
-        const response = await fetch(`fetch_blood_type_counts.php?pet_type=${petType}`);
-        const data = await response.json();
-        return data;
-    }
+        // Function to fetch blood type counts from the server
+        async function fetchBloodTypeCounts(petType) {
+            const response = await fetch(`fetch_blood_type_counts.php?pet_type=${petType}`);
+            const data = await response.json();
+            return data;
+        }
 
-    // Fetch data for dog and cat blood types
-    async function loadCharts() {
-        const dogBloodTypes = await fetchBloodTypeCounts('dog');
-        const catBloodTypes = await fetchBloodTypeCounts('cat');
+        // Fetch data for dog and cat blood types
+        async function loadCharts() {
+            const dogBloodTypes = await fetchBloodTypeCounts('dog');
+            const catBloodTypes = await fetchBloodTypeCounts('cat');
 
-        // Create charts using the fetched data
-        const dogChartCanvas = document.getElementById('dog-blood-types-chart');
-        const catChartCanvas = document.getElementById('cat-blood-types-chart');
+            // Create charts using the fetched data
+            const dogChartCanvas = document.getElementById('dog-blood-types-chart');
+            const catChartCanvas = document.getElementById('cat-blood-types-chart');
 
-        const dogChart = new Chart(dogChartCanvas, {
-            type: 'pie',
-            data: {
-                labels: dogBloodTypes.labels,
-                datasets: [{
-                    data: dogBloodTypes.counts,
-                    backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#7E57C2', '#C9CBCE'
-                    ]
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Dog Blood Types'
+            const dogChart = new Chart(dogChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels: dogBloodTypes.labels,
+                    datasets: [{
+                        data: dogBloodTypes.counts,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#7E57C2', '#C9CBCE'
+                        ]
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Dog Blood Types'
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        const catChart = new Chart(catChartCanvas, {
-            type: 'pie',
-            data: {
-                labels: catBloodTypes.labels,
-                datasets: [{
-                    data: catBloodTypes.counts,
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Cat Blood Types'
+            const catChart = new Chart(catChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels: catBloodTypes.labels,
+                    datasets: [{
+                        data: catBloodTypes.counts,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Cat Blood Types'
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    // Load charts on page load
-    window.onload = loadCharts;
-</script>
+        // Load charts on page load
+        window.onload = loadCharts;
+    </script>
 </body>
 
 </html>

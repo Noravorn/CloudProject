@@ -7,7 +7,6 @@ if ($petType === 'dog') {
     // Query for dog blood types and counts
     $query = "SELECT bt.Blood_Type_Name, COUNT(p.Pet_ID) AS count
               FROM PETS p
-              JOIN USERS u ON u.User_Pet_ID = p.Pet_ID
               JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID
               WHERE p.Pet_Type = 'Dog'
               GROUP BY bt.Blood_Type_Name";
@@ -15,7 +14,6 @@ if ($petType === 'dog') {
     // Query for cat blood types and counts
     $query = "SELECT bt.Blood_Type_Name, COUNT(p.Pet_ID) AS count
               FROM PETS p
-              JOIN USERS u ON u.User_Pet_ID = p.Pet_ID
               JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID
               WHERE p.Pet_Type = 'Cat'
               GROUP BY bt.Blood_Type_Name";
