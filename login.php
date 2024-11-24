@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php session_start(); ?>
+<?php include('connect.php'); ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +12,6 @@
 </head>
 
 <?php
-require("connect.php");
-session_start();
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -99,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn" id="login_button" name="submit">Login</button>
+            <button type="submit" class="btn" id="" name="submit">Login</button>
         </form>
     </div>
 </body>
