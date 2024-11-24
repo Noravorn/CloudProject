@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<?php session_regenerate_id(true); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['User_ID'] = $user['User_ID'];
                 $_SESSION['User_Email'] = $user['User_Email'];
                 $_SESSION['User_Role_ID'] = $user['User_Role_ID'];
-                
-                session_regenerate_id(true);
 
                 // Redirect based on user role
                 $redirectUrl = $user['User_Role_ID'] == 2 
