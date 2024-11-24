@@ -36,7 +36,7 @@
             $PhoneNumber = htmlspecialchars($_POST['PhoneNumber']);
             $City = filter_var($_POST['city'], FILTER_SANITIZE_NUMBER_INT);
             $Clinic = filter_var($_POST['clinic'], FILTER_SANITIZE_NUMBER_INT);
-            $Pet = isset($_POST['pet']) ? filter_var($_POST['pet'], FILTER_SANITIZE_NUMBER_INT) : null;
+            $Pet = isset($_POST['pet']) && !empty($_POST['pet']) ? $_POST['pet'] : null;
             $Address = htmlspecialchars($_POST['address']);
 
             // Validate inputs
