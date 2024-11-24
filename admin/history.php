@@ -52,7 +52,7 @@
                                         <td><?php echo $row['Pet_Blood']; ?></td>
                                         <td><?php echo $row['Clinic_Name']; ?></td>
                                         <td>
-                                            <a href='delete_info.php?id=<?php echo $row['Storage_ID']; ?>&type=storage' class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this storage?');">
+                                            <a href='delete_info.php?id=<?php echo $row['Storage_ID']; ?>&type=storage' class="btn btn-sm btn-danger">
                                                 <i class="bi bi-trash"></i> Delete
                                             </a>
                                         </td>

@@ -58,7 +58,7 @@
 												</a>
 											</td>
 											<td>
-												<a href='delete_info.php?id=<?= $row['Pet_ID'] ?>&type=pet' class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this pet?');">
+												<a href='delete_info.php?id=<?= $row['Pet_ID'] ?>&type=pet' class="btn btn-sm btn-danger">
 													<i class="bi bi-trash"></i> Delete
 												</a>
 											</td>

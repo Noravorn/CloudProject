@@ -54,12 +54,12 @@
 											<td><?= htmlspecialchars($row['Clinic_Open_Time']); ?></td>
 											<td><?= htmlspecialchars($row['Clinic_Close_Time']); ?></td>
 											<td>
-												<a href="edit_clinic.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-warning">
+												<a id="edit_button" href="edit_clinic.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>" class="btn btn-sm btn-warning">
 													<i class="bi bi-pencil"></i> Edit
 												</a>
 											</td>
 											<td>
-												<a href="delete_info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>&type=clinic" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this clinic?');">
+												<a id="delete_button" href="delete_info.php?id=<?= htmlspecialchars($row['Clinic_ID']); ?>&type=clinic" class="btn btn-sm btn-danger">
 													<i class="bi bi-trash"></i> Delete
 												</a>
 											</td>
