@@ -21,8 +21,8 @@
                     <thead class="table-dark">
                         <th>Donor Name</th>
                         <th>Pet Name</th>
-                        <th>Clinic</th>
                         <th>Blood type</th>
+                        <th>Clinic</th>
                         <th>Delete</th>
                     </thead>
                     <tbody>
