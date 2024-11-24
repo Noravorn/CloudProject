@@ -12,7 +12,7 @@
                 <div class="col-md-6 text-center text-md-start mb-4 mb-md-0">
                     <h1 class="banner-title fw-bold mb-4">"Connecting Pets to <br> Life-Saving Blood Resources"</h1>
                     <p class="mb-4">Pawsitive provides progressive, accessible, and affordable healthcare, tailored for emergencies.</p>
-                    <a href="/search.php" class="btn btn-lg text-white" style="background-color: #c32b45; transition: background-color 0.3s ease;"
+                    <a href="search.php" class="btn btn-lg text-white" style="background-color: #c32b45; transition: background-color 0.3s ease;"
                         onmouseover="this.style.backgroundColor='#b51d1d'" onmouseout="this.style.backgroundColor='#d62323'">Search for Blood Resources</a>
                 </div>
 
