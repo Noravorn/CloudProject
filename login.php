@@ -1,7 +1,8 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
-<?php session_start(); ?>
 <?php include('connect.php'); ?>
 
 <head>
@@ -100,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn" id="" name="submit">Login</button>
+            <button type="submit" class="btn" id="login_button" name="submit">Login</button>
         </form>
     </div>
 </body>

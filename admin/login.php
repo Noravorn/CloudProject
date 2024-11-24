@@ -1,7 +1,8 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html>
 
-<?php session_start(); ?>
 <?php include('../connect.php'); ?>
 
 <head>

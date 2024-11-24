@@ -1,3 +1,6 @@
 .env/
 test/
-test_output/
+
+log.html
+output.xml
+report.html
