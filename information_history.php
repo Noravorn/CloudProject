@@ -1,8 +1,15 @@
 <?php include 'connect.php'; ?>
-<?php session_start(); ?>
-
 <?php
 try {
+
+    session_start();
+
+    if (!isset($_SESSION['User_ID'])) {
+        // Redirect or show an error if User_ID is not set
+        echo "User ID not found in session.";
+        exit;
+    }
+
     $user_id = $_SESSION['User_ID'];
 
     // Query to fetch donation history
