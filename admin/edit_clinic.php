@@ -85,7 +85,7 @@ if (isset($_GET['id'])) {
 							<label for="CloseTime">Close Time</label>
 							<input type="time" id="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
 
-							<input type="submit" id="sub" name="sub" value="Update">
+							<input type="submit" id="edit_clinic_button" name="sub" value="Update">
 						</form>
 					</div>
 				<?php else: ?>

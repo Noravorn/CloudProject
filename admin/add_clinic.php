@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 					<label for="CloseTime">Close Time</label>
 					<input type="time" id="CloseTime" name="CloseTime" required>
 
-					<input type="submit" id="sub" name="sub" value="Add">
+					<input type="submit" id="add_clinic_button" name="sub" value="Add">
 				</form>
 			</main>
 		</div>
