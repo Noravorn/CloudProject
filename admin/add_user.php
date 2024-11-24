@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     $clinic = filter_var($_POST['clinic'], FILTER_SANITIZE_NUMBER_INT);
     $city = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT);
     $address = filter_var($_POST['Address']);
-    $pet_id = isset($_POST['pet']) ? filter_var($_POST['pet'], FILTER_SANITIZE_NUMBER_INT) : null; // Optional field
+    $pet_id = isset($_POST['pet']) && !empty($_POST['pet']) ? $_POST['pet'] : null;
 
     try {
         // Prepare SQL for inserting user data
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 
                     <label for="pet">Pet (Optional)</label>
                     <select name="pet" id="pet">
-                        <option value="">None</option>
+                        <option value= "">None</option>
                         <?php
                         $stmt = $pdo->query("SELECT * FROM PETS");
                         while ($pet = $stmt->fetch(PDO::FETCH_ASSOC)) {
