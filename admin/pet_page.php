@@ -35,7 +35,6 @@
 							<?php
 							try {
 								$query = "SELECT * FROM PETS p
-								JOIN USERS u ON u.User_Pet_ID = p.Pet_ID 
 								JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID";
 								$stmt = $pdo->query($query);
 
