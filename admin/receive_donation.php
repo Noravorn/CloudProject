@@ -16,12 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $ClinicID = htmlspecialchars(filter_input(INPUT_POST, 'clinic', FILTER_SANITIZE_NUMBER_INT));
     $currentTimestamp = date('Y-m-d H:i:s'); // Use proper timestamp format
 
-    // Validate that donor and receiver are not the same
-    if ($DonorID === $ReceiverID) {
-        echo "<p style='color: red;'>Error: Donor and receiver cannot be the same person.</p>";
-        exit;
-    }
-
     try {
         // Fetch donor pet ID
         $stmt = $pdo->prepare("SELECT Pet_ID FROM PETS p JOIN USERS u ON u.User_Pet_ID = p.Pet_ID WHERE u.User_ID = ?");
@@ -83,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="donor-name">Donor Name: </label>
                         <select id="donor-name" name="donor-name" required>
                             <?php
-                            $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
+                            $stmt = $pdo->prepare("SELECT * FROM STORAGE s JOIN USERS u ON u.User_ID = s.Donor_ID JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
                             $stmt->execute();
                             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             foreach ($users as $user) {
-                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
+                                echo "<option value='" . htmlspecialchars($user['Donor_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
                                     . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
                             }
                             ?>
