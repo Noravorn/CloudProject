@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <nav class="navbar navbar-expand-lg" style="padding: 0 20px;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <!-- Logo on the Left -->
@@ -12,9 +14,9 @@
                     <a class="nav-link" href="about.php" style="color: var(--text-color);">About</a>
                 </li>
                 <li class="nav-item">
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['User_ID'])): ?>
                         <a class="nav-link" href="logout.php" style="color: var(--text-color);">
-                            <i class="bi bi-box-arrow-right"></i> Logout
+                            <i class="ri-logout-box-line"></i> Logout
                         </a>
                     <?php else: ?>
                         <a class="nav-link" href="login.php" style="color: var(--text-color);">
