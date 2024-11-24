@@ -81,7 +81,6 @@
                     <div class="user_form">
                         <!-- Form to edit user data -->
                         <form action="edit_user.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
                                 <label for="Role">Role</label>
                                 <select name="role" id="role" required>
                                     <?php
@@ -92,9 +91,7 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="Title">Title</label>
                                 <select name="title" id="title" required>
                                     <?php
@@ -105,29 +102,22 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="Fname">First Name</label>
                                 <input type="text" class="form-control" name="Fname" id="Fname" value="<?php echo htmlspecialchars($user['User_Fname']); ?>" required>
-                            </div>
 
-                            <div class="form-group">
+
                                 <label for="Lname">Last Name</label>
                                 <input type="text" class="form-control" name="Lname" id="Lname" value="<?php echo htmlspecialchars($user['User_Lname']); ?>" required>
-                            </div>
 
-                            <div class="form-group">
+
                                 <label for="Email">Email</label>
                                 <input type="email" class="form-control" name="Email" id="Email" value="<?php echo htmlspecialchars($user['User_Email']); ?>" required>
-                            </div>
 
-                            <div class="form-group">
+
                                 <label for="PhoneNumber">Phone Number</label>
                                 <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" value="<?php echo htmlspecialchars($user['User_Phone_Number']); ?>" required>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="City">City</label>
                                 <select name="city" id="city" required>
                                     <?php
@@ -138,9 +128,7 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="Clinic">Clinic</label>
                                 <select name="clinic" id="clinic" required>
                                     <?php
@@ -151,9 +139,7 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
 
-                            <div class="form-group">
                                 <label for="Pet">Pet (Optional)</label>
                                 <select name="pet" id="pet">
                                     <option value="">None</option>
@@ -165,12 +151,8 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="Address">Address</label>
                                 <input type="text" class="form-control" name="address" id="address" value="<?php echo htmlspecialchars($user['User_Address']); ?>" required>
-                            </div>
 
                             <input type="submit" id="sub" name="sub" class="btn btn-primary" value="Update">
                         </form>
