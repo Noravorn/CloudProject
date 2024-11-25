@@ -28,6 +28,10 @@ if ($id && $type) {
                 break;
 
             case 'pet':
+                // Update DONATION_HISTORY to set Donor_Pet_ID to NULL for the deleted pet
+                $stmt = $pdo->prepare("UPDATE DONATION_HISTORY SET Donor_Pet_ID = NULL WHERE Donor_Pet_ID = ?");
+                $stmt->execute([$id]);
+
                 // Update USERS table to set User_Pet_ID to NULL for the deleted pet
                 $stmt = $pdo->prepare("UPDATE USERS SET User_Pet_ID = NULL WHERE User_Pet_ID = ?");
                 $stmt->execute([$id]);
