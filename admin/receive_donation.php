@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         // Check if the insertion was successful
         if ($stmt->rowCount() > 0) {
             echo "<p style='color: green;'>Donation history successfully added!</p>";
-            header("Location:history.php");
+            header("Location: history.php");
             exit();
         } else {
-            echo "<p style='color: red;'>Error: Failed to add donation history.</p>";
+            echo "<p style='color: red;'>Error: Failed to add donation history. Please try again.</p>";
         }
 
     } catch (PDOException $e) {
@@ -81,13 +81,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="donor-name">Donor Name: Pet Name: Blood type </label>
                         <select id="donor-name" name="donor-name" required>
                             <?php
-                            $stmt = $pdo->prepare("SELECT * FROM STORAGE s JOIN USERS u ON u.User_ID = s.Donor_ID JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
-                            $stmt->execute();
-                            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            try {
+                                $stmt = $pdo->prepare("SELECT * FROM STORAGE s 
+                                                        JOIN USERS u ON u.User_ID = s.Donor_ID 
+                                                        JOIN PETS p ON u.User_Pet_ID = p.Pet_ID 
+                                                        JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
+                                $stmt->execute();
+                                $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($users as $user) {
-                                echo "<option value='" . htmlspecialchars($user['Donor_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
-                                    . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
+                                foreach ($users as $user) {
+                                    echo "<option value='" . htmlspecialchars($user['Donor_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
+                                        . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value=''>Error loading donors. Please try again later.</option>";
                             }
                             ?>
                         </select>
@@ -96,13 +103,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="receiver-name">Receiver Name: Pet Name: Blood type</label>
                         <select id="receiver-name" name="receiver-name" required>
                             <?php
-                            $stmt = $pdo->prepare("SELECT * FROM USERS u JOIN PETS p ON u.User_Pet_ID = p.Pet_ID JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
-                            $stmt->execute();
-                            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            try {
+                                $stmt = $pdo->prepare("SELECT * FROM USERS u 
+                                                        JOIN PETS p ON u.User_Pet_ID = p.Pet_ID 
+                                                        JOIN BLOOD_TYPES bt ON bt.Blood_Type_ID = p.Pet_Blood_type_ID");
+                                $stmt->execute();
+                                $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($users as $user) {
-                                echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
-                                    . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
+                                foreach ($users as $user) {
+                                    echo "<option value='" . htmlspecialchars($user['User_ID']) . "'>" . htmlspecialchars($user['User_Fname'] . " " . $user['User_Lname'] . " : "
+                                        . $user['Pet_Name'] . " : " . $user['Blood_Type_Name']) . "</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value=''>Error loading receivers. Please try again later.</option>";
                             }
                             ?>
                         </select>
@@ -111,13 +124,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         <label for="clinic">From Clinic: </label>
                         <select name="clinic" id="clinic" required>
                             <?php
-                            // Fetch clinic names from the database using PDO
-                            $stmt = $pdo->prepare("SELECT * FROM CLINICS");
-                            $stmt->execute();
-                            $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            try {
+                                // Fetch clinic names from the database using PDO
+                                $stmt = $pdo->prepare("SELECT * FROM CLINICS");
+                                $stmt->execute();
+                                $clinics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                            foreach ($clinics as $clinic) {
-                                echo "<option value='" . htmlspecialchars($clinic['Clinic_ID']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
+                                foreach ($clinics as $clinic) {
+                                    echo "<option value='" . htmlspecialchars($clinic['Clinic_ID']) . "'>" . htmlspecialchars($clinic['Clinic_Name']) . "</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value=''>Error loading clinics. Please try again later.</option>";
                             }
                             ?>
                         </select>
