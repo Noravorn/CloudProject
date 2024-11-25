@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         $update_stmt->execute([$last_inserted_id, $user_id]);
 
         // Redirect to pet page
-        header("Location: pet_page.php");
+        header("Location:pet_page.php");
         exit();
     } catch (PDOException $e) {
         // Handle errors gracefully

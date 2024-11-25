@@ -18,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 
     try {
         $stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime, $id]);
-        // Redirect to management page with a success message
-        header("Location: clinic_manage.php?success=1");
+        header("Location:clinic_manage.php");
         exit();
     } catch (PDOException $e) {
         // Log the error and display a user-friendly message

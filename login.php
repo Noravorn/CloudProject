@@ -3,11 +3,19 @@
 <?php include('connect.php'); ?>
 <?php
 
+// Start the session and regenerate the session ID for security
+session_start();
+session_regenerate_id(true);
+
+// Include the database connection file
+include('connect.php');
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
 
+    // Check for empty fields
     if (empty($email) || empty($password)) {
         $error = "Please fill in all fields";
     } else {
@@ -15,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Use prepared statements to prevent SQL injection
             $query = "SELECT User_ID, User_Email, User_Role_ID FROM USERS WHERE User_Email = :email AND User_Password = :password";
             $stmt = $pdo->prepare($query);
-            
+
             $stmt->execute([
                 ':email' => $email,
                 ':password' => $password, // Ideally, hash passwords before storage and verification
@@ -30,12 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['User_Role_ID'] = $user['User_Role_ID'];
 
                 // Redirect based on user role
-                $redirectUrl = $user['User_Role_ID'] == 2 
-                    ? "information.php" 
-                    : null;
+                $redirectUrl = $user['User_Role_ID'] == 2 ? "information.php" : null;
 
                 if ($redirectUrl) {
-                    header("Location: $redirectUrl");
+                    header("Location:$redirectUrl");
                     exit();
                 } else {
                     $error = "Invalid user role";
@@ -73,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="wrapper">
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <h1>Login</h1>
+            
             <!-- Error Notification -->
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger text-center">
@@ -101,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit" class="btn" id="login_button" name="submit">Login</button>
         </form>
     </div>
+
 </body>
 
 <style>

@@ -50,7 +50,7 @@
             // Check if any row was updated
             if ($stmt->rowCount() > 0) {
                 // Redirect on success
-                header("Location: user_manage.php");
+                header("Location:user_manage.php");
                 exit;
             } else {
                 throw new Exception("No changes made or user not found.");

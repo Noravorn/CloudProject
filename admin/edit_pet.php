@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
 
 	if ($stmt->rowCount() > 0) {
-		header("Location: pet_page.php");
+		header("Location:pet_page.php");
 		exit();
 	} else {
 		$error = "Update failed or no changes made.";

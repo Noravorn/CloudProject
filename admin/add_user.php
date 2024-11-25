@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         $stmt->execute([$title, $role, $fname, $lname, $email, $phone, $password, $clinic, $city, $address, $pet_id]);
 
         // Redirect after successful insertion
-        header("location: user_manage.php");
+        header("location:user_manage.php");
         exit();
     } catch (PDOException $e) {
         // Log the error and display a user-friendly message
