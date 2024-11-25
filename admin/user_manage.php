@@ -11,8 +11,8 @@
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="row">
+	<div class="container-fluid vh-100">
+		<div class="row vh-100">
 			<!-- Sidebar -->
 			<?php include 'sidebar.php'; ?>
 

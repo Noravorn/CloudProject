@@ -52,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	</head>
 
 	<body>
-		<div class="container-fluid">
-			<div class="row">
+		<div class="container-fluid vh-100">
+			<div class="row vh-100">
 				<?php include 'sidebar.php'; ?>
 
 				<main class="col-md-10 p-4">
