@@ -1,17 +1,21 @@
-<?php include '../connect.php'; ?>
-
 <?php
+
+// Start output buffering to prevent headers from being sent prematurely
+ob_start();
+
+include '../connect.php';
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
     $id = $_GET['id'];
 
     // Sanitize inputs
-    $Name = htmlspecialchars(filter_var($_POST['Name']));
+    $Name = htmlspecialchars(trim($_POST['Name']));
     $City = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT); // Assuming City_ID is an integer
-    $Address = htmlspecialchars(filter_var($_POST['Address']));
-    $PhoneNumber = htmlspecialchars(filter_var($_POST['PhoneNumber']));
-    $OpenTime = htmlspecialchars(filter_var($_POST['OpenTime']));
-    $CloseTime = htmlspecialchars(filter_var($_POST['CloseTime']));
+    $Address = htmlspecialchars(trim($_POST['Address']));
+    $PhoneNumber = htmlspecialchars(trim($_POST['PhoneNumber']));
+    $OpenTime = htmlspecialchars(trim($_POST['OpenTime']));
+    $CloseTime = htmlspecialchars(trim($_POST['CloseTime']));
 
     // Update query
     $stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City_ID = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
@@ -29,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 
 // Fetch clinic data for editing
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);  // Sanitize the ID
     $stmt = $pdo->prepare("SELECT * FROM CLINICS WHERE Clinic_ID = ?");
     $stmt->execute([$id]);
     $clinic = $stmt->fetch();
@@ -57,7 +61,7 @@ if (isset($_GET['id'])) {
                 <h2>Edit Clinic Data</h2>
                 <?php if (isset($clinic)): ?>
                     <div class="clinic_form">
-                        <form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
+                        <form action="edit_clinic.php?id=<?php echo htmlspecialchars($clinic['Clinic_ID']); ?>" method="post">
                             <label for="Name">Clinic Name</label>
                             <input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
 
@@ -99,50 +103,54 @@ if (isset($_GET['id'])) {
 </body>
 
 <style>
-	main h2 {
-		text-align: center;
-	}
+    main h2 {
+        text-align: center;
+    }
 
-	.clinic_form {
-		display: flex;
-		flex-direction: column;
-		align-items: left;
-		padding-left: 20%;
-		padding-right: 20%;
-		background: var(--secondary-color);
-	}
+    .clinic_form {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        padding-left: 20%;
+        padding-right: 20%;
+        background: var(--secondary-color);
+    }
 
-	form {
-		display: grid;
-		grid-template-columns: repeat(1, 7fr);
-		gap: 1.1rem;
-		margin-bottom: 2rem;
-		border: 4px solid rgba(0, 0, 0, 0.2);
-		border-radius: 10px;
-		padding: 20px;
-		background: var(--secondary-color);
-	}
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 7fr);
+        gap: 1.1rem;
+        margin-bottom: 2rem;
+        border: 4px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        background: var(--secondary-color);
+    }
 
-	form input {
-		width: auto;
-		height: 40px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
+    form input {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-	form select {
-		width: auto;
-		height: 40px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-	}
+    form select {
+        width: auto;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-	form input[type="submit"] {
-		cursor: pointer;
-		width: auto;
-		height: 40px;
-		border-radius: 5px;
-	}
+    form input[type="submit"] {
+        cursor: pointer;
+        width: auto;
+        height: 40px;
+        border-radius: 5px;
+    }
 </style>
 
 </html>
+
+<?php
+// End output buffering and send output
+ob_end_flush();

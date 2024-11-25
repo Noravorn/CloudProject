@@ -1,6 +1,13 @@
-<?php include '../connect.php'; ?>
-
 <?php
+
+// Start output buffering to prevent headers from being sent prematurely
+ob_start();
+
+include '../connect.php';
+
+// Get the pet ID from the URL
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	$Name = htmlspecialchars($_POST['Name']);
@@ -21,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 }
 
 // Fetch pet data if ID is set
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id) {
 	$stmt = $pdo->prepare("SELECT * FROM PETS WHERE Pet_ID = ?");
 	$stmt->execute([$id]);
@@ -121,3 +127,7 @@ $bloodTypes = $bloodTypesStmt->fetchAll(PDO::FETCH_ASSOC);
 	</style>
 
 </html>
+
+<?php
+// End output buffering and send output
+ob_end_flush();
