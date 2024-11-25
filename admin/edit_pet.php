@@ -1,6 +1,25 @@
 <?php include '../connect.php'; ?>
 
 <?php
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
+	$Name = htmlspecialchars($_POST['Name']);
+	$BloodType = htmlspecialchars($_POST['bloodType']);
+	$Type = htmlspecialchars($_POST['petType']);
+	$Breed = htmlspecialchars($_POST['Breed']);
+	$Age = htmlspecialchars($_POST['Age']);
+
+	$stmt = $pdo->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
+	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
+
+	if ($stmt->rowCount() > 0) {
+		header("Location: pet_page.php");
+		exit();
+	} else {
+		$error = "Update failed or no changes made.";
+	}
+}
+
 // Fetch pet data if ID is set
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id) {
@@ -20,25 +39,6 @@ $petTypes = $petTypesStmt->fetchAll(PDO::FETCH_ASSOC);
 // Fetch Blood Types from the BLOOD_TYPES table
 $bloodTypesStmt = $pdo->query("SELECT Blood_Type_ID, Blood_Type_Name FROM BLOOD_TYPES");
 $bloodTypes = $bloodTypesStmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
-	$Name = htmlspecialchars($_POST['Name']);
-	$BloodType = htmlspecialchars($_POST['bloodType']);
-	$Type = htmlspecialchars($_POST['petType']);
-	$Breed = htmlspecialchars($_POST['Breed']);
-	$Age = htmlspecialchars($_POST['Age']);
-
-	$stmt = $pdo->prepare("UPDATE PETS SET Pet_Name = ?, Pet_Blood_type_ID = ?, Pet_Type = ?, Pet_Breed = ?, Pet_Age = ? WHERE Pet_ID = ?");
-	$stmt->execute([$Name, $BloodType, $Type, $Breed, $Age, $id]);
-
-	if ($stmt->rowCount() > 0) {
-		header("Location:pet_page.php");
-		exit();
-	} else {
-		$error = "Update failed or no changes made.";
-	}
-}
 ?>
 
 <!DOCTYPE html>
