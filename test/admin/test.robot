@@ -129,6 +129,7 @@ Edit Clinic
     Title Should Be    Clinic Management
 
     # Get the Edit button for the specific clinic by its ID
+    Scroll Element Into View    xpath=//table//td[contains(text(), '${CLINIC_NAME}')]/following-sibling::td/a[contains(@id, 'edit_button')]
     ${edit_button}=    Get WebElement    xpath=//table//td[contains(text(), '${CLINIC_NAME}')]/following-sibling::td/a[contains(@id, 'edit_button')]
     Click Element    ${edit_button}
     
@@ -152,6 +153,7 @@ Delete Clinic
     Wait Until Page Contains    ${EDITED_CLINIC_NAME}    timeout=30
 
     # Wait for the clinic to be visible in the table
+    Scroll Element Into View    xpath=//table//td[contains(text(), '${EDITED_CLINIC_NAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     ${delete_button}=    Get WebElement    xpath=//table//td[contains(text(), '${EDITED_CLINIC_NAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     Click Element    ${delete_button}
 
@@ -210,6 +212,7 @@ Delete Pet
     Wait Until Page Contains    ${EDITED_PET_NAME}    timeout=30
 
     # Wait for the pet to be visible in the table
+    Scroll Element Into View    xpath=//table//td[contains(text(), '${EDITED_PET_NAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     ${delete_button}=    Get WebElement    xpath=//table//td[contains(text(), '${EDITED_PET_NAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     Click Element    ${delete_button}
 
