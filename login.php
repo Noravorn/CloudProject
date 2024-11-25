@@ -3,13 +3,6 @@
 <?php include('connect.php'); ?>
 <?php
 
-// Start the session and regenerate the session ID for security
-session_start();
-session_regenerate_id(true);
-
-// Include the database connection file
-include('connect.php');
-
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
