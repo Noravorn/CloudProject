@@ -20,6 +20,7 @@ if ($id && $type) {
                 $stmt = $pdo->prepare("DELETE FROM DONATION_HISTORY WHERE Clinic_ID = ?");
                 $stmt->execute([$id]);
 
+                // Delete related records in STORAGE
                 $stmt = $pdo->prepare("DELETE FROM STORAGE WHERE Clinic_ID = ?");
                 $stmt->execute([$id]);
 
@@ -28,8 +29,12 @@ if ($id && $type) {
                 break;
 
             case 'pet':
-                // Update DONATION_HISTORY to set Donor_Pet_ID to NULL for the deleted pet
+                // Update DONATION_HISTORY to set Donor_Pet_ID and Receiver_Pet_ID to NULL for the deleted pet
                 $stmt = $pdo->prepare("UPDATE DONATION_HISTORY SET Donor_Pet_ID = NULL WHERE Donor_Pet_ID = ?");
+                $stmt->execute([$id]);
+
+                // Update DONATION_HISTORY to set Receiver_Pet_ID to NULL for the deleted pet
+                $stmt = $pdo->prepare("UPDATE DONATION_HISTORY SET Receiver_Pet_ID = NULL WHERE Receiver_Pet_ID = ?");
                 $stmt->execute([$id]);
 
                 // Update USERS table to set User_Pet_ID to NULL for the deleted pet
@@ -45,6 +50,7 @@ if ($id && $type) {
                 $stmt = $pdo->prepare("UPDATE DONATION_HISTORY SET Donor_ID = NULL WHERE Donor_ID = ?");
                 $stmt->execute([$id]);
 
+                // Update DONATION_HISTORY to set Receiver_ID to NULL for the user
                 $stmt = $pdo->prepare("UPDATE DONATION_HISTORY SET Receiver_ID = NULL WHERE Receiver_ID = ?");
                 $stmt->execute([$id]);
 

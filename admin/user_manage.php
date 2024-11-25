@@ -4,10 +4,10 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>User Management</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<?php include('../header.php'); ?>
+	<title>User Management</title>
 </head>
 
 <body>
@@ -53,17 +53,17 @@
 										u.User_Lname, 
 										u.User_Email, 
 										u.User_Phone_Number, 
-										p.Pet_Name, 
-										cl.Clinic_Name, 
-										c.City_Name, 
-										u.User_Address, 
+										IFNULL(p.Pet_Name, 'No Pet') AS Pet_Name, 
+										IFNULL(cl.Clinic_Name, 'No Clinic') AS Clinic_Name, 
+										IFNULL(c.City_Name, 'No City') AS City_Name, 
+										IFNULL(u.User_Address, 'No Address') AS User_Address, 
 										u.User_ID
 									FROM USERS u
-									JOIN TITLES t ON u.User_Title_ID = t.Title_ID  
-									JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
-									JOIN CITIES c ON u.User_City_ID = c.City_ID 
-									JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
-									JOIN PETS p ON u.User_Pet_ID = p.Pet_ID;
+									LEFT JOIN TITLES t ON u.User_Title_ID = t.Title_ID  
+									LEFT JOIN ROLES r ON u.User_Role_ID = r.Role_ID 
+									LEFT JOIN CITIES c ON u.User_City_ID = c.City_ID 
+									LEFT JOIN CLINICS cl ON u.User_Clinic_ID = cl.Clinic_ID 
+									LEFT JOIN PETS p ON u.User_Pet_ID = p.Pet_ID;
 								";
 								$stmt = $pdo->query($query);
 
@@ -83,7 +83,7 @@
 											<td><a href='edit_user.php?id=<?php echo $row['User_ID']; ?>' id="edit_button" class='btn btn-sm btn-warning'>Edit</a></td>
 											<td><a href='delete_info.php?id=<?php echo $row['User_ID']; ?>&type=user' id="delete_button" class='btn btn-sm btn-danger'>Delete</a></td>
 										</tr>
-							<?php   }
+							<?php }
 								} else {
 									echo "<tr><td colspan='12' class='text-center text-muted'>No users found.</td></tr>";
 								}
