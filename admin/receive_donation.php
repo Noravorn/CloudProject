@@ -1,6 +1,9 @@
-<?php include('../connect.php'); ?>
-
 <?php
+// Start output buffering to prevent headers from being sent prematurely
+ob_start();
+
+include('../connect.php');
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
@@ -189,3 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 </style>
 
 </html>
+
+<?php
+// End output buffering and send output
+ob_end_flush();
+?>

@@ -1,6 +1,9 @@
-<?php include '../connect.php'; ?>
-
 <?php
+// Start output buffering to prevent headers from being sent prematurely
+ob_start();
+
+include '../connect.php';
+
 // Set PDO to throw exceptions on errors
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -171,3 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 </style>
 
 </html>
+
+<?php
+// End output buffering and send output
+ob_end_flush();
