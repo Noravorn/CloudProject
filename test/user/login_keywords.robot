@@ -18,5 +18,5 @@ Input Username and Password
 Submit Credentials
     Click Button    id=login_button
 
-Welcome Page Should Be Open
+Information Page Should Be Open
     Wait Until Page Contains    Information    timeout=30
