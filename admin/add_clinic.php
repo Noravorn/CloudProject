@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Add Clinic</title>
-</head>
-
 <?php include '../connect.php'; ?>
 
 <?php
@@ -32,6 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	}
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Add Clinic</title>
+</head>
 
 <body>
 	<div class="container-fluid">
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 					<label for="CloseTime">Close Time</label>
 					<input type="time" id="CloseTime" name="CloseTime" required>
 
-					<input type="submit" id="sub" name="sub" value="Add">
+					<input type="submit" id="add_clinic_button" name="sub" value="Add">
 				</form>
 			</main>
 		</div>

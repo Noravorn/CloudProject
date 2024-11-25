@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Edit User</title>
-</head>
-
 <?php include '../connect.php'; ?>
 
 <?php
@@ -71,6 +61,16 @@
         }
     }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Edit User</title>
+</head>
 
 <body>
 
@@ -160,7 +160,7 @@
                                 <label for="Address">Address</label>
                                 <input type="text" class="form-control" name="address" id="address" value="<?php echo htmlspecialchars($user['User_Address']); ?>" required>
 
-                            <input type="submit" id="sub" name="sub" class="btn btn-primary" value="Update">
+                            <input type="submit" id="edit_user_button" name="sub" class="btn btn-primary" value="Update">
                         </form>
                     </div>
                 <?php else: ?>

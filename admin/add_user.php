@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Add User</title>
-</head>
-
 <?php include '../connect.php'; ?>
 
 <?php
@@ -42,6 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Add User</title>
+</head>
 
 <body>
 
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                         ?>
                     </select>
 
-                    <input type="submit" name="sub" class="btn btn-primary" value="Add User">
+                    <input type="submit" id="add_user_button" name="sub" class="btn btn-primary" value="Add User">
                 </form>
             </main>
         </div>

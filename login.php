@@ -1,3 +1,6 @@
+<?php session_start(); ?>
+<?php session_regenerate_id(true); ?>
+<?php include('connect.php'); ?>
 <?php
 
 // Start the session and regenerate the session ID for security
@@ -56,16 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include('header.php'); ?>
     <title>Login</title>
 </head>
+
 <body id="login">
 
     <div class="position-absolute top-0 start-0 m-3">
-        <a href="index.html" class="text-decoration-none text-secondary d-flex align-items-center">
+        <a href="index.php" class="text-decoration-none text-secondary d-flex align-items-center">
             <i class='bx bx-left-arrow-circle fs-4 me-2'></i>
             <span>Back</span>
         </a>

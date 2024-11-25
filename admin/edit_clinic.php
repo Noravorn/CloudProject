@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Edit Clinic</title>
-</head>
-
 <?php include '../connect.php'; ?>
 
 <?php
@@ -15,12 +5,13 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
     $id = $_GET['id'];
 
-    $Name = filter_var($_POST['Name']);
+    // Sanitize inputs
+    $Name = htmlspecialchars(filter_var($_POST['Name']));
     $City = filter_var($_POST['City'], FILTER_SANITIZE_NUMBER_INT); // Assuming City_ID is an integer
-    $Address = filter_var($_POST['Address']);
-    $PhoneNumber = filter_var($_POST['PhoneNumber']);
-    $OpenTime = filter_var($_POST['OpenTime']);
-    $CloseTime = filter_var($_POST['CloseTime']);
+    $Address = htmlspecialchars(filter_var($_POST['Address']));
+    $PhoneNumber = htmlspecialchars(filter_var($_POST['PhoneNumber']));
+    $OpenTime = htmlspecialchars(filter_var($_POST['OpenTime']));
+    $CloseTime = htmlspecialchars(filter_var($_POST['CloseTime']));
 
     // Update query
     $stmt = $pdo->prepare("UPDATE CLINICS SET Clinic_Name = ?, Clinic_City_ID = ?, Clinic_Address = ?, Clinic_Phone_Number = ?, Clinic_Open_Time = ?, Clinic_Close_Time = ? WHERE Clinic_ID = ?");
@@ -45,55 +36,66 @@ if (isset($_GET['id'])) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Edit Clinic</title>
+</head>
+
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<!-- Sidebar -->
-			<?php include 'sidebar.php'; ?>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <?php include 'sidebar.php'; ?>
 
-			<!-- Main Content -->
-			<main class="col-md-10 p-4">
-				<h2>Edit Clinic Data</h2>
-				<?php if (isset($clinic)): ?>
-					<div class="clinic_form">
-						<form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
-							<label for="Name">Clinic Name</label>
-							<input type="text" id="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
+            <!-- Main Content -->
+            <main class="col-md-10 p-4">
+                <h2>Edit Clinic Data</h2>
+                <?php if (isset($clinic)): ?>
+                    <div class="clinic_form">
+                        <form action="edit_clinic.php?id=<?php echo $clinic['Clinic_ID']; ?>" method="post">
+                            <label for="Name">Clinic Name</label>
+                            <input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($clinic['Clinic_Name']); ?>" required>
 
-							<label for="City">Clinic City</label>
-							<select name="City" id="City" required>
-								<?php
-								$stmt = $pdo->prepare("SELECT * FROM CITIES");
-								$stmt->execute();
-								$cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            <label for="City">Clinic City</label>
+                            <select name="City" id="City" required>
+                                <?php
+                                $stmt = $pdo->prepare("SELECT * FROM CITIES");
+                                $stmt->execute();
+                                $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-								foreach ($cities as $cities) {
-									echo "<option value='" . htmlspecialchars($cities["City_ID"]) . "'>" . htmlspecialchars($cities["City_Name"]) . "</option>";
-								}
-								?>
-							</select>
+                                foreach ($cities as $city) {
+                                    $selected = $city["City_ID"] == $clinic["Clinic_City_ID"] ? "selected" : "";
+                                    echo "<option value='" . htmlspecialchars($city["City_ID"]) . "' $selected>" . htmlspecialchars($city["City_Name"]) . "</option>";
+                                }
+                                ?>
+                            </select>
 
-							<label for="Address">Clinic Address</label>
-							<input type="text" id="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
+                            <label for="Address">Clinic Address</label>
+                            <input type="text" id="Address" name="Address" value="<?php echo htmlspecialchars($clinic['Clinic_Address']); ?>" required>
 
-							<label for="PhoneNumber">Phone Number</label>
-							<input type="text" id="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
+                            <label for="PhoneNumber">Phone Number</label>
+                            <input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo htmlspecialchars($clinic['Clinic_Phone_Number']); ?>" required>
 
-							<label for="OpenTime">Open Time</label>
-							<input type="time" id="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
+                            <label for="OpenTime">Open Time</label>
+                            <input type="time" id="OpenTime" name="OpenTime" value="<?php echo htmlspecialchars($clinic['Clinic_Open_Time']); ?>" required>
 
-							<label for="CloseTime">Close Time</label>
-							<input type="time" id="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
+                            <label for="CloseTime">Close Time</label>
+                            <input type="time" id="CloseTime" name="CloseTime" value="<?php echo htmlspecialchars($clinic['Clinic_Close_Time']); ?>" required>
 
-							<input type="submit" id="sub" name="sub" value="Update">
-						</form>
-					</div>
-				<?php else: ?>
-					<p>Clinic not found.</p>
-				<?php endif; ?>
-			</main>
-		</div>
-	</div>
+                            <input type="submit" id="edit_clinic_button" name="sub" value="Update">
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <p>Clinic not found.</p>
+                <?php endif; ?>
+            </main>
+        </div>
+    </div>
 </body>
 
 <style>

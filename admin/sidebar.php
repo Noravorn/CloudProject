@@ -11,6 +11,6 @@
         <a href="pet_page.php" class="nav-link text-dark"><i class='bx bxs-dog'></i> Pet Data</a>
         <a href="user_manage.php" class="nav-link text-dark"><i class="ri-user-line"></i> User Management</a>
         <a href="clinic_manage.php" class="nav-link text-dark text-nowrap"><i class="ri-hospital-line"></i> Clinic Management</a>
-        <a href="login.php" class="nav-link text-dark"><i class="ri-logout-box-line"></i> Logout</a>
+        <a href="logout.php" class="nav-link text-dark"><i class="ri-logout-box-line"></i> Logout</a>
     </nav>
 </aside>
