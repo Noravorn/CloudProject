@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Donate</title>
-</head>
-
 <?php include '../connect.php'; ?>
 
 <?php
@@ -48,6 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Donate</title>
+</head>
 
 <body>
     <div class="container-fluid">

@@ -1,18 +1,6 @@
 <?php session_start(); ?>
 <?php session_regenerate_id(true); ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
 <?php include('connect.php'); ?>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('header.php'); ?>
-    <title>Login</title>
-</head>
-
 <?php
 
 // Check if the form is submitted
@@ -62,6 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('header.php'); ?>
+    <title>Login</title>
+</head>
 
 <body id="login">
 

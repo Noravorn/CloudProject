@@ -1,17 +1,5 @@
 <?php session_start(); ?>
-
-<!DOCTYPE html>
-<html>
-
 <?php include('../connect.php'); ?>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include('../header.php'); ?>
-    <title>Login</title>
-</head>
-
 <?php
 
 // Check if the form is submitted
@@ -64,6 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include('../header.php'); ?>
+    <title>Login</title>
+</head>
 
 <body>
     <div class="container vh-100 d-flex align-items-center justify-content-center">
