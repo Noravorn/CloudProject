@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         // Check if the insertion was successful
         if ($stmt->rowCount() > 0) {
             echo "<p style='color: green;'>Donation history successfully added!</p>";
-            header("Location: history.php");
+            header("Location:history.php");
             exit();
         } else {
             echo "<p style='color: red;'>Error: Failed to add donation history.</p>";

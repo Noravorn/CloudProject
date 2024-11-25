@@ -71,7 +71,7 @@ if ($id && $type) {
             $pdo->commit();
 
             // Redirect back to the referring page
-            header("Location: $referrer");
+            header("Location:$referrer");
             exit();
         } else {
             throw new Exception("Deletion failed. ID not found.");

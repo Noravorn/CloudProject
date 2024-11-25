@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
         if ($stmt->rowCount() > 0) {
             // Redirect after successful insert
-            header("Location: history.php");
+            header("Location:history.php");
             exit();
         } else {
             // Handle insert failure

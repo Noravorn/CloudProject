@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['sub'])) {
 	
 	try {
 		$stmt->execute([$Name, $City, $Address, $PhoneNumber, $OpenTime, $CloseTime]);
-		header("Location: clinic_manage.php");
+		header("Location:clinic_manage.php");
 		exit();
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();

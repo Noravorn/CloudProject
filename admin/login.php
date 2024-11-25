@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     : null;
 
                 if ($redirectUrl) {
-                    header("Location: $redirectUrl");
+                    header("Location:$redirectUrl");
                     exit();
                 } else {
                     $error = "Invalid user role";

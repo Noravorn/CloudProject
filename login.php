@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $redirectUrl = $user['User_Role_ID'] == 2 ? "information.php" : null;
 
                 if ($redirectUrl) {
-                    header("Location: $redirectUrl");
+                    header("Location:$redirectUrl");
                     exit();
                 } else {
                     $error = "Invalid user role";
