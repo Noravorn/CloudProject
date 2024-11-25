@@ -156,8 +156,8 @@
 
         // Fetch data for dog and cat blood types
         async function loadCharts() {
-            const dogBloodTypes = await fetchBloodTypeCounts('dog');
-            const catBloodTypes = await fetchBloodTypeCounts('cat');
+            const dogBloodTypes = await fetchBloodTypeCounts('Dog');
+            const catBloodTypes = await fetchBloodTypeCounts('Cat');
 
             // Create charts using the fetched data
             const dogChartCanvas = document.getElementById('dog-blood-types-chart');

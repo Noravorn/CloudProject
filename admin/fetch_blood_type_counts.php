@@ -3,14 +3,14 @@ include '../connect.php';
 
 $petType = $_GET['pet_type'];
 
-if ($petType === 'dog') {
+if ($petType === 'Dog') {
     // Query for dog blood types and counts
     $query = "SELECT bt.Blood_Type_Name, COUNT(p.Pet_ID) AS count
               FROM PETS p
               JOIN BLOOD_TYPES bt ON p.Pet_Blood_type_ID = bt.Blood_Type_ID
               WHERE p.Pet_Type = 'Dog'
               GROUP BY bt.Blood_Type_Name";
-} else if ($petType === 'cat') {
+} else if ($petType === 'Cat') {
     // Query for cat blood types and counts
     $query = "SELECT bt.Blood_Type_Name, COUNT(p.Pet_ID) AS count
               FROM PETS p

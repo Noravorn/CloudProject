@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
 
                     <label for="petType">Pet Type</label>
                     <select id="petType" name="pet_type">
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
                     </select>
 
                     <label for="bloodType">Blood Type</label>
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                         const bloodTypeSelect = document.getElementById('bloodType');
 
                         const bloodTypes = {
-                            'dog': [
+                            'Dog': [
                                 ['DEA 1.1', 1],
                                 ['DEA 1.2', 2],
                                 ['DEA 3', 3],
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                                 ['DEA 7', 7],
                                 ['DEA 8', 8]
                             ],
-                            'cat': [
+                            'Cat': [
                                 ['A', 9],
                                 ['B', 10],
                                 ['AB', 11]
