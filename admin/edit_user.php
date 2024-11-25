@@ -160,7 +160,7 @@
                                 <label for="Address">Address</label>
                                 <input type="text" class="form-control" name="address" id="address" value="<?php echo htmlspecialchars($user['User_Address']); ?>" required>
 
-                            <input type="submit" id="sub" name="sub" class="btn btn-primary" value="Update">
+                            <input type="submit" id="edit_user_button" name="sub" class="btn btn-primary" value="Update">
                         </form>
                     </div>
                 <?php else: ?>

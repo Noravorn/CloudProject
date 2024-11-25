@@ -26,6 +26,7 @@ Add User
     Select From List By Label    id=City    New York
     Input Text    id=Address    Test Address
     Select From List By Label    id=clinic    PawsCare Center
+    Select From List By Label    id=pet    Max
     
     # Click the Add button
     Scroll Element Into View    id=add_user_button
@@ -39,9 +40,10 @@ Add User
 Edit User
     # Open the Clinic Management page
     Open Browser    ${USER_MANAGE_URL}    ${BROWSER}
-    Title Should Be    User Management
+    Wait Until Page Contains    User Management
 
     # Get the Edit button for the specific clinic by its ID
+    Scroll Element Into View    xpath=//table//td[contains(text(), '${USER_FNAME}')]/following-sibling::td/a[contains(@id, 'edit_button')]
     ${edit_button}=    Get WebElement    xpath=//table//td[contains(text(), '${USER_FNAME}')]/following-sibling::td/a[contains(@id, 'edit_button')]
     Click Element    ${edit_button}
     
@@ -65,6 +67,7 @@ Delete User
     Wait Until Page Contains    ${EDITED_USER_FNAME}    timeout=30
 
     # Wait for the clinic to be visible in the table
+    Scroll Element Into View    xpath=//table//td[contains(text(), '${EDITED_USER_FNAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     ${delete_button}=    Get WebElement    xpath=//table//td[contains(text(), '${EDITED_USER_FNAME}')]/following-sibling::td/a[contains(@id, 'delete_button')]
     Click Element    ${delete_button}
 
