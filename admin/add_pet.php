@@ -1,6 +1,6 @@
-<?php include '../connect.php'; ?>
-
 <?php
+include '../connect.php'; 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     // Sanitize and validate input
     $user_id = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_NUMBER_INT);
@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         $update_stmt->execute([$last_inserted_id, $user_id]);
 
         // Redirect to pet page
-        header("Location:pet_page.php");
-        exit();
+        header("Location: pet_page.php");
+        exit();  // Ensure no further code is executed after the header redirection
     } catch (PDOException $e) {
         // Handle errors gracefully
         echo "Error: " . htmlspecialchars($e->getMessage());
@@ -126,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         </div>
     </div>
 </body>
+
 <style>
     main h2 {
         text-align: center;

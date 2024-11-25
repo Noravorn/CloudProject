@@ -2,7 +2,7 @@
 Library           SeleniumLibrary
 
 *** Variables ***
-${LOGOUT URL}      http://localhost:3000/logout.php
+${LOGOUT URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/logout.php
 ${BROWSER}        Chrome
 
 *** Keywords ***

@@ -2,7 +2,7 @@
 Library           SeleniumLibrary
 
 *** Variables ***
-${LOGIN URL}      http://localhost:3000/admin/login.php
+${LOGIN URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/login.php
 ${BROWSER}        Chrome
 
 *** Keywords ***

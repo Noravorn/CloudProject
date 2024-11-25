@@ -8,14 +8,14 @@ Resource          logout_keywords.robot
 ${EMAIL}          michael.b@email.com
 ${PASSWORD}       test3
 
-${SEARCH URL}      http://localhost:3000/search.php
+${SEARCH URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/search.php
 ${BROWSER}        Chrome
 ${PET_SPECIES}    Dog
 ${BLOOD_TYPE}     DEA 1.1
 ${CITY}           New York
 ${SERVICE_HOURS}  Morning
 
-${INFORMATION URL}      http://localhost:3000/information.php
+${INFORMATION URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/information.php
 
 *** Test Cases ***
 Valid Login

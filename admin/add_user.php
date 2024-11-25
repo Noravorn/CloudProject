@@ -1,6 +1,6 @@
-<?php include '../connect.php'; ?>
+<?php 
+include '../connect.php'; 
 
-<?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     // Sanitize and validate inputs
     $title = filter_var($_POST['title'], FILTER_SANITIZE_NUMBER_INT);
@@ -15,6 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     $address = filter_var($_POST['Address']);
     $pet_id = isset($_POST['pet']) && !empty($_POST['pet']) ? $_POST['pet'] : null;
 
+    if (!$email) {
+        echo "Invalid email format.";
+        exit();
+    }
+
     try {
         // Prepare SQL for inserting user data
         $stmt = $pdo->prepare("INSERT INTO USERS 
@@ -23,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
         $stmt->execute([$title, $role, $fname, $lname, $email, $phone, $password, $clinic, $city, $address, $pet_id]);
 
         // Redirect after successful insertion
-        header("location:user_manage.php");
+        header("location: user_manage.php");
         exit();
     } catch (PDOException $e) {
         // Log the error and display a user-friendly message
@@ -130,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
     </div>
 
 </body>
+
 <style>
     main h2 {
         text-align: center;

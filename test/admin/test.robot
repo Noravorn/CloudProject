@@ -5,20 +5,20 @@ Resource          login_keywords.robot
 Resource          logout_keywords.robot
 
 *** Variables ***
-${ADD_USER_URL}      http://localhost:3000/admin/add_user.php
-${USER_MANAGE_URL}  http://localhost:3000/admin/user_manage.php
+${ADD_USER_URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/add_user.php
+${USER_MANAGE_URL}  http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/user_manage.php
 ${BROWSER}        Chrome
 ${USER_FNAME}    John
 ${EDITED_USER_FNAME}    Test User123
 
-${ADD_CLINIC_URL}      http://localhost:3000/admin/add_clinic.php
-${CLINIC_MANAGE_URL}  http://localhost:3000/admin/clinic_manage.php
+${ADD_CLINIC_URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/add_clinic.php
+${CLINIC_MANAGE_URL}  http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/clinic_manage.php
 ${BROWSER}        Chrome
 ${CLINIC_NAME}    Sample Clinic
 ${EDITED_CLINIC_NAME}    Test Clinic123
 
-${ADD_PET_URL}      http://localhost:3000/admin/add_pet.php
-${PET_MANAGE_URL}  http://localhost:3000/admin/pet_page.php
+${ADD_PET_URL}      http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/add_pet.php
+${PET_MANAGE_URL}  http://ec2-34-238-250-62.compute-1.amazonaws.com/admin/pet_page.php
 ${PET_NAME}    Sample Pet
 ${EDITED_PET_NAME}    Test Pet123
 
