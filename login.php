@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body id="login">
 
     <div class="position-absolute top-0 start-0 m-3">
-        <a href="index.html" class="text-decoration-none text-secondary d-flex align-items-center">
+        <a href="index.php" class="text-decoration-none text-secondary d-flex align-items-center">
             <i class='bx bx-left-arrow-circle fs-4 me-2'></i>
             <span>Back</span>
         </a>

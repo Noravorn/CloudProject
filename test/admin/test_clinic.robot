@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     A test suite for add, edit, and delete pet.
+Documentation     A test suite for add, edit, and delete clinic.
 Library           SeleniumLibrary
 
 *** Variables ***

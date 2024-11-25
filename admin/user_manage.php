@@ -80,8 +80,8 @@
 											<td><?php echo htmlspecialchars($row['Clinic_Name']); ?></td>
 											<td><?php echo htmlspecialchars($row['City_Name']); ?></td>
 											<td><?php echo htmlspecialchars($row['User_Address']); ?></td>
-											<td><a href='edit_user.php?id=<?php echo $row['User_ID']; ?>' class='btn btn-sm btn-warning'>Edit</a></td>
-											<td><a href='delete_info.php?id=<?php echo $row['User_ID']; ?>&type=user' class='btn btn-sm btn-danger'>Delete</a></td>
+											<td><a href='edit_user.php?id=<?php echo $row['User_ID']; ?>' id="edit_button" class='btn btn-sm btn-warning'>Edit</a></td>
+											<td><a href='delete_info.php?id=<?php echo $row['User_ID']; ?>&type=user' id="delete_button" class='btn btn-sm btn-danger'>Delete</a></td>
 										</tr>
 							<?php   }
 								} else {

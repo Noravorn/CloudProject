@@ -9,7 +9,10 @@
         <div class="d-flex flex-grow-1 justify-content-center">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="about.php" style="color: var(--text-color);">About</a>
+                    <a id="about-link" class="nav-link" href="about.php" style="color: var(--text-color);">About</a>
+                </li>
+                <li class="nav-item">
+                    <a id="information-link" class="nav-link" href="information.php" style="color: var(--text-color);">Information</a>
                 </li>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['User_ID'])): ?>

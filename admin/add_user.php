@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sub'])) {
                         ?>
                     </select>
 
-                    <input type="submit" name="sub" class="btn btn-primary" value="Add User">
+                    <input type="submit" id="add_user_button" name="sub" class="btn btn-primary" value="Add User">
                 </form>
             </main>
         </div>
