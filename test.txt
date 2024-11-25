@@ -1,7 +1,0 @@
-Normal User:
-michael.b@email.com
-test3
-
-Admin User:
-john.smith@email.com
-test1
